@@ -1,2 +1,5 @@
 # apc-msyadd1-template
-Template repository for APC SMSYADD1
+Documentation folder for MSYADD1
+
+Erika Daduya
+https://github.com/eddaduya
