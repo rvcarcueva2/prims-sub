@@ -111,7 +111,7 @@
                         <x-prims-sub-button1 href="" class="my-6">Go to portal</x-prims-sub-button1>
                     </div>
                 </div>
-                
+
                 <!-- About Us -->
                 <div class="flex flex-col rounded-r-2xl bg-prims-yellow-4 py-8 px-6">
                     <h3 class="text-4xl font-extrabold mb-3">About Us</h3>
@@ -132,6 +132,13 @@
                 <p class="text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus purus in massa tempor nec feugiat. Venenatis urna cursus eget nunc scelerisque viverra mauris in aliquam. Gravida dictum fusce ut placerat orci nulla pellentesque dignissim enim. Bibendum neque egestas congue quisque egestas diam in arcu cursus. Diam maecenas sed enim ut sem.</p>
             </div>
         </div>
+
+        <footer class="bg-prims-yellow-1 w-full h-16 pl-6">
+            <div class="container flex gap-4 items-center">
+                <img src="img/apc-logo.svg" class="object-scale-down h-16">
+                <p>Asia Pacific College</p>
+            </div>
+        </footer>
 
     </body>
 </html>
