@@ -23,9 +23,10 @@ export default {
                     2: '#ECBA51',
                     3: '#E7B54D',
                     4: '#E1AD40',
+                    5: '#ffdf9c',
                 },
                 'prims-azure': {
-                    100: '#A1C2D9',  // Lighter shade
+                    100: '#1150A3',  // for the login
                     200: '#6F9FBB',  // Lighter
                     300: '#4A8AA3',  // Medium light
                     400: '#2C7491',  // Base color
