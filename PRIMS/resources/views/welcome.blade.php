@@ -10,6 +10,10 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet" />
+
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -19,19 +23,23 @@
             </style>
         @endif
     </head>
-    <body>
-        <header class="bg-white shadow" style="height: 64px">
+
+    <body class="font-sans antialiased">
+        <header class="bg-white shadow fixed top-0 left-0 w-full h-16 z-10">
             <div class="container mx-auto flex justify-around items-center p-4">
+
                 <!-- navbar menu -->
                 <button class=" text-gray-700" id="menu-toggle">
                 <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
                 </button>
+
                 <!-- logo -->
                 <div class="flex items-center space-x-2">
-                    <img src="img/logo.svg" alt="Clinic Logo">
+                    <img src="img/header-logo.svg" alt="Clinic Logo">
                 </div>
+                
                 <!-- log in -->
                 @if (Route::has('login'))
                     <nav class="-mx-3 flex flex-1 justify-end">
@@ -54,5 +62,18 @@
                 @endif
             </div>
         </header>
+
+        <div class="background-section mt-16 h-[calc(100vh-4rem)] bg-cover bg-center relative" style="background-image: url(img/homepage-bg.svg);">
+            <div class="absolute w-2/5 h-full flex flex-col justify-center ml-40 font-nunito">
+                <!-- logo ulet -->
+                <img src="img/homepage-logo.svg" class="w-1/2 my-6">
+                <!-- text -->
+                <p class="my-6 text-xl text-white">“The preservation of <strong>HEALTH</strong> is easier than the <strong>CURE</strong> of the disease.”</p>
+                <!-- buttons -->
+                <div class="relative flex flex-row items-center">
+                    <x-set-an-appointment href="" class="my-6">Set an Appointment</x-set-an-appointment>
+                    <a href="" class="text-prims-yellow font-semibold p-6 underline hover:text-white transition ease-in-out duration-150">Contact Us</a>
+                </div> 
+        </div>
     </body>
 </html>
