@@ -8,6 +8,9 @@ URL::forceRootUrl($url);
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/medical-inventory', function () {
+    return view('medical-inventory');
+});
 
 Route::middleware([
     'auth:sanctum',
