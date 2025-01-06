@@ -43,21 +43,12 @@
                 <!-- log in -->
                 @if (Route::has('login'))
                     <nav class="-mx-3 flex flex-1 justify-end">
-                        @auth
                             <a
                                 href="{{ url('/dashboard') }}"
                                 class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-black dark:hover:text-black/80 dark:focus-visible:ring-white"
                             >
-                                Dashboard
+                                
                             </a>
-                        @else
-                            <a
-                                href="{{ route('login') }}"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-black dark:hover:text-black/80 dark:focus-visible:ring-white"
-                            >
-                                Log in
-                            </a>
-                        @endauth
                     </nav>
                 @endif
             </div>
@@ -74,7 +65,8 @@
 
                 <!-- buttons -->
                 <div class="relative flex flex-row items-center">
-                    <x-prims-main-button href="/appointment" class="my-6">Set an Appointment</x-prims-main-button>
+                    <x-prims-main-button href=".docker exec -it prims-mysql-1 mysql -u admin_user -p
+/appointment" class="my-6">Set an Appointment</x-prims-main-button>
                     <a href="" class="text-prims-yellow-1 font-semibold p-6 underline hover:text-white transition ease-in-out duration-150">Contact Us</a>
                 </div> 
             </div>

@@ -27,7 +27,34 @@
             @if (isset($header))
                 <header class="bg-white dark:bg-gray-800 shadow">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+                    <header class="bg-white shadow fixed top-0 left-0 w-full h-16 z-10">
+            <div class="container mx-auto flex justify-around items-center p-4">
+
+                <!-- navbar menu -->
+                <button class=" text-gray-700" id="menu-toggle">
+                <svg class="w-8 h-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                </button>
+
+                <!-- logo -->
+                <div class="flex items-center space-x-2">
+                    <img src="img/header-logo.svg" alt="Clinic Logo">
+                </div>
+
+                <!--Settings -->
+                @if (Route::has('login'))
+                    <nav class="-mx-3 flex flex-1 justify-end">
+                            <a
+                                href="{{ url('/dashboard') }}"
+                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-black dark:hover:text-black/80 dark:focus-visible:ring-white"
+                            >
+                                Settings
+                            </a>
+                    </nav>
+                @endif
+            </div>
+        </header>
                     </div>
                 </header>
             @endif
