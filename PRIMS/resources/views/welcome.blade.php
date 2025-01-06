@@ -74,7 +74,7 @@
 
                 <!-- buttons -->
                 <div class="relative flex flex-row items-center">
-                    <x-prims-main-button href="" class="my-6">Set an Appointment</x-prims-main-button>
+                    <x-prims-main-button href="/appointment" class="my-6">Set an Appointment</x-prims-main-button>
                     <a href="" class="text-prims-yellow-1 font-semibold p-6 underline hover:text-white transition ease-in-out duration-150">Contact Us</a>
                 </div> 
             </div>
