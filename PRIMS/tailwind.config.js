@@ -36,6 +36,9 @@ export default {
                     800: '#091535',  // Even darker
                     900: '#050F2A',  // Darkest
                 },
+                'sub-header': {
+                    1: '#092F60', 
+                }
             },
         },
     },
