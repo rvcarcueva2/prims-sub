@@ -2,12 +2,11 @@
     <x-prims-sub-header>
     Appointment
     </x-prims-sub-header>
-    <div class="flex m-2">
-        <h1 class="text-xl font-bold">Choose a Date</h1>
-    </div>
     <!-- Calendar -->
     <div class="mx-[30rem]">
-            <!-- Month & Year Picker -->
+        <div class="flex m-2">
+            <h1 class="text-xl font-bold">Choose a Date</h1>
+        </div>
             <div class="bg-white p-6 rounded-[1rem] shadow-md">
                 <div class="flex gap-4 justify-center mx-1 font-bold text-sub-header-1">
                     <select class="border-gray-300 rounded-lg text-sub-header">
@@ -58,11 +57,13 @@
                  </div>
             </div>
     </div>
-    <div class="flex ml-2">
-        <h1 class="text-xl font-bold">Choose a time</h1>
-    </div>
     <!-- Time -->
-    <x-setting-appointment>
+    <div class="mx-[30rem]">
+        <div class="flex ml-2">
+            <h1 class="text-xl font-bold">Choose a time</h1>
+        </div>
+        <div class="bg-white p-6 rounded-[1rem] shadow-md">
+            <div class="flex gap-4 justify-center mx-1 font-bold text-sub-header-1">
                 <select class="border-gray-300 rounded-lg">
                     <option>AM</option>
                     <option>PM</option>
@@ -81,7 +82,7 @@
                 <x-prims-sub-button3 href="">1:00</x-prims-sub-button3>
             </div>
         </div>
-    </x-setting-appointment>
+    </div>
     <x-ready-appointment>
         <h1 class="text-xl font-bold">Ready to appoint a check up?</h1>
         <x-hyperlink>No</x-hyperlink>
