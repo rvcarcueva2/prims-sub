@@ -56,10 +56,30 @@
                     <div>14</div>
                  </div>
             </div>
+        <div class="grid grid-cols-3 gap-1 items-center text-xs ml-2">
+            <div class="flex justify-around mt-4">
+                <div class="flex items-center text-left space-x-1.5">
+                    <div class="w-4 h-4 bg-prims-yellow-1 rounded-full mr-[0.2rem]"></div>
+                    <span class="text-sm">Some slots are available</span>
+                </div>
+            </div>
+            <div class="flex justify-around mt-4">
+                <div class="flex items-center space-x-1.5">
+                    <div class="w-4 h-4 bg-red-600 rounded-full"></div>
+                    <span class="text-sm">Fully booked</span>
+                </div>
+            </div>
+            <div class="flex justify-around mt-4">
+                <div class="flex items-center space-x-1.5">
+                    <div class="w-4 h-4 bg-zinc-400 rounded-full"></div>
+                    <span class="text-sm">Selected</span>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- Time -->
     <div class="mx-[30rem]">
-        <div class="flex ml-2">
+        <div class="flex mt-5 mb-2 ml-2">
             <h1 class="text-xl font-bold">Choose a time</h1>
         </div>
         <div class="bg-white p-6 rounded-[1rem] shadow-md">
