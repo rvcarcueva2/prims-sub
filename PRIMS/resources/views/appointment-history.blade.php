@@ -57,6 +57,17 @@
                 </div>
             </div>
 
+            <div class="max-w-7xl mx-auto mt-5 sm:px-6 lg:px-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg">
+                    <div class="p-6 lg:p-8 gap-6 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700">
+                        <div class="justify-between flex items-end">
+                            <span>Total: </span>
+                            <div>
+                                <x-prims-sub-button2>Create New Appointment</x-prims-sub-button2>
+                                <x-prims-sub-button2>Request Medical Record</x-prims-sub-button2>
+                            </div>
+                        </div>
+                        <x-appointment-history-table />
                             
 
 </x-app-layout>
