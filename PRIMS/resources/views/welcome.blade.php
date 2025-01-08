@@ -1,3 +1,5 @@
+@section('title', 'PRIMS')
+
 <x-app-layout>
         <div class="background-section h-[calc(100vh-4rem)] bg-cover bg-center relative" style="background-image: url(img/homepage-bg.svg);">
             <div class="relative w-2/5 h-full flex flex-col justify-center ml-40 font-nunito">
