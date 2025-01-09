@@ -41,6 +41,10 @@ Route::get('/appointment-history', function () {
     return view('appointment-history');
 })->name('appointment.history');
 
+Route::get('/addRecord', function () {
+    return view('addRecordmain');
+})->name('addRecordmain');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -49,4 +53,5 @@ Route::middleware([
     Route::get('/home', function () {
         return view('welcome');
     })->name('dashboard');
+    
 });
