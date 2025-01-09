@@ -3,9 +3,9 @@
 <x-app-layout>
     
     <div class="py-12">
-        <!-- div ni erika -->
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg">
+                <x-prims-sub-header>Appointment History</x-prims-sub-header>
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg mt-5">
                     <div class="p-6 lg:p-8 gap-6 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-around">
                         <!-- left - picture -->
                         <div>
@@ -15,7 +15,7 @@
                         <div class="flex flex-col">
                             <!-- name -->
                             <div class="text-2xl pb-5">
-                                <strong>Jay Christ Fernandez</strong>
+                                <strong>{{ Auth::user()->name }}</strong>
                             </div>
                             <div class="flex justify-between gap-3 flex-wrap">
                                 <div class="flex flex-col gap-3">
@@ -35,7 +35,7 @@
                                     <!-- email -->
                                     <div class="text-sm flex flex-row align-center gap-2 break-all">
                                         <img src="img/appointment-history/email-icon.svg" class="max-h-20">
-                                        <span>jcfrancisco@student.apc.edu.ph</span>
+                                        <span>{{ Auth::user()->email }}</span>
                                     </div>
                                     <!-- address -->
                                     <div class="text-sm flex flex-row align-center gap-2 break-words">
