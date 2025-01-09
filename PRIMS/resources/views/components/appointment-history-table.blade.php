@@ -11,28 +11,18 @@
             </tr>
         </thead>
         <tbody class="text-gray-700 dark:text-gray-300">
-            <!-- lagyan dito @ foreach $ appointments as $ appointment -->
+            @foreach ($appointmentHistory as $appointment)
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="px-6 py-4 border-b dark:border-gray-600">1</td>
-                    <td class="px-6 py-4 border-b dark:border-gray-600">2022-187311</td>
-                    <td class="px-6 py-4 border-b dark:border-gray-600">June 01, 2024</td>
-                    <td class="px-6 py-4 border-b dark:border-gray-600">7:30 to 8:00</td>
-                    <td class="px-6 py-4 border-b dark:border-gray-600">Nurse Anna Torre</td>
+                    <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->id }}</td>
+                    <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->student_number }}</td>
+                    <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->date }}</td>
+                    <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->time }}</td>
+                    <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->nurse_doctor }}</td>
                     <td class="px-6 py-4 border-b dark:border-gray-600">
-                        <span class="px-3 py-1 text-xs font-semibold">Completed</span>
+                        <span class="px-3 py-1 text-xs font-semibold">{{ $appointment->status }}</span>
                     </td>
                 </tr>
-                <tr class="hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="px-6 py-4 border-b dark:border-gray-600">2</td>
-                    <td class="px-6 py-4 border-b dark:border-gray-600">sample</td>
-                    <td class="px-6 py-4 border-b dark:border-gray-600">sample</td>
-                    <td class="px-6 py-4 border-b dark:border-gray-600">sample</td>
-                    <td class="px-6 py-4 border-b dark:border-gray-600">sample</td>
-                    <td class="px-6 py-4 border-b dark:border-gray-600">
-                        <span class="px-3 py-1 text-xs font-semibold">Canceled</span>
-                    </td>
-                </tr>
-            <!-- @ endforeach -->
+            @endforeach
         </tbody>
     </table>
 </div>
