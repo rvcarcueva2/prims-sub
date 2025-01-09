@@ -1,1 +1,1 @@
-<a href="" class="text-prims-azure-500 font-bold p-6 underline hover:text-white transition ease-in-out duration-150"> {{$slot}} </a>
+<a href="/appointment" class="text-prims-azure-500 font-bold text-xl p-6 underline hover:text-white transition ease-in-out duration-150"> {{$slot}} </a>
