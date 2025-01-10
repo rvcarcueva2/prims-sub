@@ -19,7 +19,7 @@
                 <h1 class="text-2xl font-bold">Choose a Date</h1>
             </div>
             <div class="flex gap-4 justify-center mx-1 my-4 font-bold text-sub-header-1">
-                <select id="month-select" class="border border-gray-300 rounded-lg px-9 py-2">
+                <select id="month-select" class="border border-gray-300 rounded-lg px-8 py-2">
                     <option value="0">January</option>
                     <option value="1">February</option>
                     <option value="2">March</option>
@@ -33,7 +33,7 @@
                     <option value="10">November</option>
                     <option value="11">December</option>
                 </select>
-                <select id="year-select" class="border border-gray-300 rounded-lg px-9 py-2">
+                <select id="year-select" class="border border-gray-300 rounded-lg px-8 py-2">
                     <?php
                     $currentYear = date('Y');
                     for ($i = $currentYear - 5; $i <= $currentYear + 5; $i++) {
