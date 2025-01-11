@@ -12,15 +12,33 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    @if (Auth::user()->hasRole('patient'))
+                    <x-nav-link href="{{ route('patient-homepage') }}" :active="request()->routeIs('patient-homepage')">
                         {{ __('Home') }}
                     </x-nav-link>
                     <x-nav-link href="{{ route('appointment') }}" :active="request()->routeIs('appointment')">
-                        {{ __('Calendar') }}
+                        {{ __('Appointment') }}
                     </x-nav-link>
                     <x-nav-link href="{{ route('appointment-history') }}" :active="request()->routeIs('appointment-history')">
                         {{ __('Appointment History') }}
                     </x-nav-link>
+                    @elseif (Auth::user()->hasRole('staff'))
+                    <x-nav-link href="{{ route('staff-dashboard') }}" :active="request()->routeIs('staff-dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
+                        {{ __('Calendar') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('medical-records') }}" :active="request()->routeIs('medical-records')">
+                        {{ __('Medical Records') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('medical-inventory') }}" :active="request()->routeIs('medical-inventory')">
+                        {{ __('Medical Inventory') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('summary-report') }}" :active="request()->routeIs('summary-report')">
+                        {{ __('Summary Report') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
