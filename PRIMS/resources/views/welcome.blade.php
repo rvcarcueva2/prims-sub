@@ -1,3 +1,5 @@
+@section('title', 'PRIMS')
+
 <x-app-layout>
         <div class="background-section h-[calc(100vh-4rem)] bg-cover bg-center relative" style="background-image: url(img/homepage-bg.svg);">
             <div class="relative w-2/5 h-full flex flex-col justify-center ml-40 font-nunito">
@@ -10,7 +12,7 @@
 
                 <!-- buttons -->
                 <div class="relative flex flex-row items-center">
-                    <x-prims-main-button href="" class="my-6">Set an Appointment</x-prims-main-button>
+                    <x-prims-main-button href="/appointment" class="my-6">Set an Appointment</x-prims-main-button>
                     <a href="" class="text-prims-yellow-1 font-semibold p-6 underline hover:text-white transition ease-in-out duration-150">Contact Us</a>
                 </div> 
             </div>

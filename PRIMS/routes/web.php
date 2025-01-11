@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
+use App\Http\Controllers\AppointmentHistoryController;
 $url = config('app.url');
 URL::forceRootUrl($url);
 
@@ -37,9 +38,12 @@ Route::get('/medical-inventory', function () {
     return view('medical-inventory');
 });
 
-Route::get('/appointment-history', function () {
-    return view('appointment-history');
-})->name('appointment.history');
+Route::get('/appointment-history', [AppointmentHistoryController::class, 'showAppointmentHistory'])
+    ->name('appointment.history');
+
+Route::get('/addRecord', function () {
+    return view('addRecordmain');
+})->name('addRecordmain');
 
 Route::middleware([
     'auth:sanctum',
@@ -49,4 +53,5 @@ Route::middleware([
     Route::get('/home', function () {
         return view('welcome');
     })->name('dashboard');
+    
 });
