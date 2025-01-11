@@ -18,7 +18,7 @@
                     <x-nav-link href="{{ route('appointment') }}" :active="request()->routeIs('appointment')">
                         {{ __('Calendar') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('appointment.history') }}" :active="request()->routeIs('appointment.history')">
+                    <x-nav-link href="{{ route('appointment-history') }}" :active="request()->routeIs('appointment-history')">
                         {{ __('Appointment History') }}
                     </x-nav-link>
                 </div>
@@ -99,7 +99,7 @@
             <x-responsive-nav-link href="{{ route('appointment') }}" :active="request()->routeIs('appointment')">
                 {{ __('Calendar') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link href="{{ route('appointment.history') }}" :active="request()->routeIs('appointment.history')">
+            <x-responsive-nav-link href="{{ route('appointment-history') }}" :active="request()->routeIs('appointment-history')">
                 {{ __('Appointment History') }}
             </x-responsive-nav-link>
         </div>
