@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
                 'role' => 'patient',
             ],
             [
-                'email' => 'sample@sample.com',
+                'email' => 'patient@sample.com',
                 'password' => 'sample123',
                 'role' => 'patient',
             ],
