@@ -6,9 +6,9 @@
     
     <div class="grid grid-cols-7 grid-rows-4 gap-4 justify-center m-4 ">
         <div class="col-span-2 row-span-12 bg-white rounded-md shadow-md justify-center text-center">
-            <div class="p- mt-[10rem]">
-                <div class="w-25 h-25 bg-gray-300">
-                    <img src="./images/placeholder-pfp.png" alt="placeholder pfp">
+            <div class="p-5 mt-8">
+                <div class="w-25 h-25">
+                    <img src="./img/placeholder-pfp.png" alt="placeholder pfp" class="inline-block align-middle">
                 </div>
                 <h2 class="font-bold text-xl mt-4">[Dr./Nurse's Name]</h2>
                 <hr class="border-gray-300 border-2 rounded-full m-4">
