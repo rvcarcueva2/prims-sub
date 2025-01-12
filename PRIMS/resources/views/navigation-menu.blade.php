@@ -12,38 +12,60 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    @if (Auth::user()->hasRole('patient'))
+                    <x-nav-link href="{{ route('patient-homepage') }}" :active="request()->routeIs('patient-homepage')">
                         {{ __('Home') }}
                     </x-nav-link>
                     <x-nav-link href="{{ route('appointment') }}" :active="request()->routeIs('appointment')">
-                        {{ __('Calendar') }}
+                        {{ __('Appointment') }}
                     </x-nav-link>
                     <x-nav-link href="{{ route('appointment-history') }}" :active="request()->routeIs('appointment-history')">
                         {{ __('Appointment History') }}
                     </x-nav-link>
+                    @elseif (Auth::user()->hasRole('staff'))
+                    <x-nav-link href="{{ route('staff-dashboard') }}" :active="request()->routeIs('staff-dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
+                        {{ __('Calendar') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('medical-records') }}" :active="request()->routeIs('medical-records')">
+                        {{ __('Medical Records') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('medical-inventory') }}" :active="request()->routeIs('medical-inventory')">
+                        {{ __('Medical Inventory') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('summary-report') }}" :active="request()->routeIs('summary-report')">
+                        {{ __('Summary Report') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <!-- Settings Dropdown -->
+                <!-- Login Dropdown -->
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                    <img class="size-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                                </button>
-                            @else
                                 <span class="inline-flex rounded-md">
+                                @if (Auth::user()->hasRole('patient'))
                                     <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
-                                        {{ Auth::user()->name }}
+                                        {{ $patient->first_name }} {{ $patient->last_name }}
 
                                         <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                         </svg>
                                     </button>
+                                @elseif (Auth::user()->hasRole('staff'))
+                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
+                                        Under Construction
+
+                                        <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                        </svg>
+                                    </button>
+                                @endif
                                 </span>
-                            @endif
                         </x-slot>
 
                         <x-slot name="content">

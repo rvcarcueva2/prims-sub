@@ -15,7 +15,7 @@
                         <div class="flex flex-col">
                             <!-- name -->
                             <div class="text-2xl pb-5">
-                                <strong>{{ Auth::user()->name }}</strong>
+                            <strong>{{ $patient->first_name }} {{ $patient->middle_initial }}. {{ $patient->last_name }}</strong>
                             </div>
                             <div class="flex justify-between gap-3 flex-wrap">
                                 <div class="flex flex-col gap-3">
@@ -27,7 +27,7 @@
                                     <!-- contact number -->
                                     <div class="text-sm flex flex-row align-center gap-2">
                                         <img src="img/appointment-history/contact-number-icon.svg" class="max-h-20">
-                                        <span>09752986539</span>
+                                        <span>{{ $patient->contact_number}}</span>
                                     </div>
                                     
                                 </div>
@@ -35,7 +35,7 @@
                                     <!-- email -->
                                     <div class="text-sm flex flex-row align-center gap-2 break-all">
                                         <img src="img/appointment-history/email-icon.svg" class="max-h-20">
-                                        <span>{{ Auth::user()->email }}</span>
+                                        <span>{{ $patient->email }}</span>
                                     </div>
                                     <!-- address -->
                                     <div class="text-sm flex flex-row align-center gap-2 break-words">

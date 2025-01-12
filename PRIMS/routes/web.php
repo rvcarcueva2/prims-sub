@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\AppointmentHistoryController;
+use App\Http\Controllers\PatientController;
 
 $url = config('app.url');
 URL::forceRootUrl($url);
@@ -62,8 +63,8 @@ Route::middleware([
         if (!$user || !$user->hasRole('staff')) {
             abort(403); // Forbidden
         }
-        return view('inventoryrec');
-    })->name('inventory');
+        return view('medical-inventory');
+    })->name('medical-inventory');
 
     // Medical records route
     Route::get('/staff/medical-records', function () {
