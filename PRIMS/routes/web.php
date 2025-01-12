@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\AppointmentHistoryController;
+use App\Http\Controllers\PatientController;
 
 $url = config('app.url');
 URL::forceRootUrl($url);
