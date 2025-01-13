@@ -114,16 +114,22 @@
                                     </select>
                                 </div>
                             <div class="grid grid-cols-4 gap-4 px-4 mt-4 font-bold text-center">
-                                <x-prims-sub-button3 href="">9:30</x-prims-sub-button3>
-                                <x-prims-sub-button3 href="">10:00</x-prims-sub-button3>
-                                <x-prims-sub-button3 href="">10:30</x-prims-sub-button3>
-                                <x-prims-sub-button3 href="">11:00</x-prims-sub-button3>
+                                <x-prims-sub-button3 href="">9:30 AM</x-prims-sub-button3>
+                                <x-prims-sub-button3 href="">10:00 AM</x-prims-sub-button3>
+                                <x-prims-sub-button3 href="">10:30 AM</x-prims-sub-button3>
+                                <x-prims-sub-button3 href="">11:00 AM</x-prims-sub-button3>
                             </div>
                             <div class="grid grid-cols-4 gap-4 px-4 mt-4 font-bold text-center">
-                                <x-prims-sub-button3 href="">11:30</x-prims-sub-button3>
-                                <x-prims-sub-button3 href="">12:00</x-prims-sub-button3>
-                                <x-prims-sub-button3 href="">12:30</x-prims-sub-button3>
-                                <x-prims-sub-button3 href="">More...</x-prims-sub-button3>
+                                <x-prims-sub-button3 href="">11:30 AM</x-prims-sub-button3>
+                                <x-prims-sub-button3 href="">12:00 PM</x-prims-sub-button3>
+                                <x-prims-sub-button3 href="">12:30 PM</x-prims-sub-button3>
+                                <x-prims-sub-button3 href="">1:30 PM</x-prims-sub-button3>
+                            </div>
+                            <div class="grid grid-cols-4 gap-4 px-4 mt-4 font-bold text-center">
+                                <x-prims-sub-button3 href="">1:00 PM</x-prims-sub-button3>
+                                <x-prims-sub-button3 href="">2:00 PM</x-prims-sub-button3>
+                                <x-prims-sub-button3 href="">2:30 PM</x-prims-sub-button3>
+                                <x-prims-sub-button3 href="">3:00 PM</x-prims-sub-button3>
                             </div>
                         </div>
                     </div>
