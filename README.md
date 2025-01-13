@@ -10,16 +10,16 @@ The people behind this project are students from Asia Pacific College under the 
 
 
 
-**PROJECT LEAD** || Byron Louis Rabajante - Bachelor of Science and Information Technology with Specialization in Mobile and Internet Technologies (2nd Year)
+**PROJECT LEAD** || Byron Louis Rabajante - Bachelor of Science and Information Technology with Specialization in Mobile and Internet Technologies
 ELECTIVE - GAME DEVELOPMENT
 
-**DOCUMENTATION LEAD** || Shannelien Mae Catingub - Bachelor of Science and Information Technology with Specialization in Mobile and Internet Technologies (2nd Year)
+**DOCUMENTATION LEAD** || Shannelien Mae Catingub - Bachelor of Science and Information Technology with Specialization in Mobile and Internet Technologies
 ELECTIVE - GAME DEVELOPMENT
 
-**PRESENTATION LEAD** || Clart Kent Nailgas - Bachelor of Science and Information Technology with Specialization in Mobile and Internet Technologies (2nd Year)
+**PRESENTATION LEAD** || Clart Kent Nailgas - Bachelor of Science and Information Technology with Specialization in Mobile and Internet Technologies
 ELECTIVE - GAME DEVELOPMENT
 
-**PROGRAMMING LEAD** || Erika Alessandra Daduya - Bachelor of Science and Information Technology with Specialization in Mobile and Internet Technologies (2nd Year)
+**PROGRAMMING LEAD** || Erika Alessandra Daduya - Bachelor of Science and Information Technology with Specialization in Mobile and Internet Technologies
 ELECTIVE - GAME DEVELOPMENT
 
 **Patient Record and Interaction Management System (PRIMS)**
