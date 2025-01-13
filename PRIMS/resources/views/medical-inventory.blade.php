@@ -1,30 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard with Table</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="flex flex-col">
-
-  <!-- Header -->
-  <header class="bg-white h-16 w-full fixed top-0 left-0 shadow-md z-50 flex items-center justify-between px-6">
-    <div class="flex items-center space-x-2">
-      <span class="text-yellow-500 font-bold text-lg">PRIMS</span>
-      <span class="text-gray-400 font-bold text-lg">|</span>
-      <div class="text-left">
-        <span class="text-blue-800 font-bold text-lg">APC</span>
-        <p class="text-gray-500 text-sm -mt-1">e-clinic</p>
-      </div>
-    </div>
-    <div>
-      <span class="text-black font-medium text-lg">Settings</span>
-    </div>
-  </header>
+<x-app-layout>
 
   <!-- Main Content Area -->
-  <div class="flex-1 p-6 mt-16">
+  <div class="flex-1 p-6">
     <!-- Blue Header for Medicine Inventory, Sort, Filter, and Search -->
     <div class="bg-blue-900 text-white p-2 rounded-md mb-6">
       <div class="flex justify-between items-center">
@@ -176,5 +153,4 @@
     </div>
   </div>
 
-</body>
-</html>
+</x-app-layout>

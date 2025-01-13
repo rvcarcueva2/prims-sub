@@ -3,8 +3,8 @@
     Add Medical Record
     </x-prims-sub-header>
     <div class="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden mt-4 p-6">
-        <div class="bg-yellow-300 rounded-lg p-4 flex items-center space-x-4">
-            <div class="bg-yellow-400 p-4 rounded-lg">
+        <div class="bg-prims-yellow-1 rounded-lg p-4 flex items-center space-x-4">
+            <div class="bg-prims-yellow-3 p-4 rounded-lg">
                 <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v1h1a5 5 0 0 1 5 5v6a5 5 0 0 1-5 5H6a5 5 0 0 1-5-5v-6a5 5 0 0 1 5-5h1V7a5 5 0 0 1 5-5z"/></svg>
             </div>
             <div>
