@@ -55,7 +55,7 @@
             <label class="text-sm mt-2">Allergies</label>
             <textarea class="w-full border p-2 rounded mt-2" placeholder="Allergies..."></textarea>
         </div>
-        <a href="/medrecords">
+        <a href="/staff/medical-records">
         <div class="mt-6 flex justify-end">
             <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Submit</button>
         </div>
