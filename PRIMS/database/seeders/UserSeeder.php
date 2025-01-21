@@ -17,18 +17,28 @@ class UserSeeder extends Seeder
         //
         $users = [
             [
-                'email' => 'smcatingub@sample.com',
-                'password' => 'sample123',
+                'email' => 'smcatingub@student.apc.edu.ph',
+                'password' => 'smcatingub',
                 'role' => 'patient',
             ],
             [
-                'email' => 'patient@sample.com',
-                'password' => 'sample123',
+                'email' => 'eddaduya@student.apc.edu.ph',
+                'password' => 'eddaduya',
                 'role' => 'patient',
             ],
             [
-                'email' => 'staff@sample.com',
-                'password' => 'sample123',
+                'email' => 'cknailgas@student.apc.edu.ph',
+                'password' => 'cknailgas',
+                'role' => 'patient',
+            ],
+            [
+                'email' => 'barabajante3@student.apc.edu.ph',
+                'password' => 'barabajante3',
+                'role' => 'patient',
+            ],
+            [
+                'email' => 'anamaet@apc.edu.ph',
+                'password' => 'anamaet',
                 'role' => 'staff',
             ],
         ];
