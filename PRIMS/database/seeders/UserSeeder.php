@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
             [
                 'email' => 'anamaet@apc.edu.ph',
                 'password' => 'anamaet',
-                'role' => 'staff',
+                'role' => 'clinic staff',
             ],
         ];
 

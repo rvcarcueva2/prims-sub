@@ -9,6 +9,7 @@ use Database\Seeders\AppointmentHistorySeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\RolesSeeder;
 use Database\Seeders\PatientSeeder;
+use Database\Seeders\ClinicStaffSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,6 +24,7 @@ class DatabaseSeeder extends Seeder
             RolesSeeder::class,
             UserSeeder::class,
             PatientSeeder::class,
+            ClinicStaffSeeder::class,
             AppointmentHistorySeeder::class,
         ]);
     }
