@@ -30,8 +30,10 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $user = Auth::user();
             $patient = $user ? $user->patient : null;
+            $clinicstaff = $user ? $user->clinicstaff : null;
 
             $view->with('patient', $patient);
+            $view->with('clinicstaff', $clinicstaff);
         });
     }
 }

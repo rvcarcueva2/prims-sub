@@ -22,7 +22,7 @@
                     <x-nav-link href="{{ route('appointment-history') }}" :active="request()->routeIs('appointment-history')">
                         {{ __('Appointment History') }}
                     </x-nav-link>
-                    @elseif (Auth::user()->hasRole('staff'))
+                    @elseif (Auth::user()->hasRole('clinic staff'))
                     <x-nav-link href="{{ route('staff-dashboard') }}" :active="request()->routeIs('staff-dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
@@ -56,9 +56,9 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                         </svg>
                                     </button>
-                                @elseif (Auth::user()->hasRole('staff'))
+                                @elseif (Auth::user()->hasRole('clinic staff'))
                                     <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
-                                        Under Construction
+                                        {{ $clinicstaff->clinic_staff_fname }} {{ $clinicstaff->clinic_staff_lname }}
 
                                         <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />

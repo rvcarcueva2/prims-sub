@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\AppointmentHistoryController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ClinicStaffController;
 
 $url = config('app.url');
 URL::forceRootUrl($url);
@@ -20,7 +21,7 @@ Route::middleware([
     Route::get('/dashboard', function () {
         $user = Auth::user();
 
-        if ($user->hasRole('staff')) {
+        if ($user->hasRole('clinic staff')) {
             return redirect()->route('staff-dashboard');
         } elseif ($user->hasRole('patient')) {
             return redirect()->route('patient-homepage');
@@ -33,7 +34,7 @@ Route::middleware([
     // Staff dashboard route
     Route::get('/staff/dashboard', function () {
         $user = Auth::user();
-        if (!$user || !$user->hasRole('staff')) {
+        if (!$user || !$user->hasRole('clinic staff')) {
             abort(403); // Forbidden
         }
         return view('staff-dashboard');
@@ -60,7 +61,7 @@ Route::middleware([
     // Inventory route
     Route::get('/staff/inventory', function () {
         $user = Auth::user();
-        if (!$user || !$user->hasRole('staff')) {
+        if (!$user || !$user->hasRole('clinic staff')) {
             abort(403); // Forbidden
         }
         return view('medical-inventory');
@@ -69,7 +70,7 @@ Route::middleware([
     // Medical records route
     Route::get('/staff/medical-records', function () {
         $user = Auth::user();
-        if (!$user || !$user->hasRole('staff')) {
+        if (!$user || !$user->hasRole('clinic staff')) {
             abort(403); // Forbidden
         }
         return view('medical-records');
@@ -78,7 +79,7 @@ Route::middleware([
     // Summary report route
     Route::get('/staff/summary-report', function () {
         $user = Auth::user();
-        if (!$user || !$user->hasRole('staff')) {
+        if (!$user || !$user->hasRole('clinic staff')) {
             abort(403); // Forbidden
         }
         return view('staff-summary-report');
@@ -87,7 +88,7 @@ Route::middleware([
     // Calendar route
     Route::get('/staff/calendar', function () {
         $user = Auth::user();
-        if (!$user || !$user->hasRole('staff')) {
+        if (!$user || !$user->hasRole('clinic staff')) {
             abort(403); // Forbidden
         }
         return view('staff-calendar');
@@ -100,7 +101,7 @@ Route::middleware([
     // Add Record route
     Route::get('/staff/add-record', function () {
         $user = Auth::user();
-        if (!$user || !$user->hasRole('staff')) {
+        if (!$user || !$user->hasRole('clinic staff')) {
             abort(403); // Forbidden
         }
         return view('addRecordmain');

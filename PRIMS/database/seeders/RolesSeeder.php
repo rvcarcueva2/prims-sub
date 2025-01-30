@@ -14,7 +14,7 @@ class RolesSeeder extends Seeder
      */
     public function run()
     {
-        $role_staff = Role::create(['name' => 'staff']);
+        $role_clinicstaff = Role::create(['name' => 'clinic staff']);
         $role_patient = Role::create(['name' => 'patient']);
 
         $permission_patient_homepage = Permission::create(['name' => 'patient homepage']);
@@ -30,7 +30,7 @@ class RolesSeeder extends Seeder
         $permissions_patient = [$permission_patient_homepage, $permission_schedule_appointments, $permission_appointment_history];
         $permissions_staff = [$permission_admin_dashboard, $permission_medical_records, $permission_inventory, $permission_calendar, $permission_summary_reports];
 
-        $role_staff->syncPermissions($permissions_staff);
+        $role_clinicstaff->syncPermissions($permissions_staff);
         $role_patient->syncPermissions($permissions_patient);
     }
 }
