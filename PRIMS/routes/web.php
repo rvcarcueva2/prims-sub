@@ -55,7 +55,7 @@ Route::middleware([
         if (!$user || !$user->hasRole('patient')) {
             abort(403); // Forbidden
         }
-        return view('appointment');
+        return view('patient-calendar');
     })->name('appointment');
 
     // Inventory route
@@ -106,4 +106,14 @@ Route::middleware([
         }
         return view('addRecordmain');
     })->name('addRecordmain');
+
+     // Test route
+     Route::get('/test', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('patient')) {
+            abort(403); // Forbidden
+        }
+        return view('test');
+    })->name('test');
+
 });
