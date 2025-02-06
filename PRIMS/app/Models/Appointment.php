@@ -18,4 +18,9 @@ class Appointment extends Model
         'patient_id',
         'clinic_staff_id',
     ];
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
 }
