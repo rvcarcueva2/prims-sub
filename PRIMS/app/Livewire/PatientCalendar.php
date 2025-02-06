@@ -19,6 +19,7 @@ class PatientCalendar extends Component
         '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM'
     ];
     public $reasonForVisit;
+    public $isConfirming = false;  // Control visibility of the confirmation modal
 
     public function mount()
     {
@@ -29,6 +30,7 @@ class PatientCalendar extends Component
         $this->month = Carbon::now()->month;
         $this->year = Carbon::now()->year;
         $this->generateCalendar();
+
     }
 
     public function generateCalendar()
@@ -41,7 +43,7 @@ class PatientCalendar extends Component
         for ($i = 0; $i < $firstDay; $i++) {
             $this->daysInMonth[] = null;
         }
-    
+
         for ($day = 1; $day <= $totalDays; $day++) {
             $date = Carbon::createFromDate($this->year, $this->month, $day)->toDateString();
             $this->daysInMonth[] = [
@@ -61,13 +63,13 @@ class PatientCalendar extends Component
         $this->selectedDate = Carbon::createFromDate($this->year, $this->month, (int) $date)->toDateString();
     }
 
-
     public function selectTime($time)
     {
         $this->selectedTime = $time;
     }
 
-    public function submitAppointment()
+    // Show confirmation modal
+    public function confirmAppointment()
     {
         // Ensure all required fields are set
         if (!$this->selectedDate || !$this->selectedTime || !$this->reasonForVisit) {
@@ -75,11 +77,19 @@ class PatientCalendar extends Component
             return;
         }
 
+        else $this->isConfirming = true;
+    }
+
+    // Handle the confirmation to book the appointment
+    public function submitAppointment()
+    {
+        
+
         // Combine date and time into a valid DateTime format
         $appointmentDate = Carbon::createFromFormat('Y-m-d h:i A', $this->selectedDate . ' ' . $this->selectedTime);
 
         // Store the appointment
-        Appointment::create([
+        $appointment = Appointment::create([
             'appointment_date' => $appointmentDate,
             'status' => 'pending',
             'reason_for_visit' => $this->reasonForVisit,
@@ -90,8 +100,18 @@ class PatientCalendar extends Component
         $this->selectedDate = null;
         $this->selectedTime = null;
         $this->reasonForVisit = null;
+        $this->isConfirming = false;  // Hide the confirmation modal
 
         session()->flash('success', 'Appointment successfully submitted!');
+    }
+
+    // Reset appointment selection if the patient cancels
+    public function resetSelection()
+    {
+        $this->isConfirming = false;  // Hide the confirmation modal
+        $this->selectedDate = null;
+        $this->selectedTime = null;
+        $this->reasonForVisit = null;
     }
 
     public function render()
