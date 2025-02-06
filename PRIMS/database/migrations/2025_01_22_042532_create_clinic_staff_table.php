@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clinic_staff', function (Blueprint $table) {
-            $table->id('clinic_staff_id'); // Primary key
+            $table->id(); // Primary key
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('clinic_staff_fname');
             $table->string('clinic_staff_minitial', 1)->nullable(); // Optional, single character
