@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use Livewire\Component;
 use Carbon\Carbon;
-use App\Models\Appointment;
 
-class Calendar extends Component
+class StaffCalendar extends Component
 {
     public $currentDate;
     public $calendarDays = [];
@@ -24,10 +23,17 @@ class Calendar extends Component
         $this->generateCalendar();
     }
 
-    public function selectDate($date)
+    public function currentDate($date)
     {
         $this->currentDate = Carbon::parse($date);
         // $this->loadAppointments();
+    }
+
+    public $selectedDate;
+
+    public function selectDate($date)
+    {
+        $this->selectedDate = $date;
     }
 
     public function generateCalendar()
@@ -61,7 +67,7 @@ class Calendar extends Component
 
     public function render()
     {
-        return view('livewire.calendar', [
+        return view('livewire.staff-calendar', [
             'currentMonthYear' => $this->currentDate->format('F Y'),
         ]);
     }

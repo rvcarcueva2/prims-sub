@@ -23,6 +23,13 @@ class ClinicStaffSeeder extends Seeder
                 'clinic_staff_lname' => 'Torre',
                 'clinic_staff_role' => 'Nurse',
             ],
+            [
+                'email' => 'smcatingub@apc.edu.ph',
+                'clinic_staff_fname' => 'Shannelien Mae',
+                'clinic_staff_minitial' => 'M',
+                'clinic_staff_lname' => 'Catingub',
+                'clinic_staff_role' => 'Doctor',
+            ],
         ];
 
         foreach ($clinicstaffs as $clinicstaff) {

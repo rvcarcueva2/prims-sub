@@ -11,14 +11,15 @@
         <!-- Calendar Days -->
         @foreach($calendarDays as $day)
             @php
-                // Check if the day is within the current month
+                
                 $isInCurrentMonth = \Carbon\Carbon::parse($day['date'])->month == $currentDate->month;
             @endphp
 
             <div class="p-2 rounded-lg cursor-pointer hover:bg-gray-200 
                 {{ !$isInCurrentMonth ? 'text-gray-400' : '' }} 
-                {{ $day['isToday'] ? 'bg-blue-300' : '' }}"
-                 wire:click="selectDate('{{ $day['date'] }}')">
+                {{ $day['isToday'] ? 'text-blue-600' : '' }} 
+                {{ $selectedDate === $day['date'] ? 'bg-prims-yellow-5' : '' }}"
+                wire:click="selectDate('{{ $day['date'] }}')">
                 {{ $day['day'] }}
             </div>
         @endforeach
