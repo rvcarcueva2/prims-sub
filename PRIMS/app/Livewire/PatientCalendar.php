@@ -19,7 +19,8 @@ class PatientCalendar extends Component
         '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM'
     ];
     public $reasonForVisit;
-    public $isConfirming = false;  // Control visibility of the confirmation modal
+    public $isConfirming = false; 
+    public $hasUpcomingAppointment = false;
 
     public function mount()
     {
@@ -31,6 +32,12 @@ class PatientCalendar extends Component
         $this->year = Carbon::now()->year;
         $this->generateCalendar();
 
+        $this->hasUpcomingAppointment = Appointment::where('patient_id', Auth::id())
+        ->where(function ($query) {
+            $query->where('status', 'pending')
+                  ->orWhere('appointment_date', '>=', Carbon::now());
+        })
+        ->exists();
     }
 
     public function generateCalendar()

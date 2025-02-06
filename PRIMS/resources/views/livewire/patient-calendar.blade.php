@@ -95,10 +95,21 @@
                 <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm">
                     <h3 class="text-lg font-semibold pb-3">Confirm Your Appointment</h3>
                     <p>Before submitting, is <strong>{{ \Carbon\Carbon::parse($selectedDate)->format('M. d, Y') }}</strong> at <strong>{{ $selectedTime }}</strong> the correct date and time for your appointment?</p>
-                    <div class="mt-4 flex justify-center pt-3 gap-2">
-                        <x-prims-sub-button1 wire:click="submitAppointment" class="px-4 py-2 bg-green-500 text-white rounded">Yes</x-prims-sub-button1>
-                        <button wire:click="resetSelection" class="px-4 py-2 text-black">No</button>
+                    <div class="mt-4 flex justify-center pb-3 gap-2">
+                    @if($hasUpcomingAppointment)
+                        <x-prims-sub-button1 class="opacity-50 cursor-not-allowed" disabled>
+                            Yes
+                        </x-prims-sub-button1>
+                    @else
+                        <x-prims-sub-button1 wire:click="submitAppointment">
+                            Yes
+                        </x-prims-sub-button1>
+                    @endif
+                        <button wire:click="resetSelection" class="px-4 text-black hover:text-prims-yellow-1">No</button>
                     </div>
+                    @if($hasUpcomingAppointment)
+                    <span class="text-sm text-red-500 text-center inline-block">You already have an <strong>upcoming</strong> or <strong>pending</strong> appointment.</span>
+                    @endif
                 </div>
             </div>
         @endif

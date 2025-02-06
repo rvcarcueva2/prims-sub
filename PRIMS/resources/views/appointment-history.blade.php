@@ -49,8 +49,14 @@
                         <div>
                             <div class="flex flex-col gap-3">
                                 <span><strong>Upcoming Appointment:</strong></span>
-                                <span class="text-sm">[date] - [start_time] to [end_time]</span>
-                                <span class="text-sm">January 5, 2027 - 1:45 to 2:30</span>
+
+                                @if($hasUpcomingAppointment)
+                                    <span class="text-sm">
+                                        {{ \Carbon\Carbon::parse($hasUpcomingAppointment->appointment_date)->format('F j, Y - h:i A') }} 
+                                    </span>
+                                @else
+                                    <span class="text-sm text-gray-500">None</span>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -72,7 +78,7 @@
                                 <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
                                     <tr>
                                         <th class="text-left px-6 py-3 text-sm font-medium uppercase border-b dark:border-gray-600">#</th>
-                                        <th class="text-left px-6 py-3 text-sm font-medium uppercase border-b dark:border-gray-600">Student Number</th>
+                                        <th class="text-left px-6 py-3 text-sm font-medium uppercase border-b dark:border-gray-600">ID Number</th>
                                         <th class="text-left px-6 py-3 text-sm font-medium uppercase border-b dark:border-gray-600">Date</th>
                                         <th class="text-left px-6 py-3 text-sm font-medium uppercase border-b dark:border-gray-600">Time</th>
                                         <th class="text-left px-6 py-3 text-sm font-medium uppercase border-b dark:border-gray-600">Nurse/Doctor</th>
@@ -80,18 +86,31 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-700 dark:text-gray-300">
-                                    @foreach ($appointmentHistory as $appointment)
+                                    @forelse ($appointmentHistory as $appointment)
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-600">
                                             <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->id }}</td>
                                             <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->student_number }}</td>
-                                            <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->date }}</td>
-                                            <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->time }}</td>
+                                            <td class="px-6 py-4 border-b dark:border-gray-600">
+                                                {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('F j, Y') }}
+                                            </td>
+                                            <td class="px-6 py-4 border-b dark:border-gray-600">
+                                                {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('h:i A') }}
+                                            </td>
                                             <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->nurse_doctor }}</td>
                                             <td class="px-6 py-4 border-b dark:border-gray-600">
-                                                <span class="px-3 py-1 text-xs font-semibold">{{ $appointment->status }}</span>
+                                                <span class="px-3 py-1 text-xs font-semibold 
+                                                    {{ $appointment->status == 'pending' ? 'bg-yellow-200 text-yellow-700' : '' }}
+                                                    {{ $appointment->status == 'approved' ? 'bg-green-200 text-green-700' : '' }}
+                                                    {{ $appointment->status == 'cancelled' ? 'bg-red-200 text-red-700' : '' }}">
+                                                    {{ ucfirst($appointment->status) }}
+                                                </span>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">No appointment history available.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
