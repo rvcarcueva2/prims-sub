@@ -11,7 +11,7 @@
         <!-- Calendar Days -->
         @foreach($calendarDays as $day)
             @php
-                
+     
                 $isInCurrentMonth = \Carbon\Carbon::parse($day['date'])->month == $currentDate->month;
             @endphp
 
