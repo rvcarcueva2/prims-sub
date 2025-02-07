@@ -48,6 +48,7 @@
                         <!-- Display patient info if available -->
                         @if($appointment->patient)
                             <p><strong>Patient:</strong> {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</p>
+                            <p><strong>Doctor:</strong> {{ $appointment->doctor_id }}</p>
                             <p><strong>Reason:</strong> {{ $appointment->reason_for_visit }}</p>
                             <p><strong>Time:</strong> {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('h:i A') }}</p>
                         @else
@@ -85,6 +86,7 @@
                     <p class="text-lg"><strong>Upcoming Appointment</strong></p>
                     <p class="text-3xl pb-3"><strong>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('h:i A') }}</strong></p>
                     <p>Patient: {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</p>
+                    <p>Doctor: {{ $appointment->doctor_id }} {{ $appointment->doctor_id }}</p>
 
                     <x-prims-sub-button2 class="mt-3">Start Appointment</x-prims-sub-button2>
                 </div>

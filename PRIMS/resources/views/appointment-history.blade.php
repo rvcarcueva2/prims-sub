@@ -2,7 +2,7 @@
 
 <x-app-layout>
     
-    <div class="py-12">
+    <div class="py-3">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <x-prims-sub-header>Appointment History</x-prims-sub-header>
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg mt-5">

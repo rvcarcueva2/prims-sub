@@ -4,6 +4,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Carbon\Carbon;
 use App\Models\Appointment;
+use App\Models\ClinicStaff;
 use Illuminate\Support\Facades\Auth;
 
 class PatientCalendar extends Component
@@ -19,6 +20,8 @@ class PatientCalendar extends Component
         '1:30 PM', '2:00 PM', '2:30 PM', '3:00 PM'
     ];
     public $reasonForVisit;
+    public $doctors = [];
+    public $selectedDoctor;
     public $isConfirming = false; 
     public $hasUpcomingAppointment = false;
 
@@ -35,9 +38,12 @@ class PatientCalendar extends Component
         $this->hasUpcomingAppointment = Appointment::where('patient_id', Auth::id())
         ->where(function ($query) {
             $query->where('status', 'pending')
+                  ->orWhere('status', 'approved')
                   ->orWhere('appointment_date', '>=', Carbon::now());
         })
         ->exists();
+
+        $this->doctors = ClinicStaff::where('clinic_staff_role', 'doctor')->get();
     }
 
     public function generateCalendar()
@@ -75,42 +81,64 @@ class PatientCalendar extends Component
         $this->selectedTime = $time;
     }
 
-    // Show confirmation modal
+    public function selectDoctor($doctorId)
+    {
+        $this->selectedDoctor = ClinicStaff::findOrFail($doctorId);
+        $doctorId = $this->selectedDoctor->id;
+    }
+
     public function confirmAppointment()
     {
         // Ensure all required fields are set
-        if (!$this->selectedDate || !$this->selectedTime || !$this->reasonForVisit) {
-            session()->flash('error', 'Please select a date, time, and provide a reason.');
+        if (!$this->selectedDate || !$this->selectedTime || !$this->reasonForVisit || !$this->selectedDoctor) {
+            session()->flash('error', 'Please select a date, time, doctor, and provide a reason.');
             return;
         }
 
         else $this->isConfirming = true;
     }
 
-    // Handle the confirmation to book the appointment
     public function submitAppointment()
     {
-        
-
         // Combine date and time into a valid DateTime format
         $appointmentDate = Carbon::createFromFormat('Y-m-d h:i A', $this->selectedDate . ' ' . $this->selectedTime);
 
-        // Store the appointment
+        // Check if there is already an upcoming or pending appointment
+        $existingAppointment = Appointment::where('patient_id', Auth::id())
+            ->where(function ($query) {
+                $query->where('status', 'pending')
+                    ->orWhere('status', 'approved')
+                    ->orWhere('appointment_date', '>=', Carbon::now());
+            })
+            ->exists();
+
+        if ($existingAppointment) {
+            session()->flash('error', 'You already have an upcoming or pending appointment.');
+            return;
+        }
+
+        // Store the appointment if no existing appointment
         $appointment = Appointment::create([
             'appointment_date' => $appointmentDate,
             'status' => 'pending',
             'reason_for_visit' => $this->reasonForVisit,
-            'patient_id' => Auth::id(), // Ensure user is logged in
+            'patient_id' => Auth::id(), 
+            'doctor_id' => $this->selectedDoctor,
         ]);
 
-        // Reset fields after submission
+        // Reset form fields
         $this->selectedDate = null;
         $this->selectedTime = null;
+        $this->selectedDoctor = null;
         $this->reasonForVisit = null;
-        $this->isConfirming = false;  // Hide the confirmation modal
+        $this->isConfirming = false;  
+
+        // Recalculate the upcoming appointment status
+        $this->hasUpcomingAppointment = true;  // Set this to true as soon as the appointment is booked
 
         session()->flash('success', 'Appointment successfully submitted!');
     }
+
 
     // Reset appointment selection if the patient cancels
     public function resetSelection()
@@ -118,6 +146,7 @@ class PatientCalendar extends Component
         $this->isConfirming = false;  // Hide the confirmation modal
         $this->selectedDate = null;
         $this->selectedTime = null;
+        $this->selectedDoctor = null;
         $this->reasonForVisit = null;
     }
 
@@ -126,6 +155,7 @@ class PatientCalendar extends Component
         return view('livewire.patient-calendar', [
             'monthName' => Carbon::create()->month((int) $this->month)->format('F'),
             'currentYear' => $this->year,
+            'doctors' => $this->doctors,
         ]);
     }
 }
