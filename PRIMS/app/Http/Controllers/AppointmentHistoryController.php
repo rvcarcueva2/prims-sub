@@ -2,21 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\AppointmentHistory;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Appointment;
+use Carbon\Carbon;
 
 class AppointmentHistoryController extends Controller
 {
     public function showAppointmentHistory()
     {
-        $appointmentHistory = AppointmentHistory::all(); // Fetch all records
+        $appointmentHistory = Appointment::where('patient_id', Auth::id())
+        ->orderBy('appointment_date', 'desc')
+        ->get();
 
         $user = Auth::user();
         if (!$user || !$user->hasRole('patient')) {
             abort(403); // Forbidden
         }
 
-        return view('appointment-history', compact('appointmentHistory')); // Pass to the view
+        $hasUpcomingAppointment = Appointment::where('patient_id', Auth::id())
+            ->where('appointment_date', '>=', Carbon::now())
+            ->where('status', 'approved')
+            ->orderBy('appointment_date', 'asc') // Get the next closest appointment
+            ->first();
+
+        return view('appointment-history', compact('appointmentHistory', 'hasUpcomingAppointment')); 
     }
 }
