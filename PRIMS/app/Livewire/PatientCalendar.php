@@ -43,7 +43,7 @@ class PatientCalendar extends Component
     public function generateCalendar()
     {
         $this->daysInMonth = [];
-        $today = Carbon::today();
+        $today = Carbon::today('Asia/Manila');
         $firstDay = Carbon::createFromDate($this->year, $this->month, 1)->dayOfWeek;
         $totalDays = Carbon::createFromDate($this->year, $this->month, 1)->daysInMonth;
 

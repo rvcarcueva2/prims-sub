@@ -32,5 +32,7 @@
         @stack('modals')
 
         @livewireScripts
+
+        <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/49096662.js"></script>
     </body>
 </html>

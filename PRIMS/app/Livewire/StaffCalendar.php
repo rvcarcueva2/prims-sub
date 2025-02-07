@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Appointment; // Make sure you have this model
+use App\Models\Appointment;
 use Carbon\Carbon;
 
 class StaffCalendar extends Component
@@ -12,10 +12,12 @@ class StaffCalendar extends Component
     public $calendarDays = [];
     public $appointments = [];
     public $selectedDate;
+    public $approvedAppointments = [];
 
     public function mount()
     {
-        $this->currentDate = Carbon::now();
+        $this->currentDate = Carbon::now('Asia/Manila');
+        $this->selectedDate = Carbon::now('Asia/Manila')->toDateString();
         $this->generateCalendar();
         $this->loadAppointments();
     }
@@ -36,8 +38,8 @@ class StaffCalendar extends Component
     public function generateCalendar()
     {
         $startOfMonth = $this->currentDate->copy()->startOfMonth();
+        $startOfWeek = $startOfMonth->copy()->locale('en')->startOfWeek(Carbon::SUNDAY); 
         $endOfMonth = $this->currentDate->copy()->endOfMonth();
-        $startOfWeek = $startOfMonth->copy()->startOfWeek();
         $endOfWeek = $endOfMonth->copy()->endOfWeek();
 
         $this->calendarDays = [];
@@ -71,16 +73,25 @@ class StaffCalendar extends Component
             ->where('status', 'pending')
             ->with('patient') // Make sure to eager load the patient relationship
             ->get();
+
+        $this->approvedAppointments = Appointment::whereDate('appointment_date', $this->selectedDate)
+            ->where('status', 'approved')
+            ->orderBy('appointment_date', 'asc')
+            ->get();
     }
 
+    protected $listeners = ['appointmentUpdated' => 'loadAppointments'];
 
     public function approveAppointment($appointmentId)
     {
         $appointment = Appointment::find($appointmentId);
-        $appointment->status = 'approved';
-        $appointment->save();
-        $this->loadAppointments(); // Reload the appointments after approval
-        $this->generateCalendar(); // Reload the calendar after approval
+        if ($appointment) {
+            $appointment->status = 'approved';
+            $appointment->save();
+
+            $this->loadAppointments();
+            $this->generateCalendar();
+        }
     }
 
     public function declineAppointment($appointmentId)
@@ -88,7 +99,8 @@ class StaffCalendar extends Component
         $appointment = Appointment::find($appointmentId);
         $appointment->status = 'declined';
         $appointment->save();
-        $this->loadAppointments(); // Reload the appointments after decline
+        $this->loadAppointments();
+        $this->generateCalendar();
     }
 
     public function render()

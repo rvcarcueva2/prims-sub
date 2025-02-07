@@ -47,7 +47,7 @@
             @foreach($daysInMonth as $day)
                 @if($day)
                     @php
-                        $isPastDate = \Carbon\Carbon::parse($day['date'])->lt(\Carbon\Carbon::today());
+                        $isPastDate = \Carbon\Carbon::parse($day['date'])->lt(\Carbon\Carbon::today('Asia/Manila'));
                         $isSunday = \Carbon\Carbon::parse($day['date'])->isSunday();
                     @endphp
 

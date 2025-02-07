@@ -6,7 +6,7 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <x-prims-sub-header>Appointment History</x-prims-sub-header>
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg mt-5">
-                    <div class="p-6 lg:p-8 gap-6 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-around">
+                    <div class="p-6 lg:p-8 gap-8 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-start">
                         <!-- left - picture -->
                         <div>
                             <img src="img/appointment-history/temp-id-pic.jpg" class="max-h-44 inline-block align-middle">
@@ -17,7 +17,7 @@
                             <div class="text-2xl pb-5">
                             <strong>{{ $patient->first_name }} {{ $patient->middle_initial }}. {{ $patient->last_name }}</strong>
                             </div>
-                            <div class="flex justify-between gap-3 flex-wrap">
+                            <div class="flex justify-between gap-5 flex-wrap">
                                 <div class="flex flex-col gap-3">
                                     <!-- student number -->
                                     <div class="text-sm flex flex-row align-center gap-2">
@@ -39,8 +39,8 @@
                                     </div>
                                     <!-- address -->
                                     <div class="text-sm flex flex-row align-center gap-2 break-words">
-                                        <img src="img/appointment-history/address-icon.svg" class="max-h-20">
-                                        <span>1234 Taft Avenue, Malate, Manila, Philippines long long long long long long long long </span>
+                                        <img src="img/appointment-history/gender-icon.svg" class="max-h-20">
+                                        <span>{{ $patient->gender }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -69,7 +69,6 @@
                         <div class="justify-between flex items-end">
                             <span>Total: {{ $appointmentHistory->count() }}</span>
                             <div>
-                                <x-prims-sub-button2>Create New Appointment</x-prims-sub-button2>
                                 <x-prims-sub-button2>Request Medical Record</x-prims-sub-button2>
                             </div>
                         </div>
@@ -98,7 +97,7 @@
                                             </td>
                                             <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->nurse_doctor }}</td>
                                             <td class="px-6 py-4 border-b dark:border-gray-600">
-                                                <span class="px-3 py-1 text-xs font-semibold 
+                                                <span class="px-3 py-1 text-xs font-semibold rounded-xl
                                                     {{ $appointment->status == 'pending' ? 'bg-yellow-200 text-yellow-700' : '' }}
                                                     {{ $appointment->status == 'approved' ? 'bg-green-200 text-green-700' : '' }}
                                                     {{ $appointment->status == 'cancelled' ? 'bg-red-200 text-red-700' : '' }}">
