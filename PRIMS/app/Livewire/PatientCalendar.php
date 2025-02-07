@@ -24,6 +24,10 @@ class PatientCalendar extends Component
     public $selectedDoctor;
     public $isConfirming = false; 
     public $hasUpcomingAppointment = false;
+    public $showErrorModal = false;
+    public $errorMessage = '';
+    public $showSuccessModal = false;
+    public $successMessage = '';
 
     public function mount()
     {
@@ -91,11 +95,22 @@ class PatientCalendar extends Component
     {
         // Ensure all required fields are set
         if (!$this->selectedDate || !$this->selectedTime || !$this->reasonForVisit || !$this->selectedDoctor) {
-            session()->flash('error', 'Please select a date, time, doctor, and provide a reason.');
+            $this->errorMessage = 'Please select a <strong>date</strong>, <strong>time</strong>, <strong>doctor</strong>, and provide a <strong>reason</strong> to appoint a check up.';
+            $this->showErrorModal = true; // Show the error modal
             return;
         }
 
-        else $this->isConfirming = true;
+        $this->isConfirming = true; // Show the confirmation modal
+    }
+
+    public function closeErrorModal()
+    {
+        $this->showErrorModal = false;
+    }
+
+    public function closeSuccessModal()
+    {
+        $this->showSuccessModal = false;
     }
 
     public function submitAppointment()
@@ -133,10 +148,9 @@ class PatientCalendar extends Component
         $this->reasonForVisit = null;
         $this->isConfirming = false;  
 
-        // Recalculate the upcoming appointment status
-        $this->hasUpcomingAppointment = true;  // Set this to true as soon as the appointment is booked
-
-        session()->flash('success', 'Appointment successfully submitted!');
+        $this->hasUpcomingAppointment = true;  
+        $this->showSuccessModal = true;
+        $this->successMessage = '<strong>Your appointment request has been received.</strong> An <span class="text-red-500">email notification</span> has been sent to you, please wait for the clinic staff to approve your appointment.';
     }
 
 

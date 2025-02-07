@@ -114,8 +114,8 @@
         @if($isConfirming)
             <div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm">
-                    <h3 class="text-lg font-semibold pb-3">Confirm Your Appointment</h3>
-                    <p>Before submitting, is <strong>{{ \Carbon\Carbon::parse($selectedDate)->format('M. d, Y') }}</strong> at <strong>{{ $selectedTime }}</strong> the correct date and time for your appointment with <strong>Dr. {{ $selectedDoctor->clinic_staff_fname }} {{ $selectedDoctor->clinic_staff_lname }}</strong>?</p>
+                    <h3 class="text-3xl font-bold pb-3 text-center">Are you sure?</h3>
+                    <p class="text-center">Before submitting, is <strong><span class="text-red-500">{{ \Carbon\Carbon::parse($selectedDate)->format('M. d, Y') }}</span></strong> at <strong><span class="text-red-500">{{ $selectedTime }}</span></strong> the correct date and time for your appointment with <strong><span class="text-red-500">Dr. {{ $selectedDoctor->clinic_staff_fname }} {{ $selectedDoctor->clinic_staff_lname }}</span></strong>?</p>
                     <div class="mt-4 flex justify-center pb-3 gap-2">
                     @if($hasUpcomingAppointment)
                         <x-prims-sub-button1 class="opacity-50 cursor-not-allowed" disabled>
@@ -135,12 +135,28 @@
             </div>
         @endif
 
-        @if (session()->has('success'))
-            <div class="text-green-600 font-bold">{{ session('success') }}</div>
+        @if($showSuccessModal)
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+                <div class="bg-white p-4 rounded-lg shadow-lg max-w-sm">
+                    <h3 class="text-3xl font-bold pb-3 text-center">Thank you!</h3>
+                    <p class="text-center">@php echo $successMessage; @endphp</p>
+                    <div class="mt-4 flex justify-center">
+                        <x-prims-sub-button1 wire:click="closeSuccessModal">OK</x-prims-sub-button1>
+                    </div>
+                </div>
+            </div>
         @endif
 
-        @if (session()->has('error'))
-            <div class="text-red-600 font-bold">{{ session('error') }}</div>
+        @if($showErrorModal)
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+                <div class="bg-white p-4 rounded-lg shadow-lg max-w-sm">
+                    <h3 class="text-3xl font-semibold pb-3 text-red-600 text-center">Oops...</h3>
+                    <p>@php echo $errorMessage; @endphp</p>
+                    <div class="mt-4 flex justify-center">
+                        <x-prims-sub-button1 wire:click="closeErrorModal" >OK</x-prims-sub-button1>
+                    </div>
+                </div>
+            </div>
         @endif
 
     </div>
