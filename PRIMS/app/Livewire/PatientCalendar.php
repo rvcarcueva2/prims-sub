@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PatientCalendar extends Component
 {
+    public $patient;
     public $selectedDate;
     public $selectedTime;
     public $month;
@@ -28,6 +29,7 @@ class PatientCalendar extends Component
     public $errorMessage = '';
     public $showSuccessModal = false;
     public $successMessage = '';
+    public $appointmentHistory = [];
 
     public function mount()
     {
@@ -35,17 +37,27 @@ class PatientCalendar extends Component
             abort(403, 'Unauthorized');
         }
 
+        $this->patient = Auth::user()->patient;
+
         $this->month = Carbon::now()->month;
         $this->year = Carbon::now()->year;
         $this->generateCalendar();
 
+        $this->appointmentHistory = Appointment::where('patient_id', Auth::id())
+            ->whereIn('status', ['completed', 'cancelled'])
+            ->with(['doctor', 'updatedBy']) // Load doctor and updater details
+            ->orderBy('appointment_date', 'desc')
+            ->get();
+
         $this->hasUpcomingAppointment = Appointment::where('patient_id', Auth::id())
         ->where(function ($query) {
             $query->where('status', 'pending')
-                  ->orWhere('status', 'approved')
-                  ->orWhere('appointment_date', '>=', Carbon::now());
+                    ->orWhere('status', 'approved')
+                    ->orWhere('appointment_date', '>=', Carbon::now());
         })
-        ->exists();
+        ->orderBy('appointment_date', 'asc')
+        ->first();
+        
 
         $this->doctors = ClinicStaff::where('clinic_staff_role', 'doctor')->get();
     }
@@ -138,7 +150,7 @@ class PatientCalendar extends Component
             'status' => 'pending',
             'reason_for_visit' => $this->reasonForVisit,
             'patient_id' => Auth::id(), 
-            'doctor_id' => $this->selectedDoctor,
+            'clinic_staff_id' => $this->selectedDoctor->id,
         ]);
 
         // Reset form fields

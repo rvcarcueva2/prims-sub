@@ -17,10 +17,22 @@ class Appointment extends Model
         'cancellation_reason',
         'patient_id',
         'clinic_staff_id',
+        'status_updated_by',
     ];
 
     public function patient()
     {
         return $this->belongsTo(Patient::class);
     }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(ClinicStaff::class, 'status_updated_by');
+    }
+
+    public function doctor()
+    {
+        return $this->belongsTo(ClinicStaff::class, 'clinic_staff_id');
+    }
+
 }

@@ -5,6 +5,8 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Appointment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use App\Models\ClinicStaff;
 
 class StaffCalendar extends Component
 {
@@ -101,6 +103,18 @@ class StaffCalendar extends Component
         $appointment->save();
         $this->loadAppointments();
         $this->generateCalendar();
+    }
+
+    public function updateAppointmentStatus($appointmentId, $newStatus)
+    {
+        $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
+
+        $appointment = Appointment::findOrFail($appointmentId);
+        $appointment->status = $newStatus;
+        $appointment->status_updated_by = $clinicStaffId;
+        $appointment->save();
+
+        session()->flash('success', 'Appointment status updated successfully.');
     }
 
     public function render()
