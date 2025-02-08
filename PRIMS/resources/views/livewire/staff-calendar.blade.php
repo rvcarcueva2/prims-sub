@@ -2,7 +2,7 @@
     use Carbon\Carbon;
 @endphp
 
-<div class="flex gap-5">
+<div wire:poll.5s="generateCalendar" class="flex gap-5">
     <!-- Left Side: Calendar & Pending Appointments -->
     <div class="w-3/5 bg-white shadow-lg rounded-lg p-4 mt-7">
         <div class="flex justify-center mb-4 pt-7">
@@ -48,7 +48,7 @@
                         <!-- Display patient info if available -->
                         @if($appointment->patient)
                             <p><strong>Patient:</strong> {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</p>
-                            <p><strong>Doctor:</strong> {{ $appointment->doctor_id }}</p>
+                            <p><strong>Doctor:</strong> {{ $appointment->doctor->clinic_staff_fname }} {{ $appointment->doctor->clinic_staff_lname }}</p>
                             <p><strong>Reason:</strong> {{ $appointment->reason_for_visit }}</p>
                             <p><strong>Time:</strong> {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('h:i A') }}</p>
                         @else
@@ -78,7 +78,7 @@
         <div wire:poll.5s="loadAppointments" class="relative mt-2 flex flex-col items-center">
             @forelse($approvedAppointments as $index => $appointment)
                 <div 
-                    class="w-4/5 p-3 border border-gray-200 rounded-lg bg-white shadow-md transition-all duration-300 transform 
+                    class="w-4/5 p-3 border border-gray-200 rounded-lg bg-white shadow-md transition-all duration-150 transform 
                     mb-3 hover:scale-105"
                     wire:key="approved-{{ $appointment->id }}"
                     wire:click="expandAppointment({{ $appointment->id }})"
@@ -86,9 +86,10 @@
                     <p class="text-lg"><strong>Upcoming Appointment</strong></p>
                     <p class="text-3xl pb-3"><strong>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('h:i A') }}</strong></p>
                     <p>Patient: {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</p>
-                    <p>Doctor: {{ $appointment->doctor_id }} {{ $appointment->doctor_id }}</p>
+                    <p>Doctor: {{ $appointment->doctor->clinic_staff_fname }} {{ $appointment->doctor->clinic_staff_lname }}</p>
 
                     <x-prims-sub-button2 class="mt-3">Start Appointment</x-prims-sub-button2>
+                    <x-prims-sub-button2 class="mt-3 bg-white">Cancel Appointment</x-prims-sub-button2>
                 </div>
             @empty
                 <p class="text-gray-500 mt-3">No approved appointments yet.</p>

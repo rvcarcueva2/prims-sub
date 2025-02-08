@@ -30,6 +30,7 @@ class PatientCalendar extends Component
     public $showSuccessModal = false;
     public $successMessage = '';
     public $appointmentHistory = [];
+    public $existingAppointment = false;
 
     public function mount()
     {
@@ -44,23 +45,25 @@ class PatientCalendar extends Component
         $this->generateCalendar();
 
         $this->appointmentHistory = Appointment::where('patient_id', Auth::id())
-            ->whereIn('status', ['completed', 'cancelled'])
+            ->whereIn('status', ['pending', 'approved', 'declined', 'completed', 'cancelled'])
             ->with(['doctor', 'updatedBy']) // Load doctor and updater details
-            ->orderBy('appointment_date', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get();
 
+        // Check if the patient has an APPROVED or PENDING appointment
         $this->hasUpcomingAppointment = Appointment::where('patient_id', Auth::id())
         ->where(function ($query) {
             $query->where('status', 'pending')
                     ->orWhere('status', 'approved')
-                    ->orWhere('appointment_date', '>=', Carbon::now());
-        })
+                    ->where('appointment_date', '>=', Carbon::now());
+            })
         ->orderBy('appointment_date', 'asc')
         ->first();
         
 
         $this->doctors = ClinicStaff::where('clinic_staff_role', 'doctor')->get();
     }
+    
 
     public function generateCalendar()
     {
@@ -132,11 +135,10 @@ class PatientCalendar extends Component
 
         // Check if there is already an upcoming or pending appointment
         $existingAppointment = Appointment::where('patient_id', Auth::id())
-            ->where(function ($query) {
-                $query->where('status', 'pending')
-                    ->orWhere('status', 'approved')
-                    ->orWhere('appointment_date', '>=', Carbon::now());
-            })
+        ->where(function ($query) {
+            $query->whereIn('status', ['pending', 'approved']) 
+                  ->where('appointment_date', '>=', Carbon::now()); 
+        })
             ->exists();
 
         if ($existingAppointment) {
@@ -153,6 +155,8 @@ class PatientCalendar extends Component
             'clinic_staff_id' => $this->selectedDoctor->id,
         ]);
 
+        
+
         // Reset form fields
         $this->selectedDate = null;
         $this->selectedTime = null;
@@ -162,7 +166,7 @@ class PatientCalendar extends Component
 
         $this->hasUpcomingAppointment = true;  
         $this->showSuccessModal = true;
-        $this->successMessage = '<strong>Your appointment request has been received.</strong> An <span class="text-red-500">email notification</span> has been sent to you, please wait for the clinic staff to approve your appointment.';
+        $this->successMessage = '<strong>Your appointment request has been received.</strong> An <span class="text-red-500"><strong>email notification</strong></span> has been sent to you, please wait for the clinic staff to approve your appointment.';
     }
 
 

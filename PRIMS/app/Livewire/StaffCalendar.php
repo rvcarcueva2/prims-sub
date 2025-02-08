@@ -10,11 +10,14 @@ use App\Models\ClinicStaff;
 
 class StaffCalendar extends Component
 {
+
     public $currentDate;
     public $calendarDays = [];
     public $appointments = [];
     public $selectedDate;
     public $approvedAppointments = [];
+
+    
 
     public function mount()
     {
@@ -82,13 +85,15 @@ class StaffCalendar extends Component
             ->get();
     }
 
-    protected $listeners = ['appointmentUpdated' => 'loadAppointments'];
-
     public function approveAppointment($appointmentId)
     {
         $appointment = Appointment::find($appointmentId);
         if ($appointment) {
+
+            $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
+
             $appointment->status = 'approved';
+            $appointment->status_updated_by = $clinicStaffId;
             $appointment->save();
 
             $this->loadAppointments();
@@ -99,10 +104,16 @@ class StaffCalendar extends Component
     public function declineAppointment($appointmentId)
     {
         $appointment = Appointment::find($appointmentId);
-        $appointment->status = 'declined';
-        $appointment->save();
-        $this->loadAppointments();
-        $this->generateCalendar();
+        if ($appointment) {
+            $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id'); 
+
+            $appointment->status = 'declined';
+            $appointment->status_updated_by = $clinicStaffId; 
+            $appointment->save();
+
+            $this->loadAppointments();
+            $this->generateCalendar();
+        }
     }
 
     public function updateAppointmentStatus($appointmentId, $newStatus)

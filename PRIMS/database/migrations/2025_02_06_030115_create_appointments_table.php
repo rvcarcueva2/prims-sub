@@ -25,6 +25,8 @@ return new class extends Migration
         });
     }
 
+    public $timestamps = true;
+
     /**
      * Reverse the migrations.
      */

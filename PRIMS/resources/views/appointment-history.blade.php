@@ -86,9 +86,13 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-gray-700 dark:text-gray-300">
-                                    @forelse ($appointmentHistory as $appointment)
+                                @php 
+                                    $sortedAppointments = $appointmentHistory->sortByDesc('created_at'); 
+                                    $count = $sortedAppointments->count();
+                                @endphp
+                                    @forelse ($sortedAppointments as $appointment)
                                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-600">
-                                            <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->id }}</td>
+                                            <td class="px-6 py-4 border-b dark:border-gray-600">{{ $count-- }}</td>
                                             <td class="px-6 py-4 border-b dark:border-gray-600">{{ $appointment->patient->apc_id_number }}</td>
                                             <td class="px-6 py-4 border-b dark:border-gray-600">
                                                 {{ \Carbon\Carbon::parse($appointment->appointment_date)->format('F j, Y') }}

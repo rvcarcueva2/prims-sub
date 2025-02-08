@@ -129,7 +129,7 @@
                         <button wire:click="resetSelection" class="px-4 text-black hover:text-prims-yellow-1">No</button>
                     </div>
                     @if($hasUpcomingAppointment)
-                    <span class="text-sm text-red-500 text-center inline-block">You already have an <strong>upcoming</strong> or <strong>pending</strong> appointment.</span>
+                        <span class="text-sm text-red-500 text-center inline-block">You already have an <strong>upcoming</strong> or <strong>pending</strong> appointment.</span>
                     @endif
                 </div>
             </div>
