@@ -90,7 +90,7 @@
             <div class="flex justify-center mt-6 bg-prims-yellow-5">
                 <h1 class="text-xl font-bold">Choose a Time</h1>
             </div>
-            <div class="grid grid-cols-4 gap-4 px-4 py-4 font-bold text-center">
+            <div class="grid grid-cols-5 gap-4 px-4 py-4 font-bold text-center">
                 @foreach($availableTimes as $time)
                     <button wire:click="selectTime('{{ $time }}')" 
                             class="p-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 

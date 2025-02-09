@@ -7,6 +7,8 @@ use App\Models\Appointment;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ClinicStaff;
+use App\Models\DoctorSchedule;
+use Illuminate\Support\Facades\Log;
 
 class StaffCalendar extends Component
 {
@@ -24,6 +26,17 @@ class StaffCalendar extends Component
     public $selectedAppointmentId;
     public $declineReason = '';
     public $cancelReason = '';
+    public $doctors;
+    public $selectedDoctor;
+    public $timeSlots = [
+        '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM',
+        '10:00 AM', '10:30 AM', '11:00 AM','11:30 AM', '12:00 PM', 
+        '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM',
+        '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM',
+    ];
+    public $selectedTimes = [];
+    public $isEditingSchedule = false;
+    public $stopPolling = false;
 
     public function mount()
     {
@@ -31,6 +44,7 @@ class StaffCalendar extends Component
         $this->selectedDate = Carbon::now('Asia/Manila')->toDateString();
         $this->generateCalendar();
         $this->loadAppointments();
+        $this->doctors = ClinicStaff::where('clinic_staff_role', 'doctor')->get();
     }
 
     public function changeMonth($offset)
@@ -43,8 +57,11 @@ class StaffCalendar extends Component
     public function selectDate($date)
     {
         $this->selectedDate = $date;
-        $this->loadAppointments(); // Fetch appointments for the selected date
-    }
+        $this->loadAppointments();
+
+        $this->loadExistingSchedule();
+        }
+
 
     public function generateCalendar()
     {
@@ -75,7 +92,6 @@ class StaffCalendar extends Component
             ];
         }
     }
-
 
     public function loadAppointments()
     {
@@ -186,6 +202,79 @@ class StaffCalendar extends Component
         $appointment->status_updated_by = $clinicStaffId;
         $appointment->save();
     }
+
+    public function startEditingSchedule()
+    {
+        if ($this->isEditingSchedule) {
+            $this->saveSchedule();
+            return; 
+        }
+    
+        // Load existing schedule when entering edit mode
+        $existingSchedule = DoctorSchedule::where('doctor_id', $this->selectedDoctor)
+            ->where('date', $this->selectedDate)
+            ->first();
+    
+        $this->selectedTimes = $existingSchedule ? $existingSchedule->available_times : [];
+    
+        $this->isEditingSchedule = true;
+    }
+    
+
+    public function toggleTime($time)
+    {
+        $this->stopPolling = true;
+
+        if (in_array($time, $this->selectedTimes)) {
+            $this->selectedTimes = array_diff($this->selectedTimes, [$time]);
+        } else {
+            $this->selectedTimes[] = $time;
+        }
+    }
+
+    public function saveSchedule()
+    {
+        DoctorSchedule::updateOrCreate(
+            ['doctor_id' => $this->selectedDoctor, 'date' => $this->selectedDate],
+            ['available_times' => $this->selectedTimes]
+        );
+
+        $this->selectedDoctor = null;
+        $this->selectedDate = null;
+        $this->selectedTimes = [];
+
+        $this->stopPolling = false;
+
+        session()->flash('success', 'Schedule saved successfully.');
+        $this->isEditingSchedule = false;
+    }
+
+    public function selectDoctor($doctorId)
+    {
+        $this->selectedDoctor = $doctorId;
+
+        if ($this->selectedDate) {
+            $this->loadExistingSchedule();
+        }
+    }
+
+    public function loadExistingSchedule()
+    {
+        if ($this->selectedDoctor && $this->selectedDate) {
+            $existingSchedule = DoctorSchedule::where('doctor_id', $this->selectedDoctor)
+                ->where('date', $this->selectedDate)
+                ->first();
+
+            $this->selectedTimes = $existingSchedule ? $existingSchedule->available_times : [];
+        }
+    }
+
+    public function stopPolling()
+    {
+        $this->stopPolling = true;
+
+    }
+
 
     public function render()
     {
