@@ -16,8 +16,14 @@ class StaffCalendar extends Component
     public $appointments = [];
     public $selectedDate;
     public $approvedAppointments = [];
-
-    
+    public $showApproveModal = false;
+    public $showDeclineModal = false;
+    public $showCancelModal = false;
+    public $showDeclineSuccessModal = false;
+    public $showCancelSuccessModal = false;
+    public $selectedAppointmentId;
+    public $declineReason = '';
+    public $cancelReason = '';
 
     public function mount()
     {
@@ -85,9 +91,15 @@ class StaffCalendar extends Component
             ->get();
     }
 
-    public function approveAppointment($appointmentId)
+    public function confirmApprove($appointmentId)
     {
-        $appointment = Appointment::find($appointmentId);
+        $this->selectedAppointmentId = $appointmentId;
+        $this->showApproveModal = true;
+    }
+
+    public function approveAppointment()
+    {
+        $appointment = Appointment::find($this->selectedAppointmentId);
         if ($appointment) {
 
             $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
@@ -96,21 +108,70 @@ class StaffCalendar extends Component
             $appointment->status_updated_by = $clinicStaffId;
             $appointment->save();
 
+            $this->showApproveModal = false;
+
+            $this->loadAppointments();
+            $this->generateCalendar();
+
+            session()->flash('success', 'Appointment approved. Email notification sent.');
+        }
+    }
+
+    public function confirmDecline($appointmentId)
+    {
+        $this->selectedAppointmentId = $appointmentId;
+        $this->showDeclineModal = true;
+    }
+
+    public function declineAppointment()
+    {
+        $appointment = Appointment::find($this->selectedAppointmentId);
+        if ($appointment) {
+            $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
+
+            $appointment->status = 'declined';
+            $appointment->declination_reason = $this->declineReason;
+            $appointment->status_updated_by = $clinicStaffId;
+            $appointment->save();
+
+            // Reset values and close modal
+            $this->showDeclineModal = false;
+            $this->declineReason = '';
+            $this->selectedAppointmentId = null;
+
+            $this->showDeclineSuccessModal = true;
+
+            // Refresh calendar
             $this->loadAppointments();
             $this->generateCalendar();
         }
     }
 
-    public function declineAppointment($appointmentId)
+    public function confirmCancel($appointmentId)
     {
-        $appointment = Appointment::find($appointmentId);
-        if ($appointment) {
-            $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id'); 
+        $this->selectedAppointmentId = $appointmentId;
+        $this->showCancelModal = true;
+    }
 
-            $appointment->status = 'declined';
-            $appointment->status_updated_by = $clinicStaffId; 
+    public function cancelAppointment()
+    {
+        $appointment = Appointment::find($this->selectedAppointmentId);
+        if ($appointment) {
+            $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
+
+            $appointment->status = 'cancelled';
+            $appointment->cancellation_reason = $this->cancelReason;
+            $appointment->status_updated_by = $clinicStaffId;
             $appointment->save();
 
+            // Reset values and close modal
+            $this->showCancelModal = false;
+            $this->cancelReason = '';
+            $this->selectedAppointmentId = null;
+
+            $this->showCancelSuccessModal = true;
+
+            // Refresh calendar
             $this->loadAppointments();
             $this->generateCalendar();
         }
@@ -124,8 +185,6 @@ class StaffCalendar extends Component
         $appointment->status = $newStatus;
         $appointment->status_updated_by = $clinicStaffId;
         $appointment->save();
-
-        session()->flash('success', 'Appointment status updated successfully.');
     }
 
     public function render()

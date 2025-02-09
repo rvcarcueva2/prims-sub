@@ -15,6 +15,7 @@ class Appointment extends Model
         'status',
         'reason_for_visit',
         'cancellation_reason',
+        'declination_reason',
         'patient_id',
         'clinic_staff_id',
         'status_updated_by',
