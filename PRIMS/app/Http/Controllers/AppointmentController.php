@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Appointment;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Appointment;
 use App\Models\Patient;
+use App\Notifications\AppointmentBooked;
+use App\Mail\ClinicAppointmentNotif;
+use App\Mail\PatientAppointmentNotif;
 
 class AppointmentController extends Controller
 {
@@ -45,6 +49,10 @@ class AppointmentController extends Controller
         $appointment->patient_id = $patient->id; // Use the relationship
 
         $appointment->save();
+        
+        Mail::to('prims.apc@gmail.com')->send(new ClinicAppointmentNotif($appointment, $selectedDate, $selectedTime));
+
+        Mail::to(Auth::user()->email)->send(new PatientAppointmentNotif($appointment, $selectedDate, $selectedTime));
 
         return redirect()->route('appointments.index')->with('success', 'Appointment created successfully.');
     }
