@@ -5,6 +5,10 @@ use Livewire\Component;
 use Carbon\Carbon;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ClinicAppointmentNotif;
+use App\Mail\PatientAppointmentNotif;
+
 
 class PatientCalendar extends Component
 {
@@ -110,6 +114,10 @@ class PatientCalendar extends Component
         $this->isConfirming = false;  // Hide the confirmation modal
 
         session()->flash('success', 'Appointment successfully submitted!');
+
+        Mail::to('prims.apc@gmail.com')->send(new ClinicAppointmentNotif($appointment));
+
+        Mail::to(Auth::user()->email)->send(new PatientAppointmentNotif($appointment));
     }
 
     // Reset appointment selection if the patient cancels
