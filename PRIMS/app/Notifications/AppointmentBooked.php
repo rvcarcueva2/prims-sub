@@ -6,15 +6,17 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\Appointment;
 
-class AppointmentBooked extends Notification
+class AppointmentBooked extends Notification implements ShouldQueue
 {
     use Queueable;
+
     protected $appointment;
     /**
      * Create a new notification instance.
      */
-    public function __construct($appointment)
+    public function __construct(Appointment $appointment)
     {
         $this->appointment = $appointment;
     }
@@ -24,7 +26,7 @@ class AppointmentBooked extends Notification
      *
      * @return array<int, string>
      */
-    public function via( $notifiable)
+    public function via($notifiable)
     {
         return ['mail', 'database'];
     }
@@ -35,9 +37,14 @@ class AppointmentBooked extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('New appointment booked with ' . $this->appointment->doctor_name)
-                    ->action('View Appointment', url('/appointment/' . $this->appointment->id))
-                    ->line('Thank you for using our clinic system!');
+            ->subject('Appointment Confirmation')
+            ->greeting('Hello ' . $notifiable->name . ',')
+            ->line('Your appointment has been successfully booked.')
+            ->line('📅 Date: ' . $this->appointment->appointment_date->format('F j, Y'))
+            ->line('⏰ Time: ' . $this->appointment->appointment_date->format('h:i A'))
+            ->line('📌 Reason: ' . $this->appointment->reason_for_visit)
+            ->action('View Appointment', url('/appointments'))
+            ->line('Thank you!');
     }
 
     /**

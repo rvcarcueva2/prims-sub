@@ -6,6 +6,7 @@ use App\Http\Controllers\AppointmentController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ClinicStaffController;
+use App\Mail\AppointmentNotif;
 
 $url = config('app.url');
 URL::forceRootUrl($url);
@@ -58,6 +59,10 @@ Route::middleware([
         }
         return view('patient-calendar');
     })->name('appointment');
+
+    Route::post('/appointment/notif', [AppointmentController::class, 'store'])
+    ->name('appointment.notif')
+    ->middleware('auth');
 
     // Inventory route
     Route::get('/staff/inventory', function () {

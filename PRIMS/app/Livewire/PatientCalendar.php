@@ -6,6 +6,10 @@ use Carbon\Carbon;
 use App\Models\Appointment;
 use App\Models\ClinicStaff;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ClinicAppointmentNotif;
+use App\Mail\PatientAppointmentNotif;
+
 
 class PatientCalendar extends Component
 {
@@ -164,10 +168,14 @@ class PatientCalendar extends Component
         $this->selectedDoctor = null;
         $this->reasonForVisit = null;
         $this->isConfirming = false;  
-
         $this->hasUpcomingAppointment = true;  
         $this->showSuccessModal = true;
         $this->successMessage = '<strong>Your appointment request has been received.</strong> An <span class="text-red-500"><strong>email notification</strong></span> has been sent to you, please wait for the clinic staff to approve your appointment.';
+        session()->flash('success', 'Appointment successfully submitted!');
+
+        Mail::to('prims.apc@gmail.com')->send(new ClinicAppointmentNotif($appointment));
+
+        Mail::to(Auth::user()->email)->send(new PatientAppointmentNotif($appointment));
     }
 
 
