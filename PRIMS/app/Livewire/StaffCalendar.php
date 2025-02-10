@@ -5,6 +5,11 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Appointment;
 use Carbon\Carbon;
+use App\Mail\PatientAppointmentNotif;
+use App\Mail\DeclinedAppointment;
+use App\Mail\ApprovedAppointment;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class StaffCalendar extends Component
 {
@@ -101,6 +106,17 @@ class StaffCalendar extends Component
         $appointment->save();
         $this->loadAppointments();
         $this->generateCalendar();
+
+        // Get the patient's email
+        $patientEmail = $appointment->patient->user->email ?? null;
+
+        if (!$patientEmail) {
+            return back()->with('error', 'Patient email not found.');
+        }
+
+        Mail::to($patientEmail)->send(new DeclinedAppointment($appointment, $selectedDate, $selectedTime));
+
+        return back()->with('success', 'Appointment status has been sent to the patient.');
     }
 
     public function render()
