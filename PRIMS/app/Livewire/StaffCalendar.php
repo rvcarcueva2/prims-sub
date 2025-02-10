@@ -5,19 +5,34 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Appointment;
 use Carbon\Carbon;
-use App\Mail\PatientAppointmentNotif;
-use App\Mail\DeclinedAppointment;
-use App\Mail\ApprovedAppointment;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Auth;
 
 class StaffCalendar extends Component
 {
+
     public $currentDate;
     public $calendarDays = [];
     public $appointments = [];
     public $selectedDate;
     public $approvedAppointments = [];
+    public $showApproveModal = false;
+    public $showDeclineModal = false;
+    public $showCancelModal = false;
+    public $showDeclineSuccessModal = false;
+    public $showCancelSuccessModal = false;
+    public $selectedAppointmentId;
+    public $declineReason = '';
+    public $cancelReason = '';
+    public $doctors;
+    public $selectedDoctor;
+    public $timeSlots = [
+        '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM',
+        '10:00 AM', '10:30 AM', '11:00 AM','11:30 AM', '12:00 PM', 
+        '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM',
+        '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM',
+    ];
+    public $selectedTimes = [];
+    public $isEditingSchedule = false;
+    public $stopPolling = false;
 
     public function mount()
     {
@@ -25,6 +40,7 @@ class StaffCalendar extends Component
         $this->selectedDate = Carbon::now('Asia/Manila')->toDateString();
         $this->generateCalendar();
         $this->loadAppointments();
+        $this->doctors = ClinicStaff::where('clinic_staff_role', 'doctor')->get();
     }
 
     public function changeMonth($offset)
@@ -37,8 +53,11 @@ class StaffCalendar extends Component
     public function selectDate($date)
     {
         $this->selectedDate = $date;
-        $this->loadAppointments(); // Fetch appointments for the selected date
-    }
+        $this->loadAppointments();
+
+        $this->loadExistingSchedule();
+        }
+
 
     public function generateCalendar()
     {
@@ -70,7 +89,6 @@ class StaffCalendar extends Component
         }
     }
 
-
     public function loadAppointments()
     {
         // Eager load the 'patient' relationship to avoid the null error
@@ -85,38 +103,102 @@ class StaffCalendar extends Component
             ->get();
     }
 
-    protected $listeners = ['appointmentUpdated' => 'loadAppointments'];
-
-    public function approveAppointment($appointmentId)
+    public function confirmApprove($appointmentId)
     {
-        $appointment = Appointment::find($appointmentId);
+        $this->selectedAppointmentId = $appointmentId;
+        $this->showApproveModal = true;
+    }
+
+    public function approveAppointment()
+    {
+        $appointment = Appointment::find($this->selectedAppointmentId);
         if ($appointment) {
+
+            $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
+
             $appointment->status = 'approved';
+            $appointment->status_updated_by = $clinicStaffId;
             $appointment->save();
 
+            $this->showApproveModal = false;
+
+            $this->loadAppointments();
+            $this->generateCalendar();
+
+            session()->flash('success', 'Appointment approved. Email notification sent.');
+        }
+    }
+
+    public function confirmDecline($appointmentId)
+    {
+        $this->selectedAppointmentId = $appointmentId;
+        $this->showDeclineModal = true;
+    }
+
+    public function declineAppointment()
+    {
+        $appointment = Appointment::find($this->selectedAppointmentId);
+        if ($appointment) {
+            $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
+
+            $appointment->status = 'declined';
+            $appointment->declination_reason = $this->declineReason;
+            $appointment->status_updated_by = $clinicStaffId;
+            $appointment->save();
+
+            // Reset values and close modal
+            $this->showDeclineModal = false;
+            $this->declineReason = '';
+            $this->selectedAppointmentId = null;
+
+            $this->showDeclineSuccessModal = true;
+
+            // Refresh calendar
             $this->loadAppointments();
             $this->generateCalendar();
         }
     }
 
-    public function declineAppointment($appointmentId)
+    public function confirmCancel($appointmentId)
     {
-        $appointment = Appointment::find($appointmentId);
-        $appointment->status = 'declined';
+        $this->selectedAppointmentId = $appointmentId;
+        $this->showCancelModal = true;
+    }
+
+    public function cancelAppointment()
+    {
+        $appointment = Appointment::find($this->selectedAppointmentId);
+        if ($appointment) {
+            $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
+
+            $appointment->status = 'cancelled';
+            $appointment->cancellation_reason = $this->cancelReason;
+            $appointment->status_updated_by = $clinicStaffId;
+            $appointment->save();
+
+            // Reset values and close modal
+            $this->showCancelModal = false;
+            $this->cancelReason = '';
+            $this->selectedAppointmentId = null;
+
+            $this->showCancelSuccessModal = true;
+
+            // Refresh calendar
+            $this->loadAppointments();
+            $this->generateCalendar();
+        }
+    }
+
+    public function updateAppointmentStatus($appointmentId, $newStatus)
+    {
+        $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
+
+        $appointment = Appointment::findOrFail($appointmentId);
+        $appointment->status = $newStatus;
+        $appointment->status_updated_by = $clinicStaffId;
         $appointment->save();
         $this->loadAppointments();
         $this->generateCalendar();
-
-        // Get the patient's email
-        $patientEmail = $appointment->patient->user->email ?? null;
-
-        if (!$patientEmail) {
-            return back()->with('error', 'Patient email not found.');
-        }
-
-        Mail::to($patientEmail)->send(new DeclinedAppointment($appointment, $selectedDate, $selectedTime));
-
-        return back()->with('success', 'Appointment status has been sent to the patient.');
     }
 
     public function render()

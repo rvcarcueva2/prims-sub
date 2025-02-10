@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
-use App\Http\Controllers\AppointmentHistoryController;
+use App\Http\Controllers\AppointmentController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ClinicStaffController;
@@ -101,7 +101,7 @@ Route::middleware([
     })->name('calendar');
 
     // Appointment History route
-    Route::get('/appointment-history', [AppointmentHistoryController::class, 'showAppointmentHistory'])
+    Route::get('/appointment-history', [AppointmentController::class, 'showAppointmentHistory'])
     ->name('appointment-history');
 
     // Add Record route
