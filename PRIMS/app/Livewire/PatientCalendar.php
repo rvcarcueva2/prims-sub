@@ -7,6 +7,10 @@ use App\Models\Appointment;
 use App\Models\ClinicStaff;
 use App\Models\DoctorSchedule; // Assuming this is your table for doctor availability
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ClinicAppointmentNotif;
+use App\Mail\PatientAppointmentNotif;
+
 
 class PatientCalendar extends Component
 {
@@ -208,7 +212,7 @@ class PatientCalendar extends Component
             return;
         }
 
-        Appointment::create([
+        $appointment = Appointment::create([
             'appointment_date' => $appointmentDate,
             'status' => 'pending',
             'reason_for_visit' => $this->reasonForVisit,
@@ -216,10 +220,15 @@ class PatientCalendar extends Component
             'clinic_staff_id' => $this->selectedDoctor->id,
         ]);
 
-        $this->resetSelection();
+        $this->resetSelection();        
         $this->hasUpcomingAppointment = true;
         $this->showSuccessModal = true;
         $this->successMessage = 'Your appointment request has been received.';
+        session()->flash('success', 'Appointment successfully submitted!');
+
+        Mail::to('prims.apc@gmail.com')->send(new ClinicAppointmentNotif($appointment));
+
+        Mail::to(Auth::user()->email)->send(new PatientAppointmentNotif($appointment));
     }
 
     public function resetSelection()
