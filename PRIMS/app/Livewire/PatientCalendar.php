@@ -34,6 +34,7 @@ class PatientCalendar extends Component
     public $successMessage = '';
     public $existingAppointment = false;
     public $allTimes = [];
+    public $fullyBookedDates = [];
 
     public function mount()
     {
@@ -83,13 +84,13 @@ class PatientCalendar extends Component
 
     public function selectDoctor($doctorId)
     {
-        // If the same doctor is clicked again, unselect them
         if ($this->selectedDoctor && $this->selectedDoctor->id === $doctorId) {
             $this->selectedDoctor = null;
             $this->selectedDate = null;  // Reset date selection
             $this->selectedTime = null;  // Reset time selection
             $this->availableDates = [];
             $this->availableTimes = [];
+            $this->generateCalendar();
             return;
         }
     
@@ -110,18 +111,28 @@ class PatientCalendar extends Component
         if (!$this->selectedDoctor) {
             return;
         }
-
-        $this->availableDates = DoctorSchedule::where('doctor_id', $this->selectedDoctor->id)
-            ->pluck('date')
-            ->toArray();
-
-        // Update the calendar to highlight available dates
-        foreach ($this->daysInMonth as &$day) {
-            if ($day && in_array($day['date'], $this->availableDates)) {
-                $day['isAvailable'] = true;
+    
+        $doctorSchedules = DoctorSchedule::where('doctor_id', $this->selectedDoctor->id)->get();
+    
+        $this->availableDates = [];
+        $this->fullyBookedDates = []; // Store fully booked dates
+    
+        foreach ($doctorSchedules as $schedule) {
+            if (empty($schedule->available_times)) { 
+                $this->fullyBookedDates[] = $schedule->date;
+            } else {
+                $this->availableDates[] = $schedule->date;
             }
         }
-    }
+    
+        // Update the calendar to highlight available and fully booked dates
+        foreach ($this->daysInMonth as &$day) {
+            if ($day) {
+                $day['isAvailable'] = in_array($day['date'], $this->availableDates);
+                $day['isFullyBooked'] = in_array($day['date'], $this->fullyBookedDates);
+            }
+        }
+    }    
 
     public function selectDate($date)
     {
@@ -275,6 +286,7 @@ class PatientCalendar extends Component
         $this->selectedDoctor = null;
         $this->reasonForVisit = null;
         $this->availableTimes = [];
+        $this->generateCalendar();
     }
 
     public function closeErrorModal()
