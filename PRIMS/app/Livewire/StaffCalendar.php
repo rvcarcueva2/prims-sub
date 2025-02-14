@@ -124,6 +124,21 @@ class StaffCalendar extends Component
             $appointment->status_updated_by = $clinicStaffId;
             $appointment->save();
 
+            $schedule = DoctorSchedule::where('doctor_id', $appointment->clinic_staff_id)
+                ->where('date', Carbon::parse($appointment->appointment_date)->format('Y-m-d'))
+                ->first();
+
+            if ($schedule) {
+                $availableTimes = json_decode($schedule->available_times, true) ?? [];
+
+                // Remove the approved time
+                $timeToRemove = Carbon::parse($appointment->appointment_date)->format('g:i A');
+                $updatedTimes = array_values(array_diff($availableTimes, [$timeToRemove]));
+
+                // Save the updated available times
+                $schedule->update(['available_times' => json_encode($updatedTimes)]);
+            }
+
             $this->showApproveModal = false;
 
             $this->loadAppointments();
@@ -179,6 +194,23 @@ class StaffCalendar extends Component
             $appointment->cancellation_reason = $this->cancelReason;
             $appointment->status_updated_by = $clinicStaffId;
             $appointment->save();
+
+            $schedule = DoctorSchedule::where('doctor_id', $appointment->clinic_staff_id)
+                ->where('date', Carbon::parse($appointment->appointment_date)->format('Y-m-d'))
+                ->first();
+
+            if ($schedule) {
+                $availableTimes = json_decode($schedule->available_times, true) ?? [];
+
+                // Add the canceled time back if it's not already there
+                $newTime = Carbon::parse($appointment->appointment_date)->format('g:i A');
+                if (!in_array($newTime, $availableTimes)) {
+                    $availableTimes[] = $newTime;
+                }
+
+                // Save the updated available times
+                $schedule->update(['available_times' => json_encode($availableTimes)]);
+            }
 
             // Reset values and close modal
             $this->showCancelModal = false;
@@ -265,7 +297,11 @@ class StaffCalendar extends Component
                 ->where('date', $this->selectedDate)
                 ->first();
 
-            $this->selectedTimes = $existingSchedule ? $existingSchedule->available_times : [];
+            $this->selectedTimes = $existingSchedule 
+                ? (is_array($existingSchedule->available_times) 
+                    ? $existingSchedule->available_times 
+                    : json_decode($existingSchedule->available_times, true) ?? []) 
+                : [];        
         }
     }
 

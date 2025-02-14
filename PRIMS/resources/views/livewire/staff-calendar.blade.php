@@ -215,8 +215,8 @@
                     @foreach($timeSlots as $time)
                     <button wire:click="toggleTime('{{ $time }}')"
                         x-bind:class="{
-                            'bg-prims-yellow-5 text-black': @json(in_array($time, $selectedTimes)),
-                            'bg-gray-200': @json(!in_array($time, $selectedTimes)),
+                            'bg-prims-yellow-5 text-black': @json(in_array($time, (array) $selectedTimes)),
+                            'bg-gray-200': @json(!in_array($time, (array) $selectedTimes)),
                             'cursor-not-allowed opacity-50': !($wire.selectedDoctor && $wire.selectedDate && $wire.isEditingSchedule),
                             'cursor-pointer hover:bg-white': $wire.selectedDoctor && $wire.selectedDate && $wire.isEditingSchedule
                         }"
