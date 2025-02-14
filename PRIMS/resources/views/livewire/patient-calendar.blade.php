@@ -92,26 +92,26 @@
                 <h1 class="text-xl font-bold">Choose a Time</h1>
             </div>
             <div class="grid grid-cols-5 gap-4 px-4 py-4 font-bold text-center">
-                @foreach($allTimes as $time)
-                    @php
-                        $isSelectionMade = $selectedDoctor && $selectedDate;
-                        $slot = collect($availableTimes)->firstWhere('time', $time);
-                        $isAvailable = $slot && $slot['isAvailable'];
-                    @endphp
+            @foreach($allTimes as $time)
+                @php
+                    $isSelectionMade = $selectedDoctor && $selectedDate;
+                    $slot = collect($availableTimes)->firstWhere('time', $time);
+                    $isAvailable = $slot && $slot['isAvailable'];
+                @endphp
 
-                    <button 
-                        class="p-2 rounded-lg transition-all duration-150
-                        @if(!$isSelectionMade) 
-                             text-gray-400 cursor-not-allowed
-                        @elseif($isAvailable) 
-                            {{ $selectedTime === $time ? 'bg-prims-azure-100 text-white' : 'text-black hover:bg-prims-azure-200' }}
-                        @else 
-                             text-gray-400 cursor-not-allowed
-                        @endif" 
-                        @if($isSelectionMade && $isAvailable) wire:click="selectTime('{{ $time }}')" @endif>
-                        {{ $time }}
-                    </button>
-                @endforeach
+                <button 
+                    class="p-2 rounded-lg transition-all duration-150
+                    @if(!$isSelectionMade) 
+                        text-gray-400 cursor-not-allowed
+                    @elseif($isAvailable) 
+                        {{ $selectedTime === $time ? 'bg-prims-azure-100 text-white' : 'text-black hover:bg-prims-azure-200' }}
+                    @else 
+                        text-gray-400 cursor-not-allowed
+                    @endif" 
+                    @if($isSelectionMade && $isAvailable) wire:click="selectTime('{{ $time }}')" @endif>
+                    {{ $time }}
+                </button>
+            @endforeach
             </div>
         </div>
 

@@ -45,12 +45,10 @@ class PatientCalendar extends Component
         $this->month = Carbon::now()->month;
         $this->year = Carbon::now()->year;
         $this->generateCalendar();
-        
-        // Fetch all doctors initially
         $this->doctors = ClinicStaff::where('clinic_staff_role', 'doctor')->get();
-        $this->fetchAvailableDoctors(); // Ensure availableDoctors is populated initially
+        $this->fetchAvailableDoctors(); 
+        $this->hasUpcomingAppointment = $this->checkExistingAppointment();
 
-        // Initialize all possible times
         $this->allTimes = [
             '7:30 AM', '8:00 AM', '8:30 AM', '9:00 AM', '9:30 AM',
             '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', 
@@ -157,21 +155,30 @@ class PatientCalendar extends Component
             ->where('date', $this->selectedDate)
             ->first();
     
-        // Ensure $availableTimes is always an array
+        // Get available times from the schedule (convert JSON if needed)
         $availableTimes = is_array($schedule->available_times) 
             ? $schedule->available_times 
             : json_decode($schedule->available_times, true) ?? [];
     
-        // Store available times properly
+        // Fetch already booked appointments (status: 'approved')
+        $bookedTimes = Appointment::where('clinic_staff_id', $this->selectedDoctor->id)
+            ->where('appointment_date', 'like', $this->selectedDate . '%')
+            ->where('status', 'approved') // Only exclude fully approved appointments
+            ->pluck('appointment_date')
+            ->map(function ($dateTime) {
+                return Carbon::parse($dateTime)->format('h:i A');
+            })
+            ->toArray();
+    
+        // Store available times properly (excluding booked slots)
         $this->availableTimes = [];
         foreach ($this->allTimes as $time) {
             $this->availableTimes[] = [
                 'time' => $time,
-                'isAvailable' => in_array($time, $availableTimes) // Ensure only actual available slots are marked
+                'isAvailable' => in_array($time, $availableTimes) && !in_array($time, $bookedTimes) // Exclude booked slots
             ];
         }
-    }    
-
+    }
 
     public function selectTime($time)
     {
@@ -184,6 +191,13 @@ class PatientCalendar extends Component
         $this->selectedTime = $time;
     }
     
+    public function checkExistingAppointment()
+    {
+        return Appointment::where('patient_id', Auth::id())
+            ->whereIn('status', ['pending', 'approved'])
+            ->where('appointment_date', '>=', Carbon::now()) // Ensure it's a future appointment
+            ->exists();
+    }
 
     public function confirmAppointment()
     {
@@ -223,12 +237,34 @@ class PatientCalendar extends Component
         $this->resetSelection();        
         $this->hasUpcomingAppointment = true;
         $this->showSuccessModal = true;
-        $this->successMessage = 'Your appointment request has been received.';
-        session()->flash('success', 'Appointment successfully submitted!');
+        $this->successMessage = '<strong>Your appointment request has been received.</strong> An <span class="text-red-500">email notification</span> has been sent to you, please wait for the clinic staff to approve your appointment.';
 
-        Mail::to('prims.apc@gmail.com')->send(new ClinicAppointmentNotif($appointment));
+        // Mail::to('prims.apc@gmail.com')->send(new ClinicAppointmentNotif($appointment));
+        // Mail::to(Auth::user()->email)->send(new PatientAppointmentNotif($appointment));
+    }
 
-        Mail::to(Auth::user()->email)->send(new PatientAppointmentNotif($appointment));
+    public function approveAppointment($appointmentId)
+    {
+        $appointment = Appointment::findOrFail($appointmentId);
+        
+        // Change the status to 'approved'
+        $appointment->update(['status' => 'approved']);
+
+        // Refresh available times so patients cannot book this slot anymore
+        $this->fetchAvailableTimes();
+    }
+
+    public function cancelAppointment($appointmentId)
+    {
+        $appointment = Appointment::findOrFail($appointmentId);
+
+        // Only make the slot available again if the appointment was approved before
+        if ($appointment->status === 'approved') {
+            $appointment->update(['status' => 'canceled']);
+
+            // Refresh available times to make this slot bookable again
+            $this->fetchAvailableTimes();
+        }
     }
 
     public function resetSelection()
