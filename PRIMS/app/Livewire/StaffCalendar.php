@@ -4,7 +4,11 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Appointment;
+use App\Models\ClinicStaff;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DeclinedAppointmentNotif;
 
 class StaffCalendar extends Component
 {
@@ -156,6 +160,9 @@ class StaffCalendar extends Component
             // Refresh calendar
             $this->loadAppointments();
             $this->generateCalendar();
+
+            // Send email notification
+            Mail::to($patientEmail)->send(new DeclinedAppointment($appointment));
         }
     }
 
