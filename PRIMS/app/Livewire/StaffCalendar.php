@@ -9,15 +9,16 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ClinicStaff;
 use App\Models\DoctorSchedule;
 use Illuminate\Support\Facades\Log;
+use Livewire\WithPagination;
 
 class StaffCalendar extends Component
 {
+    use WithPagination;
 
     public $currentDate;
     public $calendarDays = [];
     public $appointments = [];
     public $selectedDate;
-    public $approvedAppointments = [];
     public $showApproveModal = false;
     public $showDeclineModal = false;
     public $showCancelModal = false;
@@ -37,6 +38,8 @@ class StaffCalendar extends Component
     public $selectedTimes = [];
     public $isEditingSchedule = false;
     public $stopPolling = false;
+
+    protected $paginationTheme = 'tailwind';
 
     public function mount()
     {
@@ -101,10 +104,6 @@ class StaffCalendar extends Component
             ->with('patient') // Make sure to eager load the patient relationship
             ->get();
 
-        $this->approvedAppointments = Appointment::whereDate('appointment_date', $this->selectedDate)
-            ->where('status', 'approved')
-            ->orderBy('appointment_date', 'asc')
-            ->get();
     }
 
     public function confirmApprove($appointmentId)
@@ -123,6 +122,23 @@ class StaffCalendar extends Component
             $appointment->status = 'approved';
             $appointment->status_updated_by = $clinicStaffId;
             $appointment->save();
+
+            $schedule = DoctorSchedule::where('doctor_id', $appointment->clinic_staff_id)
+                ->where('date', Carbon::parse($appointment->appointment_date)->format('Y-m-d'))
+                ->first();
+
+            if ($schedule) {
+                $availableTimes = is_array($schedule->available_times)
+                    ? $schedule->available_times
+                    : json_decode($schedule->available_times, true) ?? [];
+
+                // Remove the approved time
+                $timeToRemove = Carbon::parse($appointment->appointment_date)->format('g:i A');
+                $updatedTimes = array_values(array_diff($availableTimes, [$timeToRemove]));
+
+                // Save the updated available times
+                $schedule->update(['available_times' => json_encode($updatedTimes)]);
+            }
 
             $this->showApproveModal = false;
 
@@ -180,6 +196,23 @@ class StaffCalendar extends Component
             $appointment->status_updated_by = $clinicStaffId;
             $appointment->save();
 
+            $schedule = DoctorSchedule::where('doctor_id', $appointment->clinic_staff_id)
+                ->where('date', Carbon::parse($appointment->appointment_date)->format('Y-m-d'))
+                ->first();
+
+            if ($schedule) {
+                $availableTimes = json_decode($schedule->available_times, true) ?? [];
+
+                // Add the canceled time back if it's not already there
+                $newTime = Carbon::parse($appointment->appointment_date)->format('g:i A');
+                if (!in_array($newTime, $availableTimes)) {
+                    $availableTimes[] = $newTime;
+                }
+
+                // Save the updated available times
+                $schedule->update(['available_times' => json_encode($availableTimes)]);
+            }
+
             // Reset values and close modal
             $this->showCancelModal = false;
             $this->cancelReason = '';
@@ -218,6 +251,14 @@ class StaffCalendar extends Component
         $this->selectedTimes = $existingSchedule ? $existingSchedule->available_times : [];
     
         $this->isEditingSchedule = true;
+    }
+
+    public function cancelEditingSchedule()
+    {
+        $this->isEditingSchedule = false; 
+        $this->selectedDoctor = null; 
+        $this->selectedTimes = []; 
+        $this->stopPolling = false; 
     }
     
 
@@ -265,7 +306,11 @@ class StaffCalendar extends Component
                 ->where('date', $this->selectedDate)
                 ->first();
 
-            $this->selectedTimes = $existingSchedule ? $existingSchedule->available_times : [];
+            $this->selectedTimes = $existingSchedule 
+                ? (is_array($existingSchedule->available_times) 
+                    ? $existingSchedule->available_times 
+                    : json_decode($existingSchedule->available_times, true) ?? []) 
+                : [];        
         }
     }
 
@@ -275,11 +320,27 @@ class StaffCalendar extends Component
 
     }
 
+    public function updatingSelectedDate()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
         return view('livewire.staff-calendar', [
             'currentMonthYear' => $this->currentDate->format('F Y'),
+            'approvedAppointments' => Appointment::whereDate('appointment_date', $this->selectedDate)
+                ->where('status', 'approved')
+                ->orderBy('appointment_date', 'asc')
+                ->paginate(2)
         ]);
     }
+
+    // private function getApprovedAppointments()
+    // {
+    //     return Appointment::whereDate('appointment_date', $this->selectedDate)
+    //         ->where('status', 'approved')
+    //         ->orderBy('appointment_date', 'asc')
+    //         ->paginate(2);
+    // }
 }
