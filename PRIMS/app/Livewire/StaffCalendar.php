@@ -131,7 +131,7 @@ class StaffCalendar extends Component
                 $availableTimes = is_array($schedule->available_times)
                     ? $schedule->available_times
                     : json_decode($schedule->available_times, true) ?? [];
-                    
+
                 // Remove the approved time
                 $timeToRemove = Carbon::parse($appointment->appointment_date)->format('g:i A');
                 $updatedTimes = array_values(array_diff($availableTimes, [$timeToRemove]));
@@ -251,6 +251,14 @@ class StaffCalendar extends Component
         $this->selectedTimes = $existingSchedule ? $existingSchedule->available_times : [];
     
         $this->isEditingSchedule = true;
+    }
+
+    public function cancelEditingSchedule()
+    {
+        $this->isEditingSchedule = false; 
+        $this->selectedDoctor = null; 
+        $this->selectedTimes = []; 
+        $this->stopPolling = false; 
     }
     
 

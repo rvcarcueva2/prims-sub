@@ -228,6 +228,12 @@
                         {{ $time }}
                     </button>
                     @endforeach
+
+                    @if($isEditingSchedule)
+                        <button wire:click="cancelEditingSchedule" class="hover:bg-gray-300 text-red-500 px-4 py-2 rounded-lg">
+                            Cancel
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>
