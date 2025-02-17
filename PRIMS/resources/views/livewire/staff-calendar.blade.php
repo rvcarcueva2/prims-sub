@@ -67,6 +67,10 @@
                     <p class="text-gray-500 mt-3">No approved appointments yet.</p>
                 @endforelse
 
+                <div class="mt-2">
+                    {{ $approvedAppointments->links() }}
+                </div>
+
                 @if($showCancelModal)
                     <div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
                         <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm">

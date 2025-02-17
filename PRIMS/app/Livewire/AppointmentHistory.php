@@ -36,33 +36,7 @@ class AppointmentHistory extends Component
 
     public function cancelAppointment()
     {
-        $appointment = Appointment::find($this->cancelAppointmentId);
-        if ($appointment) {
-            $appointment->status = 'cancelled';
-            $appointment->save();
-        }
-
-        $schedule = DoctorSchedule::where('doctor_id', $appointment->clinic_staff_id)
-                ->where('date', Carbon::parse($appointment->appointment_date)->format('Y-m-d'))
-                ->first();
-
-        if ($schedule) {
-            $availableTimes = json_decode($schedule->available_times, true) ?? [];
-
-            // Add the canceled time back if it's not already there
-            $newTime = Carbon::parse($appointment->appointment_date)->format('g:i A');
-            if (!in_array($newTime, $availableTimes)) {
-                $availableTimes[] = $newTime;
-            }
-
-            // Save the updated available times
-            $schedule->update(['available_times' => json_encode($availableTimes)]);
-        }
-
-        $this->showCancelModal = false;
-        $this->cancelReason = '';
-        $this->cancelAppointmentId = null;
-        $this->showCancelSuccessModal = true;
+        $appointment = Appointment::find($this->cancelAppointmentId);  true;
 
         // Refresh the appointment history and upcoming appointment
         $this->appointmentHistory = Appointment::where('patient_id', $this->patient->id)->get();
