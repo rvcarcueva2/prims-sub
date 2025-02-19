@@ -10,6 +10,9 @@ use App\Models\ClinicStaff;
 use App\Models\DoctorSchedule;
 use Illuminate\Support\Facades\Log;
 use Livewire\WithPagination;
+use App\Mail\ApprovedAppointment;
+use App\Mail\DeclinedAppointment;
+use Illuminate\Support\Facades\Mail;
 
 class StaffCalendar extends Component
 {
@@ -146,6 +149,8 @@ class StaffCalendar extends Component
             $this->generateCalendar();
 
             session()->flash('success', 'Appointment approved. Email notification sent.');
+
+            Mail::to($appointment->patient->email)->send(new ApprovedAppointment($appointment));
         }
     }
 
@@ -176,6 +181,8 @@ class StaffCalendar extends Component
             // Refresh calendar
             $this->loadAppointments();
             $this->generateCalendar();
+
+            Mail::to($appointment->patient->email)->send(new DeclinedAppointment($appointment));
         }
     }
 

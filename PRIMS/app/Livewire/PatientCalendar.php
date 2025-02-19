@@ -250,7 +250,7 @@ class PatientCalendar extends Component
         $this->showSuccessModal = true;
         $this->successMessage = '<strong>Your appointment request has been received.</strong> An <span class="text-red-500">email notification</span> has been sent to you, please wait for the clinic staff to approve your appointment.';
 
-        // Mail::to('prims.apc@gmail.com')->send(new ClinicAppointmentNotif($appointment));
+        // Mail::to('primsapcclinic@gmail.com')->send(new ClinicAppointmentNotif($appointment));
         // Mail::to(Auth::user()->email)->send(new PatientAppointmentNotif($appointment));
     }
 
