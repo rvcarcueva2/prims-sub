@@ -1,18 +1,44 @@
 <x-app-layout>
   <!-- Main Content Area -->
   <div class="flex-1 p-6">
-    <!-- Blue Header for Medicine Inventory, Sort, Filter, and Search -->
+    <!-- Blue Header for Medicine Inventory, Sort, Add, and Search -->
     <div class="bg-blue-900 text-white p-2 rounded-md mb-6">
       <div class="flex justify-between items-center">
         <h2 class="text-gray-100 font-semibold text-xl">Medicine Inventory</h2>
 
-        <!-- Sort, Filter, and Search Section -->
+        <!-- Sort, Add, and Search Section -->
         <div class="flex items-center space-x-4">
+          <!-- Sort Dropdown -->
+          <div class="relative">
+            <button
+              id="sortButton"
+              onclick="toggleSortMenu()"
+              class="bg-white text-gray-700 border border-gray-300 px-4 py-1 rounded"
+            >
+              Sort 
+            </button>
+            <div
+              id="sortMenu"
+              class="absolute left-0 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg hidden"
+            >
+              <button
+                onclick="sortTable('expiration')"
+                class="block px-4 py-2 text-left text-gray-700 hover:bg-gray-200 w-full"
+              >
+                Sort by Expiration Date
+              </button>
+              <button
+                onclick="sortTable('quantity')"
+                class="block px-4 py-2 text-left text-gray-700 hover:bg-gray-200 w-full"
+              >
+                Sort by Quantity
+              </button>
+            </div>
+          </div>
+
+          <!-- Add Button -->
           <button class="bg-white text-gray-700 border border-gray-300 px-4 py-1 rounded">
-            Sort
-          </button>
-          <button class="bg-white text-gray-700 border border-gray-300 px-4 py-1 rounded">
-            Filter
+            Add
           </button>
           <input
             id="searchInput"
@@ -39,7 +65,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Existing rows -->
+          <!-- Rows -->
           <tr class="bg-gray-50 hover:bg-gray-100">
             <td class="px-4 py-2">000000</td>
             <td class="px-4 py-2">
@@ -62,7 +88,6 @@
             <td class="px-4 py-2">200</td>
             <td class="px-4 py-2">Pack</td>
           </tr>
-          <!-- 10 new rows -->
           <tr class="bg-gray-50 hover:bg-gray-100">
             <td class="px-4 py-2">000002</td>
             <td class="px-4 py-2">
@@ -168,26 +193,56 @@
   </div>
 
   <script>
-    function filterTable() {
-      const searchInput = document.getElementById("searchInput").value.toLowerCase();
+    // Toggle visibility of the sort menu
+    function toggleSortMenu() {
+      document.getElementById("sortMenu").classList.toggle("hidden");
+    }
+
+    // Close dropdown if clicked outside
+    document.addEventListener("click", function (event) {
+      const sortMenu = document.getElementById("sortMenu");
+      const sortButton = document.getElementById("sortButton");
+
+      if (!sortButton.contains(event.target) && !sortMenu.contains(event.target)) {
+        sortMenu.classList.add("hidden");
+      }
+    });
+
+    // Function to sort table rows
+    function sortTable(criteria) {
       const table = document.getElementById("medicineTable");
-      const rows = table.querySelectorAll("tbody tr");
+      const rows = Array.from(table.querySelectorAll("tbody tr"));
 
-      rows.forEach((row) => {
-        const cells = row.querySelectorAll("td");
-        let isVisible = false;
+      rows.sort((a, b) => {
+        let valueA, valueB;
 
-        cells.forEach((cell) => {
-          if (cell.textContent.toLowerCase().includes(searchInput)) {
-            isVisible = true;
-          }
-        });
-
-        if (isVisible) {
-          row.style.display = "";
-        } else {
-          row.style.display = "none";
+        if (criteria === "expiration") {
+          valueA = new Date(a.children[3].textContent);
+          valueB = new Date(b.children[3].textContent);
+        } else if (criteria === "quantity") {
+          valueA = parseInt(a.children[4].textContent, 10);
+          valueB = parseInt(b.children[4].textContent, 10);
         }
+
+        return valueA > valueB ? 1 : -1;
+      });
+
+      // Reattach all rows in sorted order
+      const tbody = table.querySelector("tbody");
+      rows.forEach((row) => tbody.appendChild(row));
+
+      // Close the sort menu after sorting
+      document.getElementById("sortMenu").classList.add("hidden");
+    }
+
+    // Function to filter table rows based on search input
+    function filterTable() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.querySelectorAll("#medicineTable tbody tr");
+      
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(input) ? "" : "none";
       });
     }
   </script>
