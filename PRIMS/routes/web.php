@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ClinicStaffController;
 use App\Mail\AppointmentNotif;
+use App\Http\Controllers\StaffSummaryReportController;
+
 
 $url = config('app.url');
 URL::forceRootUrl($url);
@@ -90,6 +92,9 @@ Route::middleware([
         }
         return view('staff-summary-report');
     })->name('summary-report');
+
+    Route::get('/staff-summary-report', [StaffSummaryReportController::class, 'index'])->name('staff-summary-report');
+
 
     // Calendar route
     Route::get('/staff/calendar', function () {
