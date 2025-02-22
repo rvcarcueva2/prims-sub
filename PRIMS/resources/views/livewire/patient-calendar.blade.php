@@ -78,7 +78,7 @@
                         {{ $day['isToday'] ? 'text-blue-600' : '' }} 
                         {{ $selectedDate === $day['date'] ? 'border-2 border-prims-yellow-5 bg-prims-azure-100 text-white' : '' }} 
                         {{ ($isPastDate || $isSunday || !$isAvailable) ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer hover:bg-prims-yellow-5' }}
-                        {{ $isFullyBooked && !$isPastDate ? 'bg-[#ff8a8a] text-black' : ($isAvailable ? 'bg-[#8aff8a] text-black' : '') }} "
+                        {{ $isFullyBooked && !$isPastDate ? 'bg-[#ff8a8a] text-black' : ($isAvailable && !$isPastDate ? 'bg-[#8aff8a] text-black' : '') }} "
                         @if($isAvailable) wire:click="selectDate({{ $day['day'] }})" @endif>
                         {{ $day['day'] }}
                     </div>

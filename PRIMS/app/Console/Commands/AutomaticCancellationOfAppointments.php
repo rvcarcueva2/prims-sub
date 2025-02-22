@@ -29,7 +29,11 @@ class AutomaticCancellationOfAppointments extends Command
     {
         $count = Appointment::where('status', 'approved')
             ->where('created_at', '<', Carbon::now()->subDay())
-            ->update(['status' => 'cancelled']);
+            ->update([
+                'status' => 'cancelled',
+                'status_updated_at' => Carbon::now(),
+                'status_updated_by' => null,
+            ]);
 
         $this->info("{$count} appointments were automatically canceled.");
     }

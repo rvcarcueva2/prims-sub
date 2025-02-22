@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 use App\Mail\ApprovedAppointment;
 use App\Mail\DeclinedAppointment;
 use Illuminate\Support\Facades\Mail;
+use App\Models\User;
 
 class StaffCalendar extends Component
 {
@@ -120,10 +121,8 @@ class StaffCalendar extends Component
         $appointment = Appointment::find($this->selectedAppointmentId);
         if ($appointment) {
 
-            $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
-
             $appointment->status = 'approved';
-            $appointment->status_updated_by = $clinicStaffId;
+            $appointment->status_updated_by = Auth::id();
             $appointment->save();
 
             $schedule = DoctorSchedule::where('doctor_id', $appointment->clinic_staff_id)
@@ -164,11 +163,10 @@ class StaffCalendar extends Component
     {
         $appointment = Appointment::find($this->selectedAppointmentId);
         if ($appointment) {
-            $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
 
             $appointment->status = 'declined';
             $appointment->declination_reason = $this->declineReason;
-            $appointment->status_updated_by = $clinicStaffId;
+            $appointment->status_updated_by = Auth::id();
             $appointment->save();
 
             // Reset values and close modal
@@ -196,11 +194,10 @@ class StaffCalendar extends Component
     {
         $appointment = Appointment::find($this->selectedAppointmentId);
         if ($appointment) {
-            $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
 
             $appointment->status = 'cancelled';
             $appointment->cancellation_reason = $this->cancelReason;
-            $appointment->status_updated_by = $clinicStaffId;
+            $appointment->status_updated_by = Auth::id();
             $appointment->save();
 
             $schedule = DoctorSchedule::where('doctor_id', $appointment->clinic_staff_id)
@@ -235,11 +232,10 @@ class StaffCalendar extends Component
 
     public function updateAppointmentStatus($appointmentId, $newStatus)
     {
-        $clinicStaffId = ClinicStaff::where('user_id', Auth::id())->value('id');
 
         $appointment = Appointment::findOrFail($appointmentId);
         $appointment->status = $newStatus;
-        $appointment->status_updated_by = $clinicStaffId;
+        $appointment->status_updated_by = Auth::id();
         $appointment->save();
     }
 

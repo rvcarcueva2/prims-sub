@@ -254,30 +254,6 @@ class PatientCalendar extends Component
         Mail::to(Auth::user()->email)->send(new PatientAppointmentNotif($appointment));
     }
 
-    public function approveAppointment($appointmentId)
-    {
-        $appointment = Appointment::findOrFail($appointmentId);
-        
-        // Change the status to 'approved'
-        $appointment->update(['status' => 'approved']);
-
-        // Refresh available times so patients cannot book this slot anymore
-        $this->fetchAvailableTimes();
-    }
-
-    public function cancelAppointment($appointmentId)
-    {
-        $appointment = Appointment::findOrFail($appointmentId);
-
-        // Only make the slot available again if the appointment was approved before
-        if ($appointment->status === 'approved') {
-            $appointment->update(['status' => 'canceled']);
-
-            // Refresh available times to make this slot bookable again
-            $this->fetchAvailableTimes();
-        }
-    }
-
     public function resetSelection()
     {
         $this->isConfirming = false;
