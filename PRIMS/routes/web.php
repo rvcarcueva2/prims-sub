@@ -127,4 +127,12 @@ Route::middleware([
         return view('test');
     })->name('test');
 
+    // Add Medicine route
+    Route::get('/staff/add-medicine', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('clinic staff')) {
+            abort(403); // Forbidden
+        }
+        return view('add-medicine');
+    })->name('add-medicine');
 });
