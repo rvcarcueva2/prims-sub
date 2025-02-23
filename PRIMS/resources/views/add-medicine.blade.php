@@ -103,7 +103,9 @@
                 <input type="text" id="unit" placeholder="Each/Pack/Bottle">
             </div>
             <div class="button-container">
-                <button class="button cancel">Cancel</button>
+                <button class="button cancel" onclick="window.location.href='{{ route('medical-inventory') }}';">
+                Cancel
+            </button>
                 <button class="button">Submit</button>
             </div>
         </div>

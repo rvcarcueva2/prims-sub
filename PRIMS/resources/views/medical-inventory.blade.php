@@ -32,8 +32,9 @@
             </div>
           </div>
 
-          <button class="bg-white text-gray-700 border border-gray-300 px-4 py-1 rounded">
-            Add
+          <button class="bg-white text-gray-700 border border-gray-300 px-4 py-1 rounded" 
+        onclick="window.location.href='{{ route('add-medicine') }}';">
+        Add
           </button>
           <input
             id="searchInput"
