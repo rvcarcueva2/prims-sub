@@ -7,6 +7,7 @@ use App\Models\Appointment;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\DoctorSchedule;
+use App\Models\User;
 
 class AppointmentHistory extends Component
 {
@@ -21,10 +22,15 @@ class AppointmentHistory extends Component
     public function mount()
     {
         $this->patient = Auth::user()->patient;
+        $this->loadAppointments();
+    }
+
+    public function loadAppointments()
+    {
         $this->appointmentHistory = Appointment::where('patient_id', $this->patient->id)->get();
         $this->hasUpcomingAppointment = Appointment::where('patient_id', $this->patient->id)
             ->where('appointment_date', '>=', now())
-            ->whereIn('status', ['pending', 'approved'])
+            ->whereIn('status', ['approved'])
             ->first();
     }
 
@@ -36,14 +42,40 @@ class AppointmentHistory extends Component
 
     public function cancelAppointment()
     {
-        $appointment = Appointment::find($this->cancelAppointmentId);  true;
+        $appointment = Appointment::find($this->cancelAppointmentId);
 
-        // Refresh the appointment history and upcoming appointment
-        $this->appointmentHistory = Appointment::where('patient_id', $this->patient->id)->get();
-        $this->hasUpcomingAppointment = Appointment::where('patient_id', $this->patient->id)
-            ->where('appointment_date', '>=', now())
-            ->whereIn('status', ['pending', 'approved'])
-            ->first();
+        if ($appointment) {
+            $appointment->status = 'cancelled';
+            $appointment->cancellation_reason = $this->cancelReason;
+            $appointment->status_updated_by = Auth::id();
+            $appointment->save();
+
+            $schedule = DoctorSchedule::where('doctor_id', $appointment->clinic_staff_id)
+                ->where('date', Carbon::parse($appointment->appointment_date)->format('Y-m-d'))
+                ->first();
+
+            if ($schedule) {
+                $availableTimes = json_decode($schedule->available_times, true) ?? [];
+
+                // Add the canceled time back if it's not already there
+                $newTime = Carbon::parse($appointment->appointment_date)->format('g:i A');
+                if (!in_array($newTime, $availableTimes)) {
+                    $availableTimes[] = $newTime;
+                }
+
+                // Save the updated available times
+                $schedule->update(['available_times' => json_encode($availableTimes)]);
+            }
+
+            // Refresh appointments
+            $this->loadAppointments();
+
+            // Reset variables
+            $this->cancelAppointmentId = null;
+            $this->cancelReason = null;
+            $this->showCancelModal = false;
+            $this->showCancelSuccessModal = true;
+        }
     }
 
     public function render()
