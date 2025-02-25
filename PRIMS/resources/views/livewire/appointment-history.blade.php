@@ -44,11 +44,13 @@
                 <!-- right - appointments -->
                 <div>
                     <div class="flex flex-col gap-3 mt-4">
-                        <span><strong>Upcoming Appointment:</strong></span>
+                        <span class="text-md"><strong>Upcoming Appointment:</strong></span>
 
                         @if($hasUpcomingAppointment)
                             <span class="text-sm">
                                 {{ \Carbon\Carbon::parse($hasUpcomingAppointment->appointment_date)->format('F j, Y - h:i A') }} 
+                                <br> Dr. {{ $hasUpcomingAppointment->doctor->clinic_staff_fname }} {{ $hasUpcomingAppointment->doctor->clinic_staff_lname }}
+                                <br><em> {{ $hasUpcomingAppointment->reason_for_visit }} </em>
                             </span>
                             <x-button wire:click="confirmCancel({{ $hasUpcomingAppointment->id }})" class="mt-3">
                                 Cancel Appointment
@@ -145,9 +147,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 border-b dark:border-gray-600">
-                                        {{ $appointment->updatedBy->clinic_staff_role ?? ''}} 
-                                        {{ $appointment->updatedBy->clinic_staff_fname ?? ''}} 
-                                        {{ $appointment->updatedBy->clinic_staff_lname ?? ''}}
+                                        {{ $appointment->updatedBy->full_name ?? '' }}
                                     </td>
                                 </tr>
                             @empty

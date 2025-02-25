@@ -28,7 +28,7 @@ class Appointment extends Model
 
     public function updatedBy()
     {
-        return $this->belongsTo(ClinicStaff::class, 'status_updated_by');
+        return $this->belongsTo(User::class, 'status_updated_by');
     }
 
     public function doctor()

@@ -1,14 +1,10 @@
 <x-app-layout>
-  <!-- Main Content Area -->
   <div class="flex-1 p-6">
-    <!-- Blue Header for Medicine Inventory, Sort, Add, and Search -->
     <div class="bg-blue-900 text-white p-2 rounded-md mb-6">
       <div class="flex justify-between items-center">
         <h2 class="text-gray-100 font-semibold text-xl">Medicine Inventory</h2>
 
-        <!-- Sort, Add, and Search Section -->
         <div class="flex items-center space-x-4">
-          <!-- Sort Dropdown -->
           <div class="relative">
             <button
               id="sortButton"
@@ -36,9 +32,9 @@
             </div>
           </div>
 
-          <!-- Add Button -->
-          <button class="bg-white text-gray-700 border border-gray-300 px-4 py-1 rounded">
-            Add
+          <button class="bg-white text-gray-700 border border-gray-300 px-4 py-1 rounded" 
+        onclick="window.location.href='{{ route('add-medicine') }}';">
+        Add
           </button>
           <input
             id="searchInput"
@@ -51,7 +47,6 @@
       </div>
     </div>
 
-    <!-- Table Wrapper -->
     <div class="bg-white rounded-b-md shadow overflow-x-auto">
       <table id="medicineTable" class="w-full table-auto">
         <thead class="bg-yellow-500 text-black">
@@ -65,7 +60,6 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Rows -->
           <tr class="bg-gray-50 hover:bg-gray-100">
             <td class="px-4 py-2">000000</td>
             <td class="px-4 py-2">
@@ -193,12 +187,10 @@
   </div>
 
   <script>
-    // Toggle visibility of the sort menu
     function toggleSortMenu() {
       document.getElementById("sortMenu").classList.toggle("hidden");
     }
 
-    // Close dropdown if clicked outside
     document.addEventListener("click", function (event) {
       const sortMenu = document.getElementById("sortMenu");
       const sortButton = document.getElementById("sortButton");
@@ -208,7 +200,6 @@
       }
     });
 
-    // Function to sort table rows
     function sortTable(criteria) {
       const table = document.getElementById("medicineTable");
       const rows = Array.from(table.querySelectorAll("tbody tr"));
@@ -227,15 +218,12 @@
         return valueA > valueB ? 1 : -1;
       });
 
-      // Reattach all rows in sorted order
       const tbody = table.querySelector("tbody");
       rows.forEach((row) => tbody.appendChild(row));
 
-      // Close the sort menu after sorting
       document.getElementById("sortMenu").classList.add("hidden");
     }
 
-    // Function to filter table rows based on search input
     function filterTable() {
       const input = document.getElementById("searchInput").value.toLowerCase();
       const rows = document.querySelectorAll("#medicineTable tbody tr");

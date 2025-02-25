@@ -133,4 +133,22 @@ Route::middleware([
         return view('test');
     })->name('test');
 
+    // Add Medicine route
+    Route::get('/staff/add-medicine', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('clinic staff')) {
+            abort(403); // Forbidden
+        }
+        return view('add-medicine');
+    })->name('add-medicine');
+
+    // Add Button route
+    Route::get('/add-medicine', function () {
+        return view('add-medicine');
+    })->name('add-medicine');
+
+    // cancel button route
+    Route::get('/medical-inventory', function () {
+        return view('medical-inventory');
+    })->name('medical-inventory');
 });
