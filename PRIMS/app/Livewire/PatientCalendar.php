@@ -174,7 +174,6 @@ class PatientCalendar extends Component
         session()->flash('success', 'Appointment successfully submitted!');
 
         Mail::to('primsapcclinic@gmail.com')->send(new ClinicAppointmentNotif($appointment));
-
         Mail::to(Auth::user()->email)->send(new PatientAppointmentNotif($appointment));
     }
 
