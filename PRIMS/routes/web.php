@@ -8,6 +8,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ClinicStaffController;
 use App\Mail\AppointmentNotif;
 use App\Http\Controllers\StaffSummaryReportController;
+use App\Http\Controllers\InventoryController;
 
 
 $url = config('app.url');
@@ -135,6 +136,8 @@ Route::middleware([
         }
         return view('add-medicine');
     })->name('add-medicine');
+
+    Route::post('/staff/inventory/add', [InventoryController::class, 'store'])->name('inventory.store');
 
     // Add Button route
     Route::get('/add-medicine', function () {
