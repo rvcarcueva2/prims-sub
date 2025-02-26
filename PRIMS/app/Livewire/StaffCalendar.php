@@ -4,14 +4,15 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Appointment;
-use App\Models\ClinicStaff;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\DeclinedAppointmentNotif;
+use App\Models\ClinicStaff;
+use App\Models\DoctorSchedule;
+use Illuminate\Support\Facades\Log;
 use Livewire\WithPagination;
 use App\Mail\ApprovedAppointment;
 use App\Mail\DeclinedAppointment;
+use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 
 class StaffCalendar extends Component
@@ -178,6 +179,8 @@ class StaffCalendar extends Component
             // Refresh calendar
             $this->loadAppointments();
             $this->generateCalendar();
+
+            Mail::to($appointment->patient->email)->send(new DeclinedAppointment($appointment));
         }
     }
 
@@ -252,6 +255,14 @@ class StaffCalendar extends Component
     
         $this->isEditingSchedule = true;
     }
+
+    public function cancelEditingSchedule()
+    {
+        $this->isEditingSchedule = false; 
+        $this->selectedDoctor = null; 
+        $this->selectedTimes = []; 
+        $this->stopPolling = false; 
+    }
     
 
     public function toggleTime($time)
@@ -298,7 +309,11 @@ class StaffCalendar extends Component
                 ->where('date', $this->selectedDate)
                 ->first();
 
-            $this->selectedTimes = $existingSchedule ? $existingSchedule->available_times : [];
+            $this->selectedTimes = $existingSchedule 
+                ? (is_array($existingSchedule->available_times) 
+                    ? $existingSchedule->available_times 
+                    : json_decode($existingSchedule->available_times, true) ?? []) 
+                : [];        
         }
     }
 
@@ -308,6 +323,10 @@ class StaffCalendar extends Component
 
     }
 
+    public function updatingSelectedDate()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
