@@ -10,18 +10,18 @@
             @if(count($doctors) > 0)
                 <div class="mt-3">
                     @foreach($doctors as $doctor)
-                        <div class="flex items-center justify-center p-2 rounded cursor-pointer"
-                            wire:click="selectDoctor({{ $doctor->id }})">
-                            <div class="w-4/5 border rounded shadow-sm p-3 transition-all duration-150 transform 
-                                mb-3 hover:scale-105 {{ $selectedDoctor && $selectedDoctor->id == $doctor->id ? 'bg-prims-azure-100 text-white' : ''}}">
-                            @if($doctor)
+                        @php
+                            $isAvailable = empty($selectedDate) || in_array($doctor->id, $availableDoctors);
+                        @endphp
+                        <div class="flex items-center justify-center p-2 rounded 
+                            {{ $isAvailable ? 'cursor-pointer hover:scale-105' : 'opacity-50 cursor-not-allowed' }}" 
+                            @if($isAvailable) wire:click="selectDoctor({{ $doctor->id }})" @endif>
+                            
+                            <div class="w-4/5 border rounded shadow-sm p-3 transition-all duration-150 transform mb-3 
+                                {{ $selectedDoctor && $selectedDoctor->id == $doctor->id ? 'bg-prims-azure-100 border-2 border-prims-yellow-5 text-white' : ''}}">
+                                
                                 <img src="{{ asset($doctor->clinic_staff_image) }}" alt="Profile Picture" class="rounded-full w-18 h-18 mx-auto">
-                            @else
-                                <p>No profile picture available.</p>
-                            @endif
-                                <p class="font-semibold pt-3">
-                                    Dr. {{ $doctor->clinic_staff_fname }} {{ $doctor->clinic_staff_lname }}
-                                </p>
+                                <p class="font-semibold pt-3">Dr. {{ $doctor->clinic_staff_fname }} {{ $doctor->clinic_staff_lname }}</p>
                                 <p class="text-sm pb-3">{{ $doctor->email }}</p>
                                 <hr class="w-3/4 mx-auto">
                                 <p class="text-sm pt-3">{{ $doctor->clinic_staff_desc}}</p>
@@ -70,13 +70,16 @@
                     @php
                         $isPastDate = \Carbon\Carbon::parse($day['date'])->lt(\Carbon\Carbon::today('Asia/Manila'));
                         $isSunday = \Carbon\Carbon::parse($day['date'])->isSunday();
+                        $isAvailable = $day['isAvailable'] ?? false;
+                        $isFullyBooked = $day['isFullyBooked'] ?? false;
                     @endphp
 
                     <div class="p-2 rounded-lg 
                         {{ $day['isToday'] ? 'text-blue-600' : '' }} 
-                        {{ $selectedDate === $day['date'] ? 'bg-prims-azure-100 text-white' : '' }} 
-                        {{ ($isPastDate || $isSunday) ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer hover:bg-gray-200' }}"
-                        @if(!($isPastDate || $isSunday)) wire:click="selectDate({{ $day['day'] }})" @endif>
+                        {{ $selectedDate === $day['date'] ? 'border-2 border-prims-yellow-5 bg-prims-azure-100 text-white' : '' }} 
+                        {{ ($isPastDate || $isSunday || !$isAvailable) ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer hover:bg-prims-yellow-5' }}
+                        {{ $isFullyBooked && !$isPastDate ? 'bg-[#ff8a8a] text-black' : ($isAvailable && !$isPastDate ? 'bg-[#8aff8a] text-black' : '') }} "
+                        @if($isAvailable) wire:click="selectDate({{ $day['day'] }})" @endif>
                         {{ $day['day'] }}
                     </div>
                 @else
@@ -91,15 +94,29 @@
                 <h1 class="text-xl font-bold">Choose a Time</h1>
             </div>
             <div class="grid grid-cols-5 gap-4 px-4 py-4 font-bold text-center">
-                @foreach($availableTimes as $time)
-                    <button wire:click="selectTime('{{ $time }}')" 
-                            class="p-2 rounded-lg cursor-pointer bg-gray-200 hover:bg-gray-300 
-                                {{ $selectedTime == $time ? 'bg-prims-azure-100 text-white' : '' }}">
-                        {{ $time }}
-                    </button>
-                @endforeach
+            @foreach($allTimes as $time)
+                @php
+                    $isSelectionMade = $selectedDoctor && $selectedDate;
+                    $slot = collect($availableTimes)->firstWhere('time', $time);
+                    $isAvailable = $slot && $slot['isAvailable'];
+                @endphp
+
+                <button 
+                    class="p-2 rounded-lg transition-all duration-150
+                    @if(!$isSelectionMade) 
+                        text-gray-400 cursor-not-allowed
+                    @elseif($isAvailable) 
+                        {{ $selectedTime === $time ? 'border-2 border-prims-yellow-5 bg-prims-azure-100 text-white' : 'text-black hover:bg-prims-yellow-5' }}
+                    @else 
+                        text-gray-400 cursor-not-allowed
+                    @endif" 
+                    @if($isSelectionMade && $isAvailable) wire:click="selectTime('{{ $time }}')" @endif>
+                    {{ $time }}
+                </button>
+            @endforeach
             </div>
         </div>
+
 
         <!-- Submit -->
         <div class="col-span-5 row-span-4 bg-prims-yellow-5 shadow-md p-6">
@@ -158,6 +175,6 @@
                 </div>
             </div>
         @endif
-
+        
     </div>
 </div>

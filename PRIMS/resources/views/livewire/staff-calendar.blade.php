@@ -67,6 +67,10 @@
                     <p class="text-gray-500 mt-3">No approved appointments yet.</p>
                 @endforelse
 
+                <div class="mt-2">
+                    {{ $approvedAppointments->links() }}
+                </div>
+
                 @if($showCancelModal)
                     <div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
                         <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm">
@@ -215,8 +219,8 @@
                     @foreach($timeSlots as $time)
                     <button wire:click="toggleTime('{{ $time }}')"
                         x-bind:class="{
-                            'bg-prims-yellow-5 text-black': @json(in_array($time, $selectedTimes)),
-                            'bg-gray-200': @json(!in_array($time, $selectedTimes)),
+                            'bg-prims-yellow-5 text-black': @json(in_array($time, (array) $selectedTimes)),
+                            'bg-gray-200': @json(!in_array($time, (array) $selectedTimes)),
                             'cursor-not-allowed opacity-50': !($wire.selectedDoctor && $wire.selectedDate && $wire.isEditingSchedule),
                             'cursor-pointer hover:bg-white': $wire.selectedDoctor && $wire.selectedDate && $wire.isEditingSchedule
                         }"
@@ -224,6 +228,12 @@
                         {{ $time }}
                     </button>
                     @endforeach
+
+                    @if($isEditingSchedule)
+                        <button wire:click="cancelEditingSchedule" class="hover:bg-gray-300 text-red-500 px-4 py-2 rounded-lg">
+                            Cancel
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>

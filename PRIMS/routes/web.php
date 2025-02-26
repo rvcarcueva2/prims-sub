@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ClinicStaffController;
 use App\Mail\AppointmentNotif;
+use App\Http\Controllers\StaffSummaryReportController;
+use App\Http\Controllers\MedicalRecordController;
+use App\Livewire\ViewMedicalRecord;
 
 $url = config('app.url');
 URL::forceRootUrl($url);
@@ -82,6 +85,11 @@ Route::middleware([
         return view('medical-records');
     })->name('medical-records');
 
+    Route::get('/staff/medical-records/view/{id}', [MedicalRecordController::class, 'show'])->name('medical-records.view');
+
+    Route::get('/staff/view-record/{id}', [MedicalRecordController::class, 'view'])->name('view.record');
+
+    Route::get('/staff/medical-records/view/{id}', ViewMedicalRecord::class)->name('medical-records.view');
     // Summary report route
     Route::get('/staff/summary-report', function () {
         $user = Auth::user();
@@ -90,6 +98,9 @@ Route::middleware([
         }
         return view('staff-summary-report');
     })->name('summary-report');
+
+    Route::get('/staff-summary-report', [StaffSummaryReportController::class, 'index'])->name('staff-summary-report');
+
 
     // Calendar route
     Route::get('/staff/calendar', function () {
@@ -122,4 +133,22 @@ Route::middleware([
         return view('test');
     })->name('test');
 
+    // Add Medicine route
+    Route::get('/staff/add-medicine', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('clinic staff')) {
+            abort(403); // Forbidden
+        }
+        return view('add-medicine');
+    })->name('add-medicine');
+
+    // Add Button route
+    Route::get('/add-medicine', function () {
+        return view('add-medicine');
+    })->name('add-medicine');
+
+    // cancel button route
+    Route::get('/medical-inventory', function () {
+        return view('medical-inventory');
+    })->name('medical-inventory');
 });

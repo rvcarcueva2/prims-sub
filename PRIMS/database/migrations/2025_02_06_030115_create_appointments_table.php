@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('declination_reason')->nullable();
             $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
             $table->foreignId('clinic_staff_id')->nullable()->constrained('clinic_staff')->onDelete('set null');
-            $table->foreignId('status_updated_by')->nullable()->constrained('clinic_staff')->onDelete('set null');
+            $table->foreignId('status_updated_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();
         });
