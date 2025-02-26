@@ -17,7 +17,7 @@
                     <td class="px-4 py-2 border-b">{{ $record->first_name }}</td>
                     <td class="px-4 py-2 border-b">{{ $record->last_visited }}</td>
                     <td class="px-4 py-2 border-b">
-                        <a href="{{ route('view.record', $record->id) }}" class="text-blue-500 hover:text-blue-700">View</a>
+                    <a href="{{ route('view-medical-record', ['id' => $record->id]) }}">View</a>
                     </td>
                 </tr>
             @empty

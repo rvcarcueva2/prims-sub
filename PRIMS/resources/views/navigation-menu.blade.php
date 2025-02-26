@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('calendar') }}">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
@@ -23,9 +23,9 @@
                         {{ __('Appointment History') }}
                     </x-nav-link>
                     @elseif (Auth::user()->hasRole('clinic staff'))
-                    <x-nav-link href="{{ route('staff-dashboard') }}" :active="request()->routeIs('staff-dashboard')">
+                    <!-- <x-nav-link href="{{ route('staff-dashboard') }}" :active="request()->routeIs('staff-dashboard')">
                         {{ __('Dashboard') }}
-                    </x-nav-link>
+                    </x-nav-link> -->
                     <x-nav-link href="{{ route('calendar') }}" :active="request()->routeIs('calendar')">
                         {{ __('Calendar') }}
                     </x-nav-link>
