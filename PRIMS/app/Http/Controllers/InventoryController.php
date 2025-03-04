@@ -5,18 +5,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Inventory;
 use App\Models\Supply;
+use Carbon\Carbon;
 
 class InventoryController extends Controller
 {
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
             'brand' => 'nullable|string',
+            'name' => 'required|string',
             'category' => 'required|string',
-            'unit' => 'required|string',
-            'quantity_received' => 'required|integer|min:1',
+            'dosage_form' => 'required|string',
+            'strength_number' => 'required|integer',
+            'strength_unit' => 'required|string',
             'date_supplied' => 'required|date',
+            'quantity_received' => 'required|integer|min:1',
             'expiration_date' => 'nullable|date|after_or_equal:date_supplied',
         ]);
 
@@ -26,7 +29,8 @@ class InventoryController extends Controller
                 'name' => $request->name,
                 'brand' => $request->brand,
                 'category' => $request->category,
-                'unit' => $request->unit,
+                'dosage_strength' => trim(($request->strength_number ?? '') . ' ' . ($request->strength_unit ?? '')),
+                'dosage_form' => $request->dosage_form,
             ]
         );
 
@@ -37,9 +41,9 @@ class InventoryController extends Controller
         Inventory::create([
             'supply_id' => $supply->id,
             'quantity_received' => $request->quantity_received,
-            'date_supplied' => $request->date_supplied,
-            'expiration_date' => $request->expiration_date,
-            'updated_by' => $clinicStaff->id, // Ensure user is logged in
+            'date_supplied' => Carbon::createFromFormat('m/d/Y', $request->date_supplied)->format('Y-m-d'),
+            'expiration_date' => Carbon::createFromFormat('m/d/Y', $request->expiration_date)->format('Y-m-d'),
+            'updated_by' => $clinicStaff->id,
         ]);
 
         return redirect()->route('medical-inventory')->with('success', 'Medicine added successfully!');

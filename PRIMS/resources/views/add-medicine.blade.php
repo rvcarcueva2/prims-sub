@@ -1,7 +1,8 @@
 <x-app-layout>
-<head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <div class="flex-1 p-6">
-    <title>Add Medicine</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,6 +58,16 @@
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            max-height: 50px;
+            overflow-y: auto;
+        }
+
         .button-container {
             margin-top: 15px;
         }
@@ -72,41 +83,90 @@
             background-color: #666;
         }
     </style>
-</head>
-<body>
     <div class="header">Add Medicine Sheet</div>
     <div class="container">
         <form action="{{ route('inventory.store') }}" method="POST">
             @csrf
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" placeholder="Medicine Name" required>
+
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="form-group">
+                    <label for="brand">Brand:</label>
+                    <input type="text" id="brand" name="brand" placeholder="e.g., Biogesic">
+                </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" placeholder="e.g., Paracetamol" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="brand">Brand:</label>
-                <input type="text" id="brand" name="brand" placeholder="e.g., Biogesic">
+            
+            <div class="grid grid-cols-3 gap-4 mb-4">
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <div class="flex flex-col gap-2">
+                        <select id="category" name="category">
+                            <option value="Analgesic">Analgesic</option>
+                            <option value="Antiemetic">Antiemetic</option>
+                            <option value="Antihistamine">Antihistamine</option>
+                            <option value="Antihypertensive">Antihypertensive</option>
+                            <option value="Antipyretic">Antipyretic</option>
+                            <option value="Antitussive">Antitussive</option>
+                            <option value="Bronchodilator">Bronchodilator</option>
+                            <option value="Decongestant">Decongestant</option>
+                            <option value="Electrolyte Solution">Electrolyte Solution</option>
+                            <option value="Expectorant">Expectorant</option>
+                            <option value="Gastrointestinal">Gastrointestinal</option>
+                            <option value="Muscle Relaxant">Muslce Relaxant</option>
+                            <option value="NSAID">NSAID</option>
+                            <option value="Other">Others (Specify below)</option>
+                        </select>
+                        <input type="text" id="category_other" name="category_other" placeholder="Enter category" style="display: none;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="dosage_form">Dosage Form:</label>
+                    <div class="flex flex-col gap-2">
+                        <select id="dosage_form" name="dosage_form" placeholder="e.g., Tablet" onchange="updateUnitOptions()">
+                            <option value="Tablet">Tablet</option>
+                            <option value="Capsule">Capsule</option>
+                            <option value="Syrup">Syrup</option>
+                            <option value="Suspension">Nebulizer Solution</option>
+                            <option value="Injection">Lozenge</option>
+                            <option value="Oral Solution">Oral Solution</option>
+                            <option value="Other">Others (Specify below)</option>
+                        </select>
+                        <input type="text" id="dosage_form_other" name="dosage_form_other" placeholder="Enter dosage form" style="display: none;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="dosage_strength">Strength:</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" id="strength_number" name="strength_number" placeholder="e.g., 500" required>
+                        <select id="strength_unit" name="strength_unit">
+                            <option value="mg">mg</option>
+                            <option value="mcg">mcg</option>
+                            <option value="mL">mL</option>
+                            <option value="mcg/mL">mcg/mL</option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="category">Category:</label>
-                <input type="text" id="category" name="category" placeholder="e.g., Pain Reliever" required>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="form-group">
+                    <label for="date_supplied">Date Supplied:</label>
+                    <input type="text" id="date_supplied" name="date_supplied" placeholder="MM/DD/YYYY" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity Received (each):</label>
+                    <input type="number" id="quantity" name="quantity_received" placeholder="e.g., 100" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="unit">Unit of Measurement:</label>
-                <input type="text" id="unit" name="unit" placeholder="Each/Pack/Bottle" required>
+            <div class="mb-4">
+                <div class="form-group">
+                    <label for="expiration">Expiration Date:</label>
+                    <input type="text" id="expiration" name="expiration_date" placeholder="MM/DD/YYYY" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="quantity">Quantity Received:</label>
-                <input type="number" id="quantity" name="quantity_received" value="100" required>
-            </div>
-            <div class="form-group">
-                <label for="date_supplied">Date Supplied:</label>
-                <input type="date" id="date_supplied" name="date_supplied" required>
-            </div>
-            <div class="form-group">
-                <label for="expiration">Expiration Date (Optional):</label>
-                <input type="date" id="expiration" name="expiration_date">
-            </div>
-            <div class="button-container">
+            <div class="button-container pt-4">
                 <button class="button cancel" onclick="window.location.href='{{ route('medical-inventory') }}';">
                     Cancel
                 </button>
@@ -115,6 +175,35 @@
         </form>
 
     </div>
-</body>
-</html>
+    <script>
+        document.getElementById('category').addEventListener('change', function() {
+            var otherInput = document.getElementById('category_other');
+            if (this.value === 'Other') {
+                otherInput.style.display = 'block';
+            } else {
+                otherInput.style.display = 'none';
+                otherInput.value = '';
+            }
+        })
+        
+        document.getElementById('dosage_form').addEventListener('change', function() {
+            var otherInput = document.getElementById('dosage_form_other');
+            if (this.value === 'Other') {
+                otherInput.style.display = 'block';
+            } else {
+                otherInput.style.display = 'none';
+                otherInput.value = '';
+            }
+        })
+        
+        flatpickr("#date_supplied", {
+            dateFormat: "m/d/Y", 
+            allowInput: true,
+        });
+
+        flatpickr("#expiration", {
+            dateFormat: "m/d/Y", 
+            allowInput: true,
+        });
+    </script>
 </x-app-layout>

@@ -38,25 +38,27 @@
     <div class="bg-white rounded-b-md shadow overflow-x-auto">
         <table class="w-full table-auto">
             <thead class="bg-yellow-500 text-black">
-                <tr>
-                    <th class="px-4 py-2 text-left">Item ID</th>
-                    <th class="px-4 py-2 text-left">Name</th>
+                <tr>                    
+                    <th class="px-4 py-2 text-left">Generic Name</th>
                     <th class="px-4 py-2 text-left">Brand</th>
                     <th class="px-4 py-2 text-left">Category</th>
-                    <th class="px-4 py-2 text-left">Expiration Date</th>
+                    <th class="px-4 py-2 text-left">Dosage Form</th>
+                    <th class="px-4 py-2 text-left">Strength</th>
                     <th class="px-4 py-2 text-left">Date Supplied</th>
+                    <th class="px-4 py-2 text-left">Expiration Date</th>
                     <th class="px-4 py-2 text-left">Quantity Received</th>
                     <th class="px-4 py-2 text-left">Remaining Stock</th>
-                    <th class="px-4 py-2 text-left">Unit</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($inventory as $item)
                     <tr class="bg-gray-50 hover:bg-gray-100">
-                        <td class="px-4 py-2">{{ $item->supply->id }}</td> 
                         <td class="px-4 py-2">{{ $item->supply_name }}</td>
                         <td class="px-4 py-2">{{ $item->brand ?? 'N/A' }}</td>
                         <td class="px-4 py-2">{{ $item->category }}</td>
+                        <td class="px-4 py-2">{{ $item->dosage_form }}</td>
+                        <td class="px-4 py-2">{{ $item->dosage_strength }}</td>
+                        <td class="px-4 py-2">{{ $item->date_supplied }}</td>
                         <td class="relative group px-4 py-2 
                             {{ now()->diffInDays($item->expiration_date, false) <= 14 && now()->diffInDays($item->expiration_date, false) >= 0 ? 'text-yellow-500 font-semibold' : '' }} 
                             {{ \Carbon\Carbon::parse($item->expiration_date)->isPast() ? 'text-red-500 font-bold' : '' }}">
@@ -81,7 +83,6 @@
                                 </span>
                             @endif
                         </td>
-                        <td class="px-4 py-2">{{ $item->date_supplied }}</td>
                         <td class="px-4 py-2">{{ $item->quantity_received }}</td>
                         <td class="px-4 py-2 {{ $item->remaining_stock <= 5 ? 'bg-orange-200 text-black font-semibold' : '' }}">
                             {{ $item->remaining_stock }}
@@ -89,7 +90,6 @@
                                 <span class="text-black font-bold">⚠️</span>
                             @endif
                         </td>
-                        <td class="px-4 py-2">{{ $item->unit }}</td>
                     </tr>
                 @endforeach
             </tbody>
