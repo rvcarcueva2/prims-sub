@@ -24,24 +24,28 @@
                 </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-            @foreach ($records as $record)
-    <tr>
-        <td>{{ $record->id }}</td>
-        <td>{{ $record->last_name }}</td>
-        <td>{{ $record->first_name }}</td>
-        <td>{{ $record->last_visited }}</td>
-        <td>
-            <a href="{{ route('view-medical-record', ['record' => $record->id]) }}">
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-                    View
-                </button>
-            </a>
-        </td>
-    </tr>
-@endforeach
+                @foreach ($records as $record)
+                    <tr>
+                        <td>
+                            <input type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                        </td>
+                        <td>{{ $record->id }}</td>
+                        <td>{{ $record->last_name }}</td>
+                        <td>{{ $record->first_name }}</td>
+                        <td>{{ $record->last_visited }}</td>
+                        <td>
+                            <a href="{{ route('view-medical-record', ['id' => $record->id]) }}">
+                                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                    View
+                                </button>
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
+    
     <div class="mt-4 flex gap-6">
         <a href="/staff/add-record">
             <button id="addRecordButton" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
