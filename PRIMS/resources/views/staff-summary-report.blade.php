@@ -14,7 +14,7 @@
             <div class="space-y-3">
                 <!-- Appointments Count -->
                 <div class="bg-yellow-300 p-4 rounded-lg text-center border-2 border-blue-500 shadow-md">
-                    <h3 id="appointments-count" class="text-3xl font-bold">79</h3>
+                    <h3 id="appointments-count" class="text-3xl font-bold">1</h3>
                     <p class="text-sm">Appointments</p>
                     <!-- Meter -->
                     <div class="w-full bg-gray-300 h-4 rounded-lg mt-2">
@@ -25,7 +25,7 @@
 
                 <!-- Patients Count -->
                 <div class="bg-yellow-300 p-4 rounded-lg text-center border-2 border-blue-500 shadow-md">
-                    <h3 id="patients-count" class="text-3xl font-bold">52</h3>
+                    <h3 id="patients-count" class="text-3xl font-bold">1</h3>
                     <p class="text-sm">Patients</p>
                     <div class="h-[200px] mt-2">
                         <canvas id="gender-chart"></canvas>
@@ -59,8 +59,10 @@
 
         <!-- Generate Report Button -->
         <div class="text-center mt-4">
-            <button class="bg-blue-900 text-white px-4 py-2 rounded-lg text-md shadow-md">Generate a summary report</button>
-        </div>
+    <a href="/reports/summary_report.pdf" target="_blank" class="bg-blue-900 text-white px-4 py-2 rounded-lg text-md shadow-md">
+        Generate a summary report
+    </a>
+</div>
     </div>
 
     <!-- Chart.js Library -->
@@ -69,8 +71,8 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Appointments Meter
-            let attended = 55;
-            let canceled = 24;
+            let attended = 1;
+            let canceled = 0;
             let totalAppointments = attended + canceled;
             let attendedPercentage = (attended / totalAppointments) * 100;
             document.getElementById("appointments-meter").style.width = attendedPercentage + "%";
@@ -84,7 +86,7 @@
                 data: {
                     labels: ["Male", "Female"],
                     datasets: [{
-                        data: [30, 22],
+                        data: [1, 0],
                         backgroundColor: ["#36A2EB", "#FF6384"]
                     }]
                 },
@@ -103,7 +105,7 @@
                     datasets: [
                         {
                             label: "Patients This Year",
-                            data: [30, 50, 45, 60, 80, 75, 90, 100, 85, 95, 110, 120],
+                            data: [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                             borderColor: "blue",
                             fill: false,
                         },
@@ -126,9 +128,9 @@
             new Chart(ctxPie, {
                 type: "pie",
                 data: {
-                    labels: ["Top 1 Reason", "Top 2 Reason", "Top 3 Reason"],
+                    labels: ["Headache", "Flu", "Cough"],
                     datasets: [{
-                        data: [60, 25, 15],
+                        data: [1, 0, 0],
                         backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
                     }]
                 },
@@ -155,10 +157,10 @@
             new Chart(ctxBar, {
                 type: "bar",
                 data: {
-                    labels: ["Drug 1", "Drug 2", "Drug 3", "Drug 4", "Drug 5"],
+                    labels: ["Paracetamol", "Bioflu", "Alaxan", "Neozep", "Solmux"],
                     datasets: [{
                         label: "Prescriptions",
-                        data: [80, 60, 40, 30, 70],
+                        data: [2, 0, 0, 0, 0],
                         backgroundColor: "gray"
                     }]
                 },
