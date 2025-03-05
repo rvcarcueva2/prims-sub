@@ -52,7 +52,8 @@
             </thead>
             <tbody>
                 @foreach ($inventory as $item)
-                    <tr class="bg-gray-50 hover:bg-gray-100">
+                    <tr class="bg-gray-50 hover:bg-gray-100 curosr-pointer"
+                    onclick="window.location.href='{{ route('inventory.show', ['id' => $item->id]) }}'">
                         <td class="px-4 py-2">{{ $item->supply_name }}</td>
                         <td class="px-4 py-2">{{ $item->brand ?? 'N/A' }}</td>
                         <td class="px-4 py-2">{{ $item->category }}</td>

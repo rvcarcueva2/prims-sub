@@ -49,5 +49,12 @@ class InventoryController extends Controller
         return redirect()->route('medical-inventory')->with('success', 'Medicine added successfully!');
         
     }
+
+    public function show($id)
+    {
+        $item = Inventory::findOrFail($id); // Fetch the inventory item
+        return view('inventory-details', compact('item'));
+    }
+
 }
 
