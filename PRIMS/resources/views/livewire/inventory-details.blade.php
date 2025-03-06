@@ -1,3 +1,91 @@
-<div>
-    {{ $inventory->supply->name }}
+<div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg mt-5">
+    <div class="p-6 lg:p-8 gap-8 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-start">
+        <div class="grid grid-cols-2 grid-rows-2 gap-2 w-full">
+            <div>
+                <p class="font-bold">Generic Name:</p>
+                <p>:: {{ $inventory->supply->name }}</p>
+            </div>
+            <div>
+                <p class="font-bold">Category:</p>
+                <p>:: {{ $inventory->supply->category }}</p>
+            </div>
+            <div>
+                <p class="font-bold">Brand Name:</p>
+                <p>:: {{ $inventory->supply->brand }}</p>
+            </div>
+            <div>
+                <p class="font-bold">Dosage Form & Strength:</p>
+                <p>:: {{ $inventory->supply->dosage_form }} {{ $inventory->supply->dosage_strength }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CURRENT BATCH IN USE -->
+    <div class="p-6 lg:p-8 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-start">
+        <div class="mx-auto">    
+            <span class="text-lg font-bold uppercase">Current Batch In Use</span>
+        </div>
+        <table class="w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+            <thead class="bg-prims-yellow-5 text-prims-blue-500 ">
+                <tr>                    
+                    <th class="px-4 py-2">Generic Name</th>
+                    <th class="px-4 py-2">Brand</th>
+                    <th class="px-4 py-2">Category</th>
+                    <th class="px-4 py-2">Dosage Form</th>
+                    <th class="px-4 py-2">Strength</th>
+                    <th class="px-4 py-2">Date Supplied</th>
+                    <th class="px-4 py-2">Expiration Date</th>
+                    <th class="px-4 py-2">Quantity Received</th>
+                    <th class="px-4 py-2">Remaining Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-center align-middle">
+                    <td class="px-4 py-2">{{ $inventory->supply->name }}</td>
+                    <td class="px-4 py-2">{{ $inventory->supply->brand }}</td>
+                    <td class="px-4 py-2">{{ $inventory->supply->category }}</td>
+                    <td class="px-4 py-2">{{ $inventory->supply->dosage_form }}</td>
+                    <td class="px-4 py-2">{{ $inventory->supply->dosage_strength }}</td>
+                    <td class="px-4 py-2">{{ $inventory->date_supplied }}</td>
+                    <td class="px-4 py-2">{{ $inventory->expiration_date }}</td>
+                    <td class="px-4 py-2">{{ $inventory->quantity_received }}</td>
+                    <td class="px-4 py-2">{{ $inventory->quantity_remaining }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="p-6 lg:p-8 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-start">
+        <div class="mx-auto">    
+            <span class="text-lg font-bold uppercase">Current Batch In Use</span>
+        </div>
+        <table class="w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+            <thead class="bg-prims-yellow-5 text-prims-blue-500 ">
+                <tr>                    
+                    <th class="px-4 py-2">Generic Name</th>
+                    <th class="px-4 py-2">Brand</th>
+                    <th class="px-4 py-2">Category</th>
+                    <th class="px-4 py-2">Dosage Form</th>
+                    <th class="px-4 py-2">Strength</th>
+                    <th class="px-4 py-2">Date Supplied</th>
+                    <th class="px-4 py-2">Expiration Date</th>
+                    <th class="px-4 py-2">Quantity Received</th>
+                    <th class="px-4 py-2">Remaining Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="text-center align-middle">
+                    <td class="px-4 py-2">{{ $inventory->supply->name }}</td>
+                    <td class="px-4 py-2">{{ $inventory->supply->brand }}</td>
+                    <td class="px-4 py-2">{{ $inventory->supply->category }}</td>
+                    <td class="px-4 py-2">{{ $inventory->supply->dosage_form }}</td>
+                    <td class="px-4 py-2">{{ $inventory->supply->dosage_strength }}</td>
+                    <td class="px-4 py-2">{{ $inventory->date_supplied }}</td>
+                    <td class="px-4 py-2">{{ $inventory->expiration_date }}</td>
+                    <td class="px-4 py-2">{{ $inventory->quantity_received }}</td>
+                    <td class="px-4 py-2">{{ $inventory->quantity_remaining }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

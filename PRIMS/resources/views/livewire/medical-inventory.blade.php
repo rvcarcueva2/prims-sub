@@ -51,7 +51,22 @@
                 </tr>
             </thead>
             <tbody>
+
+                @php
+                    $displayed = [];
+                @endphp
+
                 @foreach ($inventory as $item)
+                    @php
+                        $key = $item->supply_name . '|' . $item->brand . '|' . $item->category . '|' . $item->dosage_strength . '|' . $item->dosage_form;
+
+                        if (in_array($key, $displayed)) {
+                            continue; 
+                        }
+
+                        $displayed[] = $key;
+                    @endphp
+
                     <tr class="bg-gray-50 hover:bg-gray-100 curosr-pointer"
                     onclick="window.location.href='{{ route('inventory.show', ['id' => $item->id]) }}'">
                         <td class="px-4 py-2">{{ $item->supply_name }}</td>
