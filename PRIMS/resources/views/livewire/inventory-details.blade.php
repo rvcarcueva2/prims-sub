@@ -1,3 +1,3 @@
 <div>
-    hello
+    {{ $inventory->supply->name }}
 </div>
