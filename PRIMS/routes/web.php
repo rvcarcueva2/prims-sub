@@ -8,6 +8,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ClinicStaffController;
 use App\Mail\AppointmentNotif;
 use App\Http\Controllers\StaffSummaryReportController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Livewire\ViewMedicalRecord;
 
@@ -27,7 +28,7 @@ Route::middleware([
         $user = Auth::user();
 
         if ($user->hasRole('clinic staff')) {
-            return redirect()->route('staff-dashboard');
+            return redirect()->route('calendar');
         } elseif ($user->hasRole('patient')) {
             return redirect()->route('patient-homepage');
         }
@@ -71,7 +72,7 @@ Route::middleware([
     Route::get('/staff/inventory', function () {
         $user = Auth::user();
         if (!$user || !$user->hasRole('clinic staff')) {
-            abort(403); // Forbidden
+            abort(403); // Forbidden    
         }
         return view('medical-inventory');
     })->name('medical-inventory');
@@ -85,11 +86,9 @@ Route::middleware([
         return view('medical-records');
     })->name('medical-records');
 
-    Route::get('/staff/medical-records/view/{id}', [MedicalRecordController::class, 'show'])->name('medical-records.view');
+    Route::get('/medical-records/{id}', [MedicalRecordController::class, 'view'])
+    ->name('view-medical-record');
 
-    Route::get('/staff/view-record/{id}', [MedicalRecordController::class, 'view'])->name('view.record');
-
-    Route::get('/staff/medical-records/view/{id}', ViewMedicalRecord::class)->name('medical-records.view');
     // Summary report route
     Route::get('/staff/summary-report', function () {
         $user = Auth::user();
@@ -141,6 +140,8 @@ Route::middleware([
         }
         return view('add-medicine');
     })->name('add-medicine');
+
+    Route::post('/staff/inventory/add', [InventoryController::class, 'store'])->name('inventory.store');
 
     // Add Button route
     Route::get('/add-medicine', function () {

@@ -7,9 +7,12 @@ use App\Models\MedicalRecord;
 
 class MedicalRecordController extends Controller
 {
-    public function show($id)
+    public function view($id)
     {
         $record = MedicalRecord::findOrFail($id);
         return view('view-medical-record', compact('record'));
     }
+    
 }
+
+// MedicalRecordController.php

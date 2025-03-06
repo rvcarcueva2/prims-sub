@@ -69,7 +69,7 @@ class AppointmentController extends Controller
 
         $appointment->save();
         
-        Mail::to('prims.apc@gmail.com')->send(new ClinicAppointmentNotif($appointment, $selectedDate, $selectedTime));
+        Mail::to('primsapcclinic@gmail.com')->send(new ClinicAppointmentNotif($appointment, $selectedDate, $selectedTime));
 
         Mail::to(Auth::user()->email)->send(new PatientAppointmentNotif($appointment, $selectedDate, $selectedTime));
 
