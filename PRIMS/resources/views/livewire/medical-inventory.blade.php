@@ -53,22 +53,17 @@
             <tbody>
 
                 @php
-                    $displayed = [];
+                    // Group items by unique key and get the one with the earliest expiration date
+                    $groupedInventory = collect($inventory)->groupBy(function ($item) {
+                        return $item->supply_name . '|' . $item->brand . '|' . $item->category . '|' . $item->dosage_strength . '|' . $item->dosage_form;
+                    })->map(function ($items) {
+                        return $items->sortBy('expiration_date')->first(); // Get the earliest expiration date
+                    });
                 @endphp
 
-                @foreach ($inventory as $item)
-                    @php
-                        $key = $item->supply_name . '|' . $item->brand . '|' . $item->category . '|' . $item->dosage_strength . '|' . $item->dosage_form;
-
-                        if (in_array($key, $displayed)) {
-                            continue; 
-                        }
-
-                        $displayed[] = $key;
-                    @endphp
-
-                    <tr class="bg-gray-50 hover:bg-gray-100 curosr-pointer"
-                    onclick="window.location.href='{{ route('inventory.show', ['id' => $item->id]) }}'">
+                @foreach ($groupedInventory as $item)
+                    <tr class="bg-gray-50 hover:bg-gray-100 cursor-pointer"
+                        onclick="window.location.href='{{ route('inventory.show', ['id' => $item->id]) }}'">
                         <td class="px-4 py-2">{{ $item->supply_name }}</td>
                         <td class="px-4 py-2">{{ $item->brand ?? 'N/A' }}</td>
                         <td class="px-4 py-2">{{ $item->category }}</td>
