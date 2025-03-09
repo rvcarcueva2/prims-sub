@@ -94,6 +94,11 @@
                         <td class="px-4 py-2">{{ $batch->quantity_remaining }}</td>
                     </tr>
                 @endforeach
+                @if ($otherBatches->isEmpty())
+                    <tr>
+                        <td class="px-4 py-2 text-center" colspan="9">No other batches in stock</td>
+                    </tr>
+                @endif
             </tbody>
         </table>
     </div>
