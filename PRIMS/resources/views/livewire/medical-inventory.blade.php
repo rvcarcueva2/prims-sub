@@ -107,5 +107,13 @@
         </table>
     </div>
 
+    @if (session()->has('dispose-message'))
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+            wire:ignore 
+            class="bg-green-500 text-white px-4 py-2 rounded-md mb-4 transition-opacity duration-500 ease-in-out">
+            {{ session('dispose-message') }}
+        </div>
+    @endif
+
 </div>
 

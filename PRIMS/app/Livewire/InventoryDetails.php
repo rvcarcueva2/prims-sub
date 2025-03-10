@@ -11,6 +11,7 @@ class InventoryDetails extends Component
 {
     public $inventory;
     public $showDispenseModal = false;
+    public $showDisposeModal = false;
     public $patientId;
     public $amountDispensed;
 
@@ -48,16 +49,20 @@ class InventoryDetails extends Component
         session()->flash('message', 'Medicine dispensed successfully.');
     }
 
-    public function dispose()
+    public function confirmDispose()
     {
-        // Soft delete the inventory item
-        $this->inventory->delete();
+        DB::transaction(function () {
+            $this->inventory->delete();
+        });
 
-        // Show success message
-        session()->flash('message', 'Medicine disposed successfully.');
-
-        // Refresh component
+        session()->flash('dispose-message', 'Medicine disposed successfully.');
+        
         return redirect()->route('medical-inventory');
+    }
+
+    public function openDisposeModal()
+    {
+        $this->showDisposeModal = true;
     }
 
     public function openDispenseModal()

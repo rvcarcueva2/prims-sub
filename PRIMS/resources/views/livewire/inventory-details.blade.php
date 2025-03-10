@@ -62,9 +62,23 @@
         <div class="p-6 lg:p-8">
             <div class="flex justify-end space-x-4">
                 <!-- Dispose Button -->
-                <button wire:click="dispose" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
-                    Mark as Disposed
+                <button wire:click="openDisposeModal" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                    Dispose
                 </button>
+
+                @if ($showDisposeModal)
+                    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                        <div class="bg-white p-6 rounded shadow-lg">
+                            <h2 class="text-lg font-bold mb-4">Confirm Disposal</h2>
+                            <p>Are you sure you want to dispose of this medicine? This action cannot be undone.</p>
+
+                            <div class="mt-4 flex justify-end space-x-2">
+                                <button wire:click="confirmDispose" class="bg-red-600 text-white px-4 py-2 rounded">Confirm</button>
+                                <button wire:click="$set('showDisposeModal', false)" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
                 <!-- Dispense Button -->
                 <button wire:click="openDispenseModal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
