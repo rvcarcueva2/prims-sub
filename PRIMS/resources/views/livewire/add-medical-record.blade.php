@@ -15,12 +15,12 @@
                 <input type="hidden" wire:model="last_name"> <!-- Hidden field to ensure submission -->
 
                 <label class="font-bold text-lg">Middle Initial</label>
-                <input type="text" wire:model="middle_initial" class="border p-2 rounded col-span-2 bg-gray-200" >
-                <!-- <input type="hidden" wire:model="middle_initial"> Hidden field to ensure submission -->
+                <input type="text" wire:model="mi" class="border p-2 rounded col-span-2 bg-gray-200" readonly>
+                <input type="hidden" wire:model="mi"> <!-- Hidden field to ensure submission -->
 
-                <label class="font-bold text-lg">Sex</label>
-                <input type="text" wire:model="sex" class="border p-2 rounded col-span-2 bg-gray-200" >
-                <!-- <input type="hidden" wire:model="sex"> Hidden field to ensure submission -->
+                <label class="font-bold text-lg">Gender</label>
+                <input type="text" wire:model="gender" class="border p-2 rounded col-span-2 bg-gray-200" readonly>
+                <input type="hidden" wire:model="gender"> <!-- Hidden field to ensure submission -->
 
                 <label class="font-bold text-lg">Age</label>
                 <input type="text" wire:model="age" class="border p-2 rounded col-span-2 bg-gray-200" >
@@ -29,6 +29,10 @@
                 <label class="font-bold text-lg">Date of Birth</label>
                 <input type="text" wire:model="dob" class="border p-2 rounded col-span-2 bg-gray-200" readonly>
                 <input type="hidden" wire:model="dob"> <!-- Hidden field to ensure submission -->
+
+                <label class="font-bold text-lg">Contact Number</label>
+                <input type="text" wire:model="contact_number" class="border p-2 rounded col-span-2 bg-gray-200" readonly>
+                <input type="hidden" wire:model="contact_number"> <!-- Hidden field to ensure submission -->
 
                 <label class="font-bold text-lg">Nationality</label>
                 <input type="text" wire:model="nationality" class="border p-2 rounded col-span-2 bg-gray-200" >
@@ -58,6 +62,116 @@
 
                 <label class="font-bold text-lg mt-2">Allergies</label>
                 <textarea wire:model="allergies" class="w-full border p-2 rounded" placeholder="Allergies..."></textarea>
+
+                <div class="rounded-md shadow-md bg-white px-4 py-1 my-4 justify-center">
+                    <h3 class="text-lg font-semibold my-4">Past Medical History</h3>
+                    <div class="text-md grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 ml-8">
+                        @foreach ($past_medical_history as $key => $value)
+                            @if ($key === 'Hepatitis')
+                                <div class="flex flex-col my-2">
+                                    <span class="font-medium">{{ $key }}</span>
+                                    <div class="flex flex-wrap gap-4 mt-1">
+                                        @foreach (['A', 'B', 'C', 'D', 'None'] as $type)
+                                            <label class="flex items-center space-x-1">
+                                                <input type="radio" wire:model="past_medical_history.Hepatitis" value="{{ $type }}" class="accent-black">
+                                                <span>{{ $type }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @else
+                                <div class="flex flex-col my-2">
+                                    <span class="font-medium">{{ $key }}</span>
+                                    <div class="flex gap-4 mt-1">
+                                        <label class="flex items-center space-x-1">
+                                            <input type="radio" wire:model="past_medical_history.{{ $key }}" value="Yes" class="accent-black">
+                                            <span>Yes</span>
+                                        </label>
+                                        <label class="flex items-center space-x-1">
+                                            <input type="radio" wire:model="past_medical_history.{{ $key }}" value="No" class="accent-black">
+                                            <span>No</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="rounded-md shadow-md bg-white px-4 py-1 mt-6 mb-4">
+                    <h3 class="text-lg font-semibold my-4">Family History</h3>
+                    <div class="text-md grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 ml-8">
+                        @foreach ($family_history as $key => $value)
+                            <div class="flex flex-col my-2">
+                                <span class="font-medium">{{ $key }}</span>
+                                <div class="flex gap-4 mt-1">
+                                    <label class="flex items-center space-x-1">
+                                        <input type="radio" wire:model="family_history.{{ $key }}" value="Yes" class="accent-black">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="flex items-center space-x-1">
+                                        <input type="radio" wire:model="family_history.{{ $key }}" value="No" class="accent-black">
+                                        <span>No</span>
+                                    </label>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="rounded-md shadow-md bg-white px-4 py-1 mt-6 mb-4">
+                    <h3 class="text-lg font-semibold my-4">Personal & Social History</h3>
+                    <div class="text-md grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 ml-8">
+
+                        <!-- Smoke Input -->
+                        <div class="col-span-2 flex flex-col">
+                            <label class="text-md font-medium">Smoke</label>
+                            <div class="flex items-center gap-4">
+                                <label class="text-sm">Sticks/day:</label>
+                                <input type="number" wire:model="social_history.sticks_per_day" class="border rounded p-1 w-20" min="0">
+                                <label class="text-sm">Packs/year:</label>
+                                <input type="number" wire:model="social_history.packs_per_year" class="border rounded p-1 w-20" min="0">
+                            </div>
+                        </div>
+
+                        <!-- Alcohol Consumption -->
+                        <div class="flex flex-col">
+                            <label class="font-medium">Alcohol Consumption</label>
+                            <select wire:model="social_history.alcohol" class="border rounded p-1 w-full">
+                                <option value="">Select bottles per week</option>
+                                <option value="N/A">N/A</option>
+                                @for ($i = 1; $i <= 20; $i++)
+                                    <option value="{{ $i }}">{{ $i }} bottle(s) per week</option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <!-- Medications -->
+                        <div class="col-span-2 flex flex-col">
+                            <label class="text-md font-medium">Medications</label>
+                            <input type="text" wire:model="social_history.medications" class="border rounded-md p-1 w-[10rem]">
+                        </div>
+
+                        <!-- Loop Through Other Fields (Vape, etc.) -->
+                        @foreach ($social_history as $key => $value)
+                            @if (!in_array($key, ['Smoker', 'Alcohol', 'Medications', 'sticks_per_day', 'packs_per_year']))
+                                <div class="flex flex-col my-2">
+                                    <span class="font-medium">{{ $key }}</span>
+                                    <div class="flex gap-4 mt-1">
+                                        <label class="flex items-center space-x-1">
+                                            <input type="radio" wire:model="social_history.{{ $key }}" value="Yes" class="accent-black">
+                                            <span>Yes</span>
+                                        </label>
+                                        <label class="flex items-center space-x-1">
+                                            <input type="radio" wire:model="social_history.{{ $key }}" value="No" class="accent-black">
+                                            <span>No</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
 
                 <label class="block text-lg font-medium">Diagnosis</label>
                 <select wire:model="diagnosis" class="w-full p-2 border rounded-md mb-3 ">
