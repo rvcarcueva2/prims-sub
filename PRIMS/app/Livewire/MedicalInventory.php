@@ -47,7 +47,8 @@ class MedicalInventory extends Component
     public function render()
     {
         $inventory = Inventory::with('supply')
-            ->join('supplies', 'inventory.supply_id', '=', 'supplies.id')
+            ->leftjoin('supplies', 'inventory.supply_id', '=', 'supplies.id')
+            ->whereNull('inventory.deleted_at')
             ->orderBy($this->sortField, $this->sortDirection) // Sort alphabetically by name
             ->select('inventory.*', 'supplies.name as supply_name', 'supplies.brand', 'supplies.category', 'supplies.dosage_strength', 'supplies.dosage_form')
             ->when(strlen($this->search) > 0, function ($query) { 

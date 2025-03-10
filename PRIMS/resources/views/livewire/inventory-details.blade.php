@@ -59,6 +59,19 @@
                 </tr>
             </tbody>
         </table>
+        <div class="p-6 lg:p-8">
+            <div class="flex justify-end space-x-4">
+                <!-- Dispose Button -->
+                <button wire:click="dispose" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                    Mark as Disposed
+                </button>
+
+                <!-- Dispense Button -->
+                <button wire:click="openDispenseModal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                    Issue to Patient
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- OTHER BATCH/ES IN STOCK -->
@@ -102,4 +115,25 @@
             </tbody>
         </table>
     </div>
+
+    @if ($showDispenseModal)
+        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+            <div class="bg-white p-6 rounded shadow-lg">
+                <h2 class="text-lg font-bold mb-4">Dispense Medicine</h2>
+                
+                <label class="block mb-2">APC ID Number</label>
+                <input type="text" wire:model="patientId" class="w-full border p-2 rounded">
+
+                <label class="block mb-2 mt-4">Amount to Dispense</label>
+                <input type="number" wire:model="amountDispensed" class="w-full border p-2 rounded">
+
+                <div class="mt-4 flex justify-end space-x-2">
+                    <button wire:click="dispense" class="bg-blue-600 text-white px-4 py-2 rounded">Confirm</button>
+                    <button wire:click="$set('showDispenseModal', false)" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    
 </div>

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('expiration_date')->nullable();
             $table->foreignId('updated_by')->constrained('clinic_staff');
             $table->timestamps();
+            $table->softDeletes();
         });        
     }
 
