@@ -77,11 +77,11 @@
                             {{ $item->expiration_date ?? 'N/A' }}
 
                             @if (\Carbon\Carbon::parse($item->expiration_date)->isPast())
-                                <span class="cursor-pointer" wire:click="confirmDisposal({{ $item->id }})">
+                                <span class="relative group">
                                     🚫
                                     <div class="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 hidden group-hover:flex 
                                                 bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap z-50">
-                                        Expired - Click to dispose
+                                        Expired - Need to dispose
                                     </div>
                                 </span>
                             @elseif (now()->diffInDays($item->expiration_date, false) <= 14 && now()->diffInDays($item->expiration_date, false) >= 0)

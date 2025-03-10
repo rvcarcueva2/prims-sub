@@ -30,25 +30,29 @@ class InventoryDetails extends Component
 
     public function dispense()
     {
-        if (!$this->selectedPatient) {
-            session()->flash('error', 'No patient found with that APC ID.');
-            return;
-        }
+        $clinicStaff = DB::table('clinic_staff')->where('user_id', auth()->id())->first();
 
+        // Calculate the total amount dispensed for this inventory item
+            $totalDispensed = DB::table('dispensed')
+            ->where('inventory_id', $this->inventory->id)
+            ->sum('quantity_dispensed');
+
+        // Compute remaining stock dynamically
+        $quantityRemaining = $this->inventory->quantity_received - $totalDispensed;
+
+        // Validate input with the dynamically calculated remaining stock
         $this->validate([
             'patientId' => 'required|exists:patients,apc_id_number',
-            'amountDispensed' => 'required|integer|min:1|max:' . $this->inventory->quantity_remaining,
+            'amountDispensed' => 'required|integer|min:1|max:' . $quantityRemaining,
         ]);
 
-        DB::transaction(function () {
-
-            // Log the dispensation
+        DB::transaction(function () use ($clinicStaff) {
             Dispensed::create([
                 'inventory_id' => $this->inventory->id,
                 'patient_id' => $this->selectedPatient->id,
                 'quantity_dispensed' => $this->amountDispensed,
                 'date_dispensed' => now(),
-                'dispensed_by' => auth()->id(),
+                'dispensed_by' => $clinicStaff->id,
             ]);
         });
 

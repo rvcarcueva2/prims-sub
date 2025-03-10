@@ -55,7 +55,7 @@
                     <td class="px-4 py-2">{{ $currentBatch->date_supplied }}</td>
                     <td class="px-4 py-2">{{ $currentBatch->expiration_date }}</td>
                     <td class="px-4 py-2">{{ $currentBatch->quantity_received }}</td>
-                    <td class="px-4 py-2">{{ $currentBatch->quantity_remaining }}</td>
+                    <td class="px-4 py-2">{{ $currentBatch->quantity_received - $currentBatch->dispensed->sum('quantity_dispensed') }}
                 </tr>
             </tbody>
         </table>
@@ -153,7 +153,7 @@
                         <td class="px-4 py-2">{{ $batch->date_supplied }}</td>
                         <td class="px-4 py-2">{{ $batch->expiration_date }}</td>
                         <td class="px-4 py-2">{{ $batch->quantity_received }}</td>
-                        <td class="px-4 py-2">{{ $batch->quantity_remaining }}</td>
+                        <td class="px-4 py-2">{{ $batch->quantity_received - $batch->dispensed->sum('quantity_dispensed') }}</td>
                     </tr>
                 @endforeach
                 @if ($otherBatches->isEmpty())

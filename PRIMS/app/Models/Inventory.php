@@ -30,4 +30,9 @@ class Inventory extends Model
         return $this->quantity_received - $dispensed;
     }
 
+    public function dispensed()
+    {
+        return $this->hasMany(Dispensed::class);
+    }
+
 }
