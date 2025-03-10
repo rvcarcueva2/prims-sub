@@ -82,8 +82,43 @@
 
                 <!-- Dispense Button -->
                 <button wire:click="openDispenseModal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                    Issue to Patient
+                    Dispense to Patient
                 </button>
+
+                @if ($showDispenseModal)
+                    <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                        <div class="bg-white p-6 rounded shadow-lg">
+                            <h2 class="text-lg font-bold mb-4">Dispense Medicine</h2>
+
+                            <label class="block mb-2">APC ID Number</label>
+                            <input type="text" wire:model.live="patientId" class="w-full border p-2 rounded">
+                            
+                            <!-- Display patient details dynamically -->
+                            <div class="mt-2">
+                                @if ($selectedPatient)
+                                    <p class="text-green-600 font-semibold">{{ $selectedPatient->first_name }} {{ $selectedPatient->middle_initial}}. {{ $selectedPatient->last_name }}</p>
+                                    <p class="text-gray-500">{{ $selectedPatient->email }}</p>
+                                @else
+                                    <p class="text-red-600">No patient with that ID</p>
+                                @endif
+                            </div>
+
+                            <label class="block mb-2 mt-4">Amount to Dispense</label>
+                            <input type="number" wire:model="amountDispensed" class="w-full border p-2 rounded">
+
+                            <div class="mt-4 flex justify-end space-x-2">
+                                <button wire:click="dispense" class="bg-blue-600 text-white px-4 py-2 rounded" 
+                                    @if (!$selectedPatient) disabled @endif>
+                                    Confirm
+                                </button>
+                                <button wire:click="closeDispenseModal" class="bg-gray-500 text-white px-4 py-2 rounded">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>
@@ -123,31 +158,10 @@
                 @endforeach
                 @if ($otherBatches->isEmpty())
                     <tr>
-                        <td class="px-4 py-2 text-center" colspan="9">No other batches in stock</td>
+                        <td class="px-4 py-2 text-center" colspan="9"><em>No other batches in stock</em></td>
                     </tr>
                 @endif
             </tbody>
         </table>
     </div>
-
-    @if ($showDispenseModal)
-        <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div class="bg-white p-6 rounded shadow-lg">
-                <h2 class="text-lg font-bold mb-4">Dispense Medicine</h2>
-                
-                <label class="block mb-2">APC ID Number</label>
-                <input type="text" wire:model="patientId" class="w-full border p-2 rounded">
-
-                <label class="block mb-2 mt-4">Amount to Dispense</label>
-                <input type="number" wire:model="amountDispensed" class="w-full border p-2 rounded">
-
-                <div class="mt-4 flex justify-end space-x-2">
-                    <button wire:click="dispense" class="bg-blue-600 text-white px-4 py-2 rounded">Confirm</button>
-                    <button wire:click="$set('showDispenseModal', false)" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
-                </div>
-            </div>
-        </div>
-    @endif
-
-    
 </div>
