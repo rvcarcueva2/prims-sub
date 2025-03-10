@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->date('dob');
             $table->string('address');
             $table->text('reason');
+            $table->text('diagnosis');
             $table->text('description');
             $table->text('allergies')->nullable();
             $table->date('last_visited')->nullable();
