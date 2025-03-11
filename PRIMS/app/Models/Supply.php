@@ -9,7 +9,7 @@ class Supply extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'brand', 'category', 'unit'];
+    protected $fillable = ['name', 'brand', 'category', 'dosage_strength', 'dosage_form'];
 
     public function inventory()
     {
