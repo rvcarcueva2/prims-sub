@@ -22,6 +22,7 @@ class PatientSeeder extends Seeder
                 'last_name' => 'Catingub',
                 'gender' => 'Female',
                 'date_of_birth' => '2003-12-29',
+                'nationality' => 'Filipino',
                 'contact_number' => '09123456789',
                 'apc_id_number' => '2022-140224',
                 'address' => 'Pasig City',
@@ -33,6 +34,7 @@ class PatientSeeder extends Seeder
                 'last_name' => 'Daduya',
                 'gender' => 'Female',
                 'date_of_birth' => '2003-01-15',
+                'nationality' => 'Filipino',
                 'contact_number' => '09127894561',
                 'apc_id_number' => '2022-140335',
                 'address' => 'Paranaque City',
@@ -44,6 +46,7 @@ class PatientSeeder extends Seeder
                 'last_name' => 'Nailgas',
                 'gender' => 'Female',
                 'date_of_birth' => '2002-10-05',
+                'nationality' => 'Filipino',
                 'contact_number' => '09129087654',
                 'apc_id_number' => '2022-140276',
                 'address' => 'Taguig City',
@@ -55,6 +58,7 @@ class PatientSeeder extends Seeder
                 'last_name' => 'Rabajante',
                 'gender' => 'Male',
                 'date_of_birth' => '2001-05-12',
+                'nationality' => 'Filipino',
                 'contact_number' => '09134567890',
                 'apc_id_number' => '2022-140227',
                 'address' => 'Taguig City',
@@ -76,6 +80,8 @@ class PatientSeeder extends Seeder
                     'date_of_birth' => $patient['date_of_birth'],
                     'contact_number' => $patient['contact_number'],
                     'apc_id_number' => $patient['apc_id_number'],
+                    'address' => $patient['address'],
+                    'nationality' => $patient['nationality'],
                 ]);
             }
         }
