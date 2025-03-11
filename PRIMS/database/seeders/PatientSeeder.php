@@ -80,6 +80,8 @@ class PatientSeeder extends Seeder
                     'date_of_birth' => $patient['date_of_birth'],
                     'contact_number' => $patient['contact_number'],
                     'apc_id_number' => $patient['apc_id_number'],
+                    'address' => $patient['address'],
+                    'nationality' => $patient['nationality'],
                 ]);
             }
         }

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->enum('gender', ['Male', 'Female', 'Other']);
             $table->date('date_of_birth');
-            $table->string('address')->nullable()->change();
+            $table->string('nationality');
             $table->unsignedBigInteger('category_id')->nullable(); // Placeholder for foreign key
             $table->string('contact_number');
             $table->unsignedBigInteger('medical_history_id')->nullable(); // Placeholder for foreign key

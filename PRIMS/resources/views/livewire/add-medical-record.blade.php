@@ -2,53 +2,106 @@
     <div class="rounded-md shadow-md bg-prims-yellow-1 mt-5 p-6">
         <h1 class="text-2xl font-bold text-center mb-6">Personal Information</h1>
         <form wire:submit.prevent="submit">
-            <div class="grid grid-cols-3 gap-4 my-4 items-center">
-                <label class="font-bold text-lg">ID Number</label>
-                <input type="text" wire:model.lazy="apc_id_number" wire:change="searchPatient" class="border p-2 rounded col-span-2" placeholder="Enter an ID number">
+            <div class="grid grid-cols-3 gap-4 my-4">
+                <div>
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">ID Number</label>
+                        <input type="text" wire:model.lazy="apc_id_number" wire:change="searchPatient" class="border p-2 rounded w-full col-span-2" placeholder="Enter an ID number">
+                    </div>
 
-                <label class="font-bold text-lg">First Name</label>
-                <input type="text" wire:model="first_name" class="border p-2 rounded col-span-2 bg-gray-200" readonly>
-                <input type="hidden" wire:model="first_name"> <!-- Hidden field to ensure submission -->
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">First Name</label>
+                        <input type="text" wire:model="first_name" class="border p-2 rounded w-full col-span-2 bg-gray-200" readonly>
+                        <input type="hidden" wire:model="first_name"> <!-- Hidden field to ensure submission -->
+                    </div>
 
-                <label class="font-bold text-lg">Last Name</label>
-                <input type="text" wire:model="last_name" class="border p-2 rounded col-span-2 bg-gray-200" readonly>
-                <input type="hidden" wire:model="last_name"> <!-- Hidden field to ensure submission -->
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">Middle Initial</label>
+                        <input type="text" wire:model="mi" class="border p-2 rounded w-full col-span-2 bg-gray-200" readonly>
+                        <input type="hidden" wire:model="mi"> <!-- Hidden field to ensure submission -->
+                    </div>
 
-                <label class="font-bold text-lg">Middle Initial</label>
-                <input type="text" wire:model="mi" class="border p-2 rounded col-span-2 bg-gray-200" readonly>
-                <input type="hidden" wire:model="mi"> <!-- Hidden field to ensure submission -->
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">Last Name</label>
+                        <input type="text" wire:model="last_name" class="border p-2 rounded w-full col-span-2 bg-gray-200" readonly>
+                        <input type="hidden" wire:model="last_name"> <!-- Hidden field to ensure submission -->
+                    </div>
 
-                <label class="font-bold text-lg">Gender</label>
-                <input type="text" wire:model="gender" class="border p-2 rounded col-span-2 bg-gray-200" readonly>
-                <input type="hidden" wire:model="gender"> <!-- Hidden field to ensure submission -->
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">Gender</label>
+                        <input type="text" wire:model="gender" class="border p-2 rounded w-full col-span-2 bg-gray-200" readonly>
+                        <input type="hidden" wire:model="gender"> <!-- Hidden field to ensure submission -->
+                    </div>
+                </div>
+                <div>
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">Age</label>
+                        <input type="text" wire:model="age" class="border p-2 rounded w-full col-span-2 bg-gray-200" >
+                        <!-- <input type="hidden" wire:model="age"> Hidden field to ensure submission -->
+                    </div>
 
-                <label class="font-bold text-lg">Age</label>
-                <input type="text" wire:model="age" class="border p-2 rounded col-span-2 bg-gray-200" >
-                <!-- <input type="hidden" wire:model="age"> Hidden field to ensure submission -->
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">Date of Birth</label>
+                        <input type="text" wire:model="dob" class="border p-2 rounded w-full col-span-2 bg-gray-200" readonly>
+                        <input type="hidden" wire:model="dob"> <!-- Hidden field to ensure submission -->
+                    </div>
 
-                <label class="font-bold text-lg">Date of Birth</label>
-                <input type="text" wire:model="dob" class="border p-2 rounded col-span-2 bg-gray-200" readonly>
-                <input type="hidden" wire:model="dob"> <!-- Hidden field to ensure submission -->
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">House/Unit No. & Street</label>
+                        <input type="text" wire:model="street_number" class="border p-2 rounded w-full col-span-2 bg-gray-200">
+                        <!-- <input type="hidden" wire:model="first_name"> Hidden field to ensure submission -->
+                    </div>
 
-                <label class="font-bold text-lg">Contact Number</label>
-                <input type="text" wire:model="contact_number" class="border p-2 rounded col-span-2 bg-gray-200" readonly>
-                <input type="hidden" wire:model="contact_number"> <!-- Hidden field to ensure submission -->
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">Barangay</label>
+                        <input type="text" wire:model="barangay" class="border p-2 rounded w-full col-span-2 bg-gray-200">
+                        <!-- <input type="hidden" wire:model="first_name"> Hidden field to ensure submission -->
+                    </div>
 
-                <label class="font-bold text-lg">Nationality</label>
-                <input type="text" wire:model="nationality" class="border p-2 rounded col-span-2 bg-gray-200" >
-                <!-- <input type="hidden" wire:model="nationality"> Hidden field to ensure submission -->
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">City/Municipality</label>
+                        <input type="text" wire:model="city" class="border p-2 rounded w-full col-span-2 bg-gray-200">
+                        <!-- <input type="hidden" wire:model="first_name"> Hidden field to ensure submission -->
+                    </div>
+                </div>
+                <div>
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">Province</label>
+                        <input type="text" wire:model="province" class="border p-2 rounded w-full col-span-2 bg-gray-200">
+                        <!-- <input type="hidden" wire:model="first_name"> Hidden field to ensure submission -->
+                    </div>
 
-                <label class="font-bold text-lg">Address</label>
-                <input type="text" wire:model="address" class="border p-2 rounded col-span-2 bg-gray-200">
-                <!-- <input type="hidden" wire:model="first_name"> Hidden field to ensure submission -->
-                 
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">ZIP Code</label>
+                        <input type="text" wire:model="zip_code" class="border p-2 rounded w-full col-span-2 bg-gray-200">
+                        <!-- <input type="hidden" wire:model="first_name"> Hidden field to ensure submission -->
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">Country</label>
+                        <input type="text" wire:model="country" class="border p-2 rounded w-full col-span-2 bg-gray-200">
+                        <!-- <input type="hidden" wire:model="first_name"> Hidden field to ensure submission -->
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">Contact Number</label>
+                        <input type="text" wire:model="contact_number" class="border p-2 rounded w-full col-span-2 bg-gray-200" readonly>
+                        <input type="hidden" wire:model="contact_number"> <!-- Hidden field to ensure submission -->
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="font-bold text-lg">Nationality</label>
+                        <input type="text" wire:model="nationality" class="border p-2 rounded w-full col-span-2 bg-gray-200" >
+                        <!-- <input type="hidden" wire:model="nationality"> Hidden field to ensure submission -->
+                    </div>
+                </div>
             </div>
 
             <hr class="mt-10">
             <h1 class="text-2xl font-bold text-center mt-6">Medical History</h1>
             <div class="mt-6">
                 <label class="block text-lg font-medium">Reason for Visit</label>
-                <select wire:model="reason" class="w-full p-2 border rounded-md mb-3">
+                <select wire:model="reason" class="w-full p-2 border rounded-md mb-6">
                     <option value="">Select a reason</option>
                     <option value="Consultation">Consultation</option>
                     <option value="Fever">Fever</option>
@@ -149,7 +202,7 @@
                         <!-- Medications -->
                         <div class="col-span-2 flex flex-col">
                             <label class="text-md font-medium">Medications</label>
-                            <input type="text" wire:model="social_history.medications" class="border rounded-md p-1 w-[10rem]">
+                            <input type="text" wire:model="social_history.medications" class="border rounded-md p-1 w-[22rem]">
                         </div>
 
                         <!-- Loop Through Other Fields (Vape, etc.) -->
@@ -172,6 +225,9 @@
                         @endforeach
                     </div>
                 </div>
+
+                <label class="font-medium text-lg">Physical Examination</label>
+                <textarea wire:model="pe" class="w-full border p-2 rounded mb-5" placeholder="Physical Examination"></textarea>
 
                 <label class="block text-lg font-medium">Diagnosis</label>
                 <select wire:model="diagnosis" class="w-full p-2 border rounded-md mb-3 ">

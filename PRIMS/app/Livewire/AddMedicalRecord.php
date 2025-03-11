@@ -8,7 +8,7 @@ use App\Models\Patient;
 
 class AddMedicalRecord extends Component
 {
-    public $apc_id_number, $email, $first_name, $mi, $last_name, $contact_number, $dob, $gender, $address, $reason, $description, $diagnosis, $allergies;
+    public $apc_id_number, $email, $first_name, $mi, $last_name, $contact_number, $dob, $gender, $address, $reason, $nationality, $description, $diagnosis, $allergies;
 
     public $past_medical_history = [
         'Mumps' => null,
@@ -55,6 +55,7 @@ class AddMedicalRecord extends Component
             $this->gender = $patient->gender;
             $this->address = $patient->address;
             $this->contact_number = $patient->contact_number;
+            $this->nationality = $patient->nationality;
         } else {
             \Log::warning('No patient found for ID: ' . $this->apc_id_number);
 
@@ -67,6 +68,7 @@ class AddMedicalRecord extends Component
             $this->gender = null;
             $this->address = null;
             $this->contact_number = null;
+            $this->nationality = null;
         }
     }
 
@@ -85,6 +87,7 @@ class AddMedicalRecord extends Component
             'gender' => 'required',
             'contact_number' => 'required',
             'address' => 'required',
+            'nationality' => 'required',
             'reason' => 'required',
             'description' => 'required',
             'diagnosis' => 'required',
@@ -104,6 +107,7 @@ class AddMedicalRecord extends Component
             'gender' => $this->gender,
             'contact_number' => $this->contact_number,
             'address' => $this->address,
+            'nationality' => $this->nationality,
             'reason' => $this->reason,
             'description' => $this->description,
             'diagnosis' => $this->diagnosis,
