@@ -138,42 +138,6 @@
         </div>
     </div>
 
-    <div x-data="{ open: false }" class="mt-6">
-        <button @click="open = !open"
-            class="bg-red-900 text-white px-4 py-2 rounded-md flex items-center w-full">
-            <span class="mr-2" x-text="open ? '+' : '-'"></span> 
-            <h2 class="text-gray-100 font-semibold text-xl">Dispense History</h2>
-        </button>
-
-        <div x-show="open" class="bg-white rounded-b-md shadow overflow-x-auto mt-2">
-            <table class="w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-                <thead class="bg-gray-200 text-prims-blue-500">
-                    <tr>
-                        <th class="px-4 py-2">Patient Name</th>
-                        <th class="px-4 py-2">Quantity Dispensed</th>
-                        <th class="px-4 py-2">Date Dispensed</th>
-                        <th class="px-4 py-2">Dispensed By</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($inventory->dispensed as $record)
-                        <tr class="text-center">
-                            <td class="px-4 py-2">{{ $record->patient->first_name }} {{ $record->patient->last_name }}</td>
-                            <td class="px-4 py-2">{{ $record->quantity_dispensed }}</td>
-                            <td class="px-4 py-2">{{ $record->date_dispensed }}</td>
-                            <td class="px-4 py-2">{{ $record->dispensedBy->clinic_staff_fname }} {{ $record->dispensedBy->clinic_staff_lname }}</td>
-                        </tr>
-                    @endforeach
-                    @if ($inventory->dispensed->isEmpty())
-                        <tr>
-                            <td class="px-4 py-2 text-center" colspan="4"><em>No dispense history available</em></td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
-        </div>
-    </div>
-
     <!-- OTHER BATCH/ES IN STOCK -->
     <div class="p-6 lg:p-8 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-start">
         <div class="mx-auto">    

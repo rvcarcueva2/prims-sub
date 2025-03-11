@@ -164,11 +164,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $outOfStock = collect($inventory)->filter(fn($item) => $item->remaining_stock == 0);
-                    @endphp
 
-                    @foreach ($outOfStock as $item)
+                    @foreach ($inventoryWithTrashed as $item)
                         <tr class="bg-gray-50 hover:bg-gray-100 text-center align-middle">
                             <td class="px-4 py-2">{{ $item->supply_name }}</td>
                             <td class="px-4 py-2">{{ $item->brand ?? 'N/A' }}</td>
@@ -181,6 +178,7 @@
             </table>
         </div>
     </div>
+    
 
 </div>
 
