@@ -43,12 +43,12 @@
     </div>
 
     <!-- CURRENT BATCH IN USE -->
-    <div class="p-6 lg:p-8 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-start">
+    <div class="p-6 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-start">
         <div class="mx-auto">    
             <span class="text-lg font-bold uppercase">Current Batch In Use</span>
         </div>
         <table class="w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-            <thead class="bg-prims-yellow-5 text-prims-blue-500 ">
+            <thead class="bg-prims-yellow-1 text-prims-blue-500 ">
                 <tr>                    
                     <th class="px-4 py-2">Generic Name</th>
                     <th class="px-4 py-2">Brand</th>
@@ -69,18 +69,39 @@
                     <td class="px-4 py-2">{{ $currentBatch->supply->dosage_form }}</td>
                     <td class="px-4 py-2">{{ $currentBatch->supply->dosage_strength }}</td>
                     <td class="px-4 py-2">{{ $currentBatch->date_supplied }}</td>
-                    <td class="px-4 py-2">{{ $currentBatch->expiration_date }}</td>
+                    <td class="relative group px-4 py-2 
+                                    {{ now()->diffInDays($currentBatch->expiration_date, false) <= 14 && now()->diffInDays($currentBatch->expiration_date, false) >= 0 ? 'text-yellow-500 font-semibold' : '' }} 
+                                    {{ \Carbon\Carbon::parse($currentBatch->expiration_date)->isPast() ? 'text-red-500 font-bold' : '' }}">
+
+                                    {{ $currentBatch->expiration_date ?? 'N/A' }}
+
+                                    @if (\Carbon\Carbon::parse($currentBatch->expiration_date)->isPast())
+                                            <div class="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 hidden group-hover:flex 
+                                                        bg-black text-red-300 text-xs rounded px-2 py-1 whitespace-nowrap z-50">
+                                                Expired - Need to dispose
+                                            </div>
+                                    @elseif (now()->diffInDays($currentBatch->expiration_date, false) <= 14 && now()->diffInDays($currentBatch->expiration_date, false) >= 0)
+                                            <div class="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 hidden group-hover:flex 
+                                                        bg-black text-yellow-300 text-xs rounded px-2 py-1 whitespace-nowrap z-50">
+                                                Near Expiry ({{ round(now()->diffInDays($currentBatch->expiration_date)) }} days left)
+                                            </div>
+                                    @endif
+                                </td>
                     <td class="px-4 py-2">{{ $currentBatch->quantity_received }}</td>
-                    <td class="px-4 py-2">{{ $currentBatch->quantity_received - $currentBatch->dispensed->sum('quantity_dispensed') }}
+                    <td class="px-4 py-2 font-semibold relative group
+                    @if ($currentBatch->quantity_received - $currentBatch->dispensed->sum('quantity_dispensed') <= 25) text-red-500
+                    @elseif ($currentBatch->quantity_received - $currentBatch->dispensed->sum('quantity_dispensed') <= 50) text-yellow-500
+                    @endif">
+                    {{ $currentBatch->quantity_received - $currentBatch->dispensed->sum('quantity_dispensed') }}
                 </tr>
             </tbody>
         </table>
-        <div class="p-6 lg:p-8">
-            <div class="flex justify-end space-x-4">
+        <div class="pt-6 pr-6 flex justify-end space-x-4 w-full">
+            <div>
                 <!-- Dispose Button -->
-                <button wire:click="openDisposeModal" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                <x-button wire:click="openDisposeModal" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
                     Dispose
-                </button>
+                </x-button>
 
                 @if ($showDisposeModal)
                     <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
@@ -89,21 +110,21 @@
                             <p>Are you sure you want to dispose of this medicine? This action cannot be undone.</p>
 
                             <div class="mt-4 flex justify-end space-x-2">
-                                <button wire:click="confirmDispose" class="bg-red-600 text-white px-4 py-2 rounded">Confirm</button>
                                 <button wire:click="$set('showDisposeModal', false)" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+                                <button wire:click="confirmDispose" class="bg-blue-600 text-white px-4 py-2 rounded">Confirm</button>
                             </div>
                         </div>
                     </div>
                 @endif
 
                 <!-- Dispense Button -->
-                <button wire:click="openDispenseModal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                <x-button wire:click="openDispenseModal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
                     Dispense to Patient
-                </button>
+                </x-button>
 
                 @if ($showDispenseModal)
                     <div class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-                        <div class="bg-white p-6 rounded shadow-lg">
+                        <div class="bg-white p-6 rounded shadow-lg w-[25%]">
                             <h2 class="text-lg font-bold mb-4">Dispense Medicine</h2>
 
                             <label class="block mb-2">APC ID Number</label>
@@ -111,24 +132,26 @@
                             
                             <!-- Display patient details dynamically -->
                             <div class="mt-2">
+                                <em>
                                 @if ($selectedPatient)
-                                    <p class="text-green-600 font-semibold">{{ $selectedPatient->first_name }} {{ $selectedPatient->middle_initial}}. {{ $selectedPatient->last_name }}</p>
-                                    <p class="text-gray-500">{{ $selectedPatient->email }}</p>
+                                    <p class="text-prims-azure-500 font-semibold">{{ $selectedPatient->first_name }} {{ $selectedPatient->middle_initial}}. {{ $selectedPatient->last_name }}</p>
+                                    <p class="text-prims-azure-500">{{ $selectedPatient->email }}</p>
                                 @else
-                                    <p class="text-red-600">No patient with that ID</p>
+                                    <p class="text-sm text-red-500">No patient with that ID</p>
                                 @endif
+                                </em>
                             </div>
 
                             <label class="block mb-2 mt-4">Amount to Dispense</label>
                             <input type="number" wire:model="amountDispensed" class="w-full border p-2 rounded">
 
                             <div class="mt-4 flex justify-end space-x-2">
+                                <button wire:click="closeDispenseModal" class="bg-gray-500 text-white px-4 py-2 rounded">
+                                    Cancel
+                                </button>
                                 <button wire:click="dispense" class="bg-blue-600 text-white px-4 py-2 rounded" 
                                     @if (!$selectedPatient) disabled @endif>
                                     Confirm
-                                </button>
-                                <button wire:click="closeDispenseModal" class="bg-gray-500 text-white px-4 py-2 rounded">
-                                    Cancel
                                 </button>
                             </div>
                         </div>
@@ -139,7 +162,7 @@
     </div>
 
     <!-- OTHER BATCH/ES IN STOCK -->
-    <div class="p-6 lg:p-8 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-start">
+    <div class="p-6 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-start">
         <div class="mx-auto">    
             <span class="text-lg font-bold uppercase">Batch/es in Stock</span>
         </div>

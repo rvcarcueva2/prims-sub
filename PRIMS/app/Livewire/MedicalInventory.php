@@ -4,10 +4,13 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Inventory;
+use Livewire\WithPagination;
 
 
 class MedicalInventory extends Component
 {
+    use WithPagination;
+
     public $search = '';
     public $sortField = 'supplies.name';
     public $sortDirection = 'asc';
@@ -70,19 +73,19 @@ class MedicalInventory extends Component
             })
             ->get();
 
-            $inventoryWithTrashed = Inventory::withTrashed()
-                ->join('supplies', 'inventory.supply_id', '=', 'supplies.id')
-                ->selectRaw('
-                    inventory.supply_id, 
-                    MIN(supplies.name) as supply_name, 
-                    MIN(supplies.brand) as brand, 
-                    MIN(supplies.category) as category, 
-                    MIN(supplies.dosage_strength) as dosage_strength, 
-                    MIN(supplies.dosage_form) as dosage_form
-                ')
-                ->groupBy('inventory.supply_id')
-                ->havingRaw('COUNT(*) = SUM(CASE WHEN inventory.deleted_at IS NOT NULL THEN 1 ELSE 0 END)')
-                ->get();
+        $inventoryWithTrashed = Inventory::withTrashed()
+            ->join('supplies', 'inventory.supply_id', '=', 'supplies.id')
+            ->selectRaw('
+                inventory.supply_id, 
+                MIN(supplies.name) as supply_name, 
+                MIN(supplies.brand) as brand, 
+                MIN(supplies.category) as category, 
+                MIN(supplies.dosage_strength) as dosage_strength, 
+                MIN(supplies.dosage_form) as dosage_form
+            ')
+            ->groupBy('inventory.supply_id')
+            ->havingRaw('COUNT(*) = SUM(CASE WHEN inventory.deleted_at IS NOT NULL THEN 1 ELSE 0 END)')
+            ->get();
 
         return view('livewire.medical-inventory', compact('inventory', 'inventoryWithTrashed'));
     }
