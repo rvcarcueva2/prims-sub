@@ -32,15 +32,15 @@ class InventoryDetails extends Component
     {
         $clinicStaff = DB::table('clinic_staff')->where('user_id', auth()->id())->first();
 
-        // Calculate the total amount dispensed for this inventory item
-            $totalDispensed = DB::table('dispensed')
+        // Calculate the total amount dispensed so far for this inventory item
+        $totalDispensed = DB::table('dispensed')
             ->where('inventory_id', $this->inventory->id)
             ->sum('quantity_dispensed');
 
         // Compute remaining stock dynamically
         $quantityRemaining = $this->inventory->quantity_received - $totalDispensed;
 
-        // Validate input with the dynamically calculated remaining stock
+        // Validate input using the dynamically calculated remaining stock
         $this->validate([
             'patientId' => 'required|exists:patients,apc_id_number',
             'amountDispensed' => 'required|integer|min:1|max:' . $quantityRemaining,
@@ -54,16 +54,26 @@ class InventoryDetails extends Component
                 'date_dispensed' => now(),
                 'dispensed_by' => $clinicStaff->id,
             ]);
+        
+            // Compute remaining stock again within the transaction
+            $totalDispensed = DB::table('dispensed')
+                ->where('inventory_id', $this->inventory->id)
+                ->sum('quantity_dispensed');
+        
+            $quantityRemainingAfter = $this->inventory->quantity_received - $totalDispensed;
+        
+            if ($quantityRemainingAfter <= 0) {
+                $this->inventory->delete();
+                return redirect()->route('medical-inventory')->with('batch_deleted_no-stock', 'Medicine dispensed and current batch is out of stock. Replaced with the next batch.')->with('reload', true); // Ensure the batch is removed
+            }
         });
 
         // Close modal and reset inputs
         $this->showDispenseModal = false;
-        $this->reset(['patientId', 'amountDispensed']);
+        $this->reset(['patientId', 'amountDispensed', 'selectedPatient']);
 
         // Show success message
         session()->flash('message', 'Medicine dispensed successfully.');
-        $this->reset(['patientId', 'amountDispensed', 'selectedPatient']);
-        $this->showDispenseModal = false;
     }
 
     public function confirmDispose()

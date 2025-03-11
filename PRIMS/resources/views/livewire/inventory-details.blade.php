@@ -1,7 +1,23 @@
 @php
-    $currentBatch = $inventory->supply->inventory->sortBy('expiration_date')->first();
+    // Sort all inventory by expiration date
+    $allBatches = $inventory->supply->inventory->sortBy('expiration_date');
 
-    $otherBatches = $inventory->supply->inventory->where('id', '!=', $currentBatch->id)->sortBy('expiration_date');
+    // Get the current batch as the one with the earliest expiration date
+    $currentBatch = $allBatches->first();
+
+    if ($currentBatch) {
+        // Calculate remaining stock for the current batch
+        $remainingStock = $currentBatch->quantity_received - $currentBatch->dispensed->sum('quantity_dispensed');
+
+        // If stock is zero or less, delete the batch and move to the next one
+        if ($remainingStock <= 0) {
+            $currentBatch->delete();
+            $currentBatch = $allBatches->where('id', '!=', $currentBatch->id)->first();
+        }
+    }
+
+    // Get remaining other batches
+    $otherBatches = $allBatches->where('id', '!=', optional($currentBatch)->id);
 @endphp
 
 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg mt-5">
@@ -29,7 +45,7 @@
     <!-- CURRENT BATCH IN USE -->
     <div class="p-6 lg:p-8 bg-white dark:bg-gray-800 dark:bg-gradient-to-bl dark:from-gray-700/50 dark:via-transparent border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-start">
         <div class="mx-auto">    
-            <span class="text-lg font-bold uppercase">Current Batch In  Use</span>
+            <span class="text-lg font-bold uppercase">Current Batch In Use</span>
         </div>
         <table class="w-full bg-white border border-gray-200 rounded-lg shadow-lg">
             <thead class="bg-prims-yellow-5 text-prims-blue-500 ">
@@ -118,8 +134,43 @@
                         </div>
                     </div>
                 @endif
-
             </div>
+        </div>
+    </div>
+
+    <div x-data="{ open: false }" class="mt-6">
+        <button @click="open = !open"
+            class="bg-red-900 text-white px-4 py-2 rounded-md flex items-center w-full">
+            <span class="mr-2" x-text="open ? '+' : '-'"></span> 
+            <h2 class="text-gray-100 font-semibold text-xl">Dispense History</h2>
+        </button>
+
+        <div x-show="open" class="bg-white rounded-b-md shadow overflow-x-auto mt-2">
+            <table class="w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+                <thead class="bg-gray-200 text-prims-blue-500">
+                    <tr>
+                        <th class="px-4 py-2">Patient Name</th>
+                        <th class="px-4 py-2">Quantity Dispensed</th>
+                        <th class="px-4 py-2">Date Dispensed</th>
+                        <th class="px-4 py-2">Dispensed By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($inventory->dispensed as $record)
+                        <tr class="text-center">
+                            <td class="px-4 py-2">{{ $record->patient->first_name }} {{ $record->patient->last_name }}</td>
+                            <td class="px-4 py-2">{{ $record->quantity_dispensed }}</td>
+                            <td class="px-4 py-2">{{ $record->date_dispensed }}</td>
+                            <td class="px-4 py-2">{{ $record->dispensedBy->clinic_staff_fname }} {{ $record->dispensedBy->clinic_staff_lname }}</td>
+                        </tr>
+                    @endforeach
+                    @if ($inventory->dispensed->isEmpty())
+                        <tr>
+                            <td class="px-4 py-2 text-center" colspan="4"><em>No dispense history available</em></td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -165,3 +216,10 @@
         </table>
     </div>
 </div>
+
+
+@if (session('reload'))
+    <script>
+        window.location.reload();
+    </script>
+@endif

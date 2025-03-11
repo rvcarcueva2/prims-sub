@@ -39,31 +39,39 @@
         <table class="w-full table-auto">
             <thead class="bg-yellow-500 text-black">
                 <tr>                    
-                    <th class="px-4 py-2 text-left">Generic Name</th>
-                    <th class="px-4 py-2 text-left">Brand</th>
-                    <th class="px-4 py-2 text-left">Category</th>
-                    <th class="px-4 py-2 text-left">Dosage Form</th>
-                    <th class="px-4 py-2 text-left">Strength</th>
-                    <th class="px-4 py-2 text-left">Date Supplied</th>
-                    <th class="px-4 py-2 text-left">Expiration Date</th>
-                    <th class="px-4 py-2 text-left">Quantity Received</th>
-                    <th class="px-4 py-2 text-left">Remaining Stock</th>
+                    <th class="px-4 py-2">Generic Name</th>
+                    <th class="px-4 py-2">Brand</th>
+                    <th class="px-4 py-2">Category</th>
+                    <th class="px-4 py-2">Dosage Form</th>
+                    <th class="px-4 py-2">Strength</th>
+                    <th class="px-4 py-2">Date Supplied</th>
+                    <th class="px-4 py-2">Expiration Date</th>
+                    <th class="px-4 py-2">Quantity Received</th>
+                    <th class="px-4 py-2">Remaining Stock</th>
                 </tr>
             </thead>
             <tbody>
 
                 @php
-                    // Group items by unique key and get the one with the earliest expiration date
-                    $groupedInventory = collect($inventory)->groupBy(function ($item) {
-                        return $item->supply_name . '|' . $item->brand . '|' . $item->category . '|' . $item->dosage_strength . '|' . $item->dosage_form;
-                    })->map(function ($items) {
-                        return $items->sortBy('expiration_date')->first(); // Get the earliest expiration date
+                    $groupedInventory = collect($inventory)->groupBy('supply_name')->map(function ($items) {
+                        return [
+                            'earliest_expiring' => $items->sortBy([
+                                ['expiration_date', 'asc'],  // Sort by expiration date (earliest first)
+                                ['created_at', 'asc']        // If same expiration, sort by creation date (earliest first)
+                            ])->first(), // Get the first item after sorting
+                            'total_remaining_stock' => $items->sum('remaining_stock') // Sum of remaining stock
+                        ];
                     });
                 @endphp
 
-                @foreach ($groupedInventory as $item)
-                    <tr class="bg-gray-50 hover:bg-gray-100 cursor-pointer"
+                @foreach ($groupedInventory as $supply_name => $data)
+                    @php
+                        $item = $data['earliest_expiring'];
+                        $totalStock = $data['total_remaining_stock'];
+                    @endphp
+                    <tr class="bg-gray-50 hover:bg-gray-100 cursor-pointer text-center align-middle"
                         onclick="window.location.href='{{ route('inventory.show', ['id' => $item->id]) }}'">
+
                         <td class="px-4 py-2">{{ $item->supply_name }}</td>
                         <td class="px-4 py-2">{{ $item->brand ?? 'N/A' }}</td>
                         <td class="px-4 py-2">{{ $item->category }}</td>
@@ -77,28 +85,41 @@
                             {{ $item->expiration_date ?? 'N/A' }}
 
                             @if (\Carbon\Carbon::parse($item->expiration_date)->isPast())
-                                <span class="relative group">
-                                    🚫
                                     <div class="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 hidden group-hover:flex 
-                                                bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap z-50">
+                                                bg-black text-red-300 text-xs rounded px-2 py-1 whitespace-nowrap z-50">
                                         Expired - Need to dispose
                                     </div>
-                                </span>
                             @elseif (now()->diffInDays($item->expiration_date, false) <= 14 && now()->diffInDays($item->expiration_date, false) >= 0)
-                                <span class="relative group">
-                                    ⚠️
                                     <div class="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 hidden group-hover:flex 
-                                                bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap z-50">
+                                                bg-black text-yellow-300 text-xs rounded px-2 py-1 whitespace-nowrap z-50">
                                         Near Expiry ({{ round(now()->diffInDays($item->expiration_date)) }} days left)
                                     </div>
-                                </span>
                             @endif
                         </td>
                         <td class="px-4 py-2">{{ $item->quantity_received }}</td>
-                        <td class="px-4 py-2 {{ $item->remaining_stock <= 5 ? 'bg-orange-200 text-black font-semibold' : '' }}">
+                        <td class="px-4 py-2 font-semibold relative group
+                            @if ($totalStock <= 25) text-red-500
+                            @elseif ($totalStock <= 50) text-yellow-500
+                            @endif">
+                            
+                            
                             {{ $item->remaining_stock }}
-                            @if ($item->remaining_stock <= 5)
-                                <span class="text-black font-bold">⚠️</span>
+                                <div class="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 hidden group-hover:flex 
+                                                    bg-black text-white text-xs rounded px-2 py-1 whitespace-nowrap z-50">
+                                    Total stock: {{ $totalStock }}
+                                </div>
+
+                            @if ($totalStock <= 50 && $totalStock > 25)
+                                    <div class="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 hidden group-hover:flex 
+                                                bg-black text-yellow-300 text-xs rounded px-2 py-1 whitespace-nowrap z-50">
+                                        Please consider reordering
+                                    </div>
+                            @endif
+                            @if ($totalStock <= 25)
+                                    <div class="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 hidden group-hover:flex 
+                                                bg-black text-red-300 text-xs rounded px-2 py-1 whitespace-nowrap z-50">
+                                        Low Stock - Need to reorder
+                                    </div>
                             @endif
                         </td>
                     </tr>
@@ -114,6 +135,52 @@
             {{ session('dispose-message') }}
         </div>
     @endif
+
+    @if (session()->has('batch_deleted_no-stock'))
+        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show"
+            wire:ignore 
+            class="bg-red-500 text-white px-4 py-2 rounded-md mb-4 transition-opacity duration-500 ease-in-out">
+            {{ session('batch_deleted_no-stock') }}
+        </div>
+    @endif
+
+    <!-- Out-of-Stock Supplies Section (Collapsible) -->
+    <div x-data="{ open: false }" class="mt-6">
+        <button @click="open = !open"
+            class="bg-red-900 text-white px-4 py-2 rounded-md flex items-center w-full">
+            <span class="mr-2" x-text="open ? '+' : '-'"></span> 
+            <h2 class="text-gray-100 font-semibold text-xl">Out-of-Stock Supplies</h2>
+        </button>
+
+        <div x-show="open" class="bg-white rounded-b-md shadow overflow-x-auto mt-2">
+            <table class="w-full table-auto">
+                <thead class="bg-red-500 text-white">
+                    <tr>
+                        <th class="px-4 py-2">Generic Name</th>
+                        <th class="px-4 py-2">Brand</th>
+                        <th class="px-4 py-2">Category</th>
+                        <th class="px-4 py-2">Dosage Form</th>
+                        <th class="px-4 py-2">Strength</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $outOfStock = collect($inventory)->filter(fn($item) => $item->remaining_stock == 0);
+                    @endphp
+
+                    @foreach ($outOfStock as $item)
+                        <tr class="bg-gray-50 hover:bg-gray-100 text-center align-middle">
+                            <td class="px-4 py-2">{{ $item->supply_name }}</td>
+                            <td class="px-4 py-2">{{ $item->brand ?? 'N/A' }}</td>
+                            <td class="px-4 py-2">{{ $item->category }}</td>
+                            <td class="px-4 py-2">{{ $item->dosage_form }}</td>
+                            <td class="px-4 py-2">{{ $item->dosage_strength }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 </div>
 
