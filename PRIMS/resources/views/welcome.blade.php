@@ -32,7 +32,7 @@
                 </div>
 
                 <!-- Checkups -->
-                <div class="flex flex-col bg-prims-yellow-2 py-8 px-6">
+                <div class="flex flex-col bg-prims-yellow-1 py-8 px-6">
                     <h3 class="text-4xl font-extrabold mb-3">Checkups</h3>
                     <h4 class="text-xl font-light mb-3">Walk-ins (Wednesdays)</h4>
                     <h5 class="text-2xl">Morning</h5>
@@ -42,7 +42,7 @@
                 </div>
 
                 <!-- Patient Portal -->
-                <div class="flex flex-col bg-prims-yellow-3 py-8 px-6">
+                <div class="flex flex-col bg-prims-yellow-1 py-8 px-6">
                     <h3 class="text-4xl font-extrabold mb-3">Patient Portal</h3>
                     <h5 class="text-md">You can access our patient portal to request medical records or set appointments in the calendar.</h5>
                     <div class="flex justify-end">
@@ -51,7 +51,7 @@
                 </div>
 
                 <!-- About Us -->
-                <div class="flex flex-col rounded-r-2xl bg-prims-yellow-4 py-8 px-6">
+                <div class="flex flex-col rounded-r-2xl bg-prims-yellow-1 py-8 px-6">
                     <h3 class="text-4xl font-extrabold mb-3">About Us</h3>
                     <h5 class="text-md">Learn about the APC-Clinic including its facilities and personnel.</h5>
                     <div class="flex justify-end">
@@ -65,12 +65,20 @@
             <div class="w-[45%]">
                 <img src="img/sample-pic.svg" class="object-cover rounded-lg">
             </div>
-            <div class="flex flex-col w-[50%] text-right">
-                <p class="font-bold text-4xl mb-8">We care for you.</p>
-                <p class="text-lg">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lobortis mattis aliquam faucibus purus in massa tempor nec feugiat. Venenatis urna cursus eget nunc scelerisque viverra mauris in aliquam. Gravida dictum fusce ut placerat orci nulla pellentesque dignissim enim. Bibendum neque egestas congue quisque egestas diam in arcu cursus. Diam maecenas sed enim ut sem.</p>
+            <div class="flex flex-col w-[50%] text-left">
+                <p class="font-bold text-4xl mb-6">We care for you.</p>
+                <p class="text-lg">At APC Clinic, we are dedicated to providing quality and accessible healthcare services to our community. Our clinic offers free checkups, including blood pressure monitoring and COVID-19 testing, ensuring that everyone has access to essential health screenings. In addition, we are excited to announce that our dental clinic will be launching soon to expand our services further. <br><br> Committed to promoting wellness and preventive care, APC Clinic strives to create a healthier environment for all. Visit us today and experience compassionate care at no cost!</p>
             </div>
         </div>
+        <footer class="bg-prims-yellow-1 w-full h-16 flex items-center pl-6 relative">
+    <img src="img/apc-logo.svg" class="object-scale-down h-16">
+    <p class="absolute inset-0 flex items-center justify-center w-full">
+        Copyright © 2025<span class="ml-1 text-blue-500">Asia Pacific College</span>. All Rights Reserved.
+    </p>
+</footer>
 
+    </body>
+</html>
         <footer class="bg-prims-yellow-1 w-full h-16 pl-6">
             <div class="container flex gap-4 items-center">
                 <img src="img/apc-logo.svg" class="object-scale-down h-16">
