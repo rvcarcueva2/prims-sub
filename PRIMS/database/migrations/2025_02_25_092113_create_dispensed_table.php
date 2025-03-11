@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('dispensed', function (Blueprint $table) {
             $table->id();
             $table->foreignId('inventory_id')->constrained('inventory')->onDelete('cascade');
+            $table->foreignId('patient_id')->constrained('patients')->onDelete('cascade');
             $table->integer('quantity_dispensed');
             $table->date('date_dispensed');
             $table->foreignId('dispensed_by')->constrained('clinic_staff');

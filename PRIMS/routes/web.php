@@ -142,6 +142,8 @@ Route::middleware([
     })->name('add-medicine');
 
     Route::post('/staff/inventory/add', [InventoryController::class, 'store'])->name('inventory.store');
+    Route::get('/staff/inventory/{id}', [InventoryController::class, 'show'])->name('inventory.show');
+
 
     // Add Button route
     Route::get('/add-medicine', function () {
