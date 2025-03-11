@@ -2,11 +2,21 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
+use App\Http\Controllers\AppointmentController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ClinicStaffController;
+use App\Mail\AppointmentNotif;
+use App\Http\Controllers\StaffSummaryReportController;
+use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\MedicalRecordController;
+use App\Livewire\ViewMedicalRecord;
+
 $url = config('app.url');
 URL::forceRootUrl($url);
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::middleware([
@@ -15,6 +25,133 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $user = Auth::user();
+
+        if ($user->hasRole('clinic staff')) {
+            return redirect()->route('calendar');
+        } elseif ($user->hasRole('patient')) {
+            return redirect()->route('patient-homepage');
+        }
+
+        abort(403, 'Unauthorized action.');
+        
     })->name('dashboard');
+
+    // Staff dashboard route
+    Route::get('/staff/dashboard', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('clinic staff')) {
+            abort(403); // Forbidden
+        }
+        return view('staff-dashboard');
+    })->name('staff-dashboard');
+
+    // Patient homepage route
+    Route::get('/homepage', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('patient')) {
+            abort(403); // Forbidden
+        }
+        return view('welcome');
+    })->name('patient-homepage');
+
+    // Appointment route
+    Route::get('/appointment', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('patient')) {
+            abort(403); // Forbidden
+        }
+        return view('patient-calendar');
+    })->name('appointment');
+
+    Route::post('/appointment/notif', [AppointmentController::class, 'store'])
+    ->name('appointment.notif')
+    ->middleware('auth');
+
+    // Inventory route
+    Route::get('/staff/inventory', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('clinic staff')) {
+            abort(403); // Forbidden    
+        }
+        return view('medical-inventory');
+    })->name('medical-inventory');
+
+    // Medical records route
+    Route::get('/staff/medical-records', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('clinic staff')) {
+            abort(403); // Forbidden
+        }
+        return view('medical-records');
+    })->name('medical-records');
+
+    Route::get('/medical-records/{id}', [MedicalRecordController::class, 'view'])
+    ->name('view-medical-record');
+
+    // Summary report route
+    Route::get('/staff/summary-report', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('clinic staff')) {
+            abort(403); // Forbidden
+        }
+        return view('staff-summary-report');
+    })->name('summary-report');
+
+    Route::get('/staff-summary-report', [StaffSummaryReportController::class, 'index'])->name('staff-summary-report');
+
+
+    // Calendar route
+    Route::get('/staff/calendar', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('clinic staff')) {
+            abort(403); // Forbidden
+        }
+        return view('staff-calendar');
+    })->name('calendar');
+
+    // Appointment History route
+    Route::get('/appointment-history', [AppointmentController::class, 'showAppointmentHistory'])
+    ->name('appointment-history');
+
+    // Add Record route
+    Route::get('/staff/add-record', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('clinic staff')) {
+            abort(403); // Forbidden
+        }
+        return view('addRecordmain');
+    })->name('addRecordmain');
+
+     // Test route
+     Route::get('/test', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('patient')) {
+            abort(403); // Forbidden
+        }
+        return view('test');
+    })->name('test');
+
+    // Add Medicine route
+    Route::get('/staff/add-medicine', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('clinic staff')) {
+            abort(403); // Forbidden
+        }
+        return view('add-medicine');
+    })->name('add-medicine');
+
+    Route::post('/staff/inventory/add', [InventoryController::class, 'store'])->name('inventory.store');
+    Route::get('/staff/inventory/{id}', [InventoryController::class, 'show'])->name('inventory.show');
+
+
+    // Add Button route
+    Route::get('/add-medicine', function () {
+        return view('add-medicine');
+    })->name('add-medicine');
+
+    // cancel button route
+    Route::get('/medical-inventory', function () {
+        return view('medical-inventory');
+    })->name('medical-inventory');
 });

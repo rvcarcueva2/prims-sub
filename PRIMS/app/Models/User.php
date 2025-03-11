@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
@@ -19,6 +20,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +28,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
     ];
@@ -64,4 +65,26 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function patient()
+    {
+    return $this->hasOne(Patient::class, 'user_id');
+    }
+
+    public function clinicstaff()
+    {
+    return $this->hasOne(ClinicStaff::class, 'user_id', 'id');
+    }
+
+    public function getFullNameAttribute()
+    {
+        if ($this->patient) {
+            return $this->patient->first_name . ' ' . $this->patient->last_name;
+        } elseif ($this->clinicStaff) {
+            return $this->clinicStaff->clinic_staff_fname . ' ' . $this->clinicStaff->clinic_staff_lname;
+        }
+        
+        return 'Unknown';
+    }
+
 }
