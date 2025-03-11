@@ -146,12 +146,12 @@ Route::middleware([
 
 
     // Add Button route
-    Route::get('/add-medicine', function () {
-        return view('add-medicine');
-    })->name('add-medicine');
+    // Route::get('/add-medicine', function () {
+    //     return view('add-medicine');
+    // })->name('add-medicine');
 
     // cancel button route
-    Route::get('/medical-inventory', function () {
-        return view('medical-inventory');
-    })->name('medical-inventory');
+    // Route::get('/medical-inventory', function () {
+    //     return view('medical-inventory');
+    // })->name('medical-inventory');
 });

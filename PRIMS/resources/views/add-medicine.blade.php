@@ -83,7 +83,9 @@
             background-color: #666;
         }
     </style>
-    <div class="header">Add Medicine Sheet</div>
+    <div class="w-[50%] mx-auto">
+        <x-prims-sub-header>Add Medicine</x-prims-sub-header>
+    </div>
     <div class="container">
         <form action="{{ route('inventory.store') }}" method="POST">
             @csrf
@@ -167,10 +169,10 @@
                 </div>
             </div>
             <div class="button-container pt-4">
-                <button class="button cancel" onclick="window.location.href='{{ route('medical-inventory') }}';">
+                <x-button onclick="window.location.href='{{ route('medical-inventory') }}';">
                     Cancel
-                </button>
-                <button type="submit" class="button">Submit</button>
+                </x-button>
+                <x-button type="submit">Submit</x-button>
             </div>
         </form>
 
