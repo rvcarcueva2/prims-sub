@@ -7,15 +7,33 @@
         <div class="bg-yellow-200 rounded-lg p-4">
             <h2 class="text-lg font-semibold">Personal Information</h2>
         </div>
-        <div class="grid grid-cols-3 gap-4 mt-4 items-center">
+        <div class="grid grid-cols-2 gap-4 mt-4 items-center">
+            <label class="text-sm">ID Number</label>
+            <input type="text" value="{{ $record->apc_id_number }}" class="border p-2 rounded" readonly>
+
+            <label class="text-sm">First Name</label>
+            <input type="text" value="{{ $record->first_name }}" class="border p-2 rounded" readonly>
+
+            <label class="text-sm">Middle Initial</label>
+            <input type="text" value="{{ $record->mi }}" class="border p-2 rounded" readonly>
+
+            <label class="text-sm">Last Name</label>
+            <input type="text" value="{{ $record->last_name }}" class="border p-2 rounded" readonly>
+
+            <label class="text-sm">Gender</label>
+            <input type="text" value="{{ $record->gender }}" class="border p-2 rounded" readonly>
+
+            <label class="text-sm">Age</label>
+            <input type="text" value="{{ $record->age }}" class="border p-2 rounded" readonly>
+        
             <label class="text-sm">Date of Birth</label>
-            <input type="date" value="{{ $record->dob }}" class="border p-2 rounded col-span-2" readonly>
+            <input type="date" value="{{ $record->dob }}" class="border p-2 rounded" readonly>
 
             <label class="text-sm">Address</label>
-            <input type="text" value="{{ $record->address }}" class="border p-2 rounded col-span-2" readonly>
+            <input type="text" value="{{ $record->address }}" class="border p-2 rounded" readonly>
 
             <label class="text-sm">Email Address</label>
-            <input type="text" value="{{ $record->email }}" class="border p-2 rounded col-span-2" readonly>
+            <input type="text" value="{{ $record->email }}" class="border p-2 rounded" readonly>
 
             <label class="text-sm">Contact No.</label>
             <input type="text" value="{{ $record->contact }}" class="border p-2 rounded" readonly>
