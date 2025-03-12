@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Inventory extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'inventory';
 
@@ -27,6 +28,11 @@ class Inventory extends Model
     {
         $dispensed = Dispensed::where('inventory_id', $this->id)->sum('quantity_dispensed');
         return $this->quantity_received - $dispensed;
+    }
+
+    public function dispensed()
+    {
+        return $this->hasMany(Dispensed::class);
     }
 
 }

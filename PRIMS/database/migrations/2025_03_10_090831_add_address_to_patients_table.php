@@ -12,7 +12,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('patients', function (Blueprint $table) {
-            $table->string('address')->after('apc_id_number'); // Adjust position as needed
+            if (!Schema::hasColumn('patients', 'address')) { 
+                $table->string('address')->nullable();
+            }
         });
     }
 

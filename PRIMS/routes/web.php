@@ -142,14 +142,16 @@ Route::middleware([
     })->name('add-medicine');
 
     Route::post('/staff/inventory/add', [InventoryController::class, 'store'])->name('inventory.store');
+    Route::get('/staff/inventory/{id}', [InventoryController::class, 'show'])->name('inventory.show');
+
 
     // Add Button route
-    Route::get('/add-medicine', function () {
-        return view('add-medicine');
-    })->name('add-medicine');
+    // Route::get('/add-medicine', function () {
+    //     return view('add-medicine');
+    // })->name('add-medicine');
 
     // cancel button route
-    Route::get('/medical-inventory', function () {
-        return view('medical-inventory');
-    })->name('medical-inventory');
+    // Route::get('/medical-inventory', function () {
+    //     return view('medical-inventory');
+    // })->name('medical-inventory');
 });
