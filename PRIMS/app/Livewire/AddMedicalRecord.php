@@ -5,10 +5,11 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\MedicalRecord;
 use App\Models\Patient;
+use Carbon\Carbon;
 
 class AddMedicalRecord extends Component
 {
-    public $apc_id_number, $email, $first_name, $mi, $last_name, $contact_number, $dob, $gender, $address, $reason, $nationality, $description, $diagnosis, $allergies;
+    public $apc_id_number, $email, $first_name, $mi, $last_name, $contact_number, $dob, $age, $gender, $street_number, $barangay, $city, $province, $zip_code, $country, $reason, $nationality, $description, $diagnosis, $allergies, $pe, $prescription;
 
     public $past_medical_history = [
         'Mumps' => null,
@@ -53,9 +54,15 @@ class AddMedicalRecord extends Component
             $this->last_name = $patient->last_name;
             $this->dob = $patient->date_of_birth;
             $this->gender = $patient->gender;
-            $this->address = $patient->address;
+            $this->street_number = $patient->street_number;
+            $this->barangay = $patient->barangay;
+            $this->city = $patient->city;
+            $this->province = $patient->province;
+            $this->zip_code = $patient->zip_code;
+            $this->country = $patient->country;
             $this->contact_number = $patient->contact_number;
             $this->nationality = $patient->nationality;
+            $this->calculateAge();
         } else {
             \Log::warning('No patient found for ID: ' . $this->apc_id_number);
 
@@ -65,10 +72,25 @@ class AddMedicalRecord extends Component
             $this->mi = null;
             $this->last_name = null;
             $this->dob = null;
+            $this->age = null;
             $this->gender = null;
-            $this->address = null;
+            $this->street_number = null;
+            $this->barangay = null;
+            $this->city = null;
+            $this->province = null;
+            $this->zip_code = null;
+            $this->country = null;
             $this->contact_number = null;
             $this->nationality = null;
+        }
+    }
+
+    public function calculateAge()
+    {
+        if ($this->dob) {
+            $this->age = Carbon::parse($this->dob)->age;
+        } else {
+            $this->age = null;
         }
     }
 
@@ -81,12 +103,17 @@ class AddMedicalRecord extends Component
             'email' => 'required',
             'apc_id_number' => 'required',
             'first_name' => 'required',
-            'mi' => 'required',
+            'mi' => 'nullable',
             'last_name' => 'required',
             'dob' => 'required|date',
             'gender' => 'required',
             'contact_number' => 'required',
-            'address' => 'required',
+            'street_number' => 'required',
+            'barangay' => 'required',
+            'city' => 'required',
+            'province' => 'required',
+            'zip_code' => 'required',
+            'country' => 'required',
             'nationality' => 'required',
             'reason' => 'required',
             'description' => 'required',
@@ -95,18 +122,25 @@ class AddMedicalRecord extends Component
             'past_medical_history' =>'required',
             'family_history' => 'required',
             'social_history' => 'required',
+            'pe' => 'required',
+            'prescription' => 'required',
         ]);
 
         MedicalRecord::create([
             'email' => $this->email,
-            'apc_id_number' => $this->first_name,
+            'apc_id_number' => $this->apc_id_number,
             'first_name' => $this->first_name,
             'mi' => $this->mi,
             'last_name' => $this->last_name,
             'dob' => $this->dob,
             'gender' => $this->gender,
             'contact_number' => $this->contact_number,
-            'address' => $this->address,
+            'street_number' => $this->street_number,
+            'barangay' => $this->barangay,
+            'city' => $this->city,
+            'province' => $this->province,
+            'zip_code' => $this->zip_code,
+            'country' => $this->country,
             'nationality' => $this->nationality,
             'reason' => $this->reason,
             'description' => $this->description,
@@ -116,6 +150,8 @@ class AddMedicalRecord extends Component
             'family_history' => json_encode($this->family_history),
             'social_history' => json_encode($this->social_history),
             'last_visited' => now(),
+            'pe' => $this->pe,
+            'prescription' => $this->prescription,
         ]);
 
         $this->reset();
