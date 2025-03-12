@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\MedicalRecord;
+use App\Models\Patient;
 
 class ViewMedicalRecord extends Component
 {
@@ -20,6 +21,3 @@ class ViewMedicalRecord extends Component
         return view('livewire.view-medical-record', ['record' => $this->record]);
     }
 }
-
-
-
