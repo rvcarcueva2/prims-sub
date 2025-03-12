@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('brand')->nullable();
             $table->string('category');
-            $table->string('unit');
+            $table->string('dosage_strength');
+            $table->string('dosage_form');
             $table->timestamps();
         });
     }
