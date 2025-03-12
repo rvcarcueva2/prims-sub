@@ -1,1 +1,2 @@
-hello world
+<x-app-layout>
+</x-app-layout>
