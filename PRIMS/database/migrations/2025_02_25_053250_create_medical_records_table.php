@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('mi')->nullable();
             $table->string('last_name');
             $table->date('dob');
+            $table->string('age')->nullable();
             $table->string('gender')->nullable();
             $table->string('street_number')->nullable();
             $table->string('barangay')->nullable();
