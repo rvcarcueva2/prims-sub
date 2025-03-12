@@ -17,7 +17,7 @@
                 <p class="text-lg text-gray-700 text-justify">
                     APC Clinic is the sole healthcare provider at Asia Pacific College, dedicated to serving students, 
                     faculty, and staff. We offer free medical checkups, blood pressure monitoring, and essential medications 
-                    to ensure accessible, quality care on campus
+                    to ensure accessible, quality care on campus.
                 </p>
                 <br>
                 <p class="text-lg text-gray-700 text-justify">
