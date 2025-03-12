@@ -277,6 +277,7 @@
             </div>
 
             <div class="mt-6 flex justify-end">
+                <a href="/staff/medical-records" class="text-white text-md m-2 mx-6 underline hover:text-prims-azure-500 transition ease-in-out duration-150"> Back </a>
                 <button type="submit" class="px-4 py-2 bg-prims-azure-500 text-white rounded-lg hover:bg-prims-azure-100">
                     Submit
                 </button>

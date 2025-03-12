@@ -1,10 +1,10 @@
 <div>
     <x-prims-sub-header>
-        View Medical Record
+        Medical Record
     </x-prims-sub-header>
 
     <div class="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden mt-4 p-6">
-        <div class="bg-yellow-200 rounded-lg p-4">
+        <div class="bg-prims-yellow-1 rounded-lg p-4">
             <h2 class="text-lg font-semibold">Personal Information</h2>
         </div>
         <div class="grid grid-cols-2 gap-4 mt-4 items-center">
@@ -39,7 +39,7 @@
             <input type="text" value="{{ $record->contact }}" class="border p-2 rounded" readonly>
         </div>
 
-        <div class="mt-6 bg-yellow-200 rounded-lg p-4">
+        <div class="mt-6 bg-prims-yellow-1 rounded-lg p-4">
             <h2 class="text-lg font-semibold">Medical Concerns</h2>
         </div>
         <div class="mt-4">

@@ -10,13 +10,29 @@ class MedicalRecord extends Model
     use HasFactory;
 
     protected $fillable = [
+        'email',
+        'apc_id_number',
         'first_name',
+        'mi',
         'last_name',
         'dob',
-        'address',
+        'gender',
+        'contact_number',
+        'street_number',
+        'barangay',
+        'city',
+        'province',
+        'zip_code',
+        'country',
+        'nationality',
         'reason',
         'description',
+        'diagnosis',
         'allergies',
-        'last_visited',
+        'past_medical_history',
+        'family_history',
+        'social_history',
+        'pe',
+        'prescription',
     ];
 }
