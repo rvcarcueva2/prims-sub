@@ -21,6 +21,3 @@ class ViewMedicalRecord extends Component
         return view('livewire.view-medical-record', ['record' => $this->record]);
     }
 }
-
-
-
