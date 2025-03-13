@@ -97,15 +97,15 @@ Route::middleware([
 
 
     // Summary report route
-    Route::get('/staff/summary-report', function () {
-        $user = Auth::user();
-        if (!$user || !$user->hasRole('clinic staff')) {
-            abort(403); // Forbidden
-        }
-        return view('staff-summary-report');
-    })->name('summary-report');
+    // Route::get('/staff/summary-report', function () {
+    //     $user = Auth::user();
+    //     if (!$user || !$user->hasRole('clinic staff')) {
+    //         abort(403); // Forbidden
+    //     }
+    //     return view('staff-summary-report');
+    // })->name('summary-report');
 
-    Route::get('/staff-summary-report', [StaffSummaryReportController::class, 'index'])->name('staff-summary-report');
+    Route::get('/staff/summary-report', [StaffSummaryReportController::class, 'index'])->name('summary-report');
 
 
     // Calendar route
