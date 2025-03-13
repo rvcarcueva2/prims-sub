@@ -28,10 +28,12 @@ class StaffSummaryReportController extends Controller
             ->whereMonth('appointment_date', $month)
             ->whereYear('appointment_date', $year)
             ->count();
+        
         $cancelledCount = Appointment::where('status', 'cancelled')
             ->whereMonth('appointment_date', $month)
             ->whereYear('appointment_date', $year)
             ->count();
+
         $totalAppointments = $attendedCount + $cancelledCount;
         $attendedPercentage = ($totalAppointments > 0) ? ($attendedCount / $totalAppointments) * 100 : 0;
 

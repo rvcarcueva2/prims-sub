@@ -2,6 +2,44 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Filter Section: Month and Year Selection -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
+            <form method="GET" action="{{ route('summary-report') }}">
+                <div class="flex justify-end items-center space-x-6">
+                    <!-- Month Filter -->
+                    <div class="flex items-center space-x-4">
+                        <label for="month" class="font-semibold text-gray-700">Month:</label>
+                        <select name="month" id="month" class="rounded-lg border-gray-300 p-2 w-32">
+                            @for ($i = 1; $i <= 12; $i++)
+                                <option value="{{ $i }}" {{ $i == $selectedMonth ? 'selected' : '' }}>
+                                    {{ \Carbon\Carbon::create()->month($i)->format('F') }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
+
+                    <!-- Year Filter -->
+                    <div class="flex items-center space-x-4">
+                        <label for="year" class="font-semibold text-gray-700">Year:</label>
+                        <select name="year" id="year" class="rounded-lg border-gray-300 p-2 w-32">
+                            @for ($i = 2020; $i <= \Carbon\Carbon::now()->year; $i++)
+                                <option value="{{ $i }}" {{ $i == $selectedYear ? 'selected' : '' }}>
+                                    {{ $i }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex items-center">
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600">
+                            Apply Filter
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
         <!-- Card Container for Stats -->
         <div class="bg-white shadow-lg rounded-lg p-6 mb-6">
             <div class="flex justify-between items-center">
@@ -39,24 +77,34 @@
             </div>
         </div>
 
-        <!-- Top 5 Prescribed Medications & Most Common Diagnoses (Separate Containers) -->
-        <div class="flex space-x-8 mt-6">
-            <!-- Medication Chart Container -->
-            <div class="bg-white shadow-lg rounded-lg p-6 w-1/2">
-                <h3 class="text-xl font-semibold text-gray-800 text-center mb-4">Top 5 Most Prescribed Medications</h3>
-                <div class="relative h-[400px]">
+        <!-- Top 5 Prescribed Medications & Most Common Diagnoses (Side-by-Side) -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mt-6">
+            <h3 class="text-xl font-semibold text-gray-800 text-center mb-4">Top 5 Most Prescribed Medications & Most Common Diagnoses</h3>
+
+            <div class="flex space-x-8">
+                <!-- Medication Chart Container -->
+                <div class="relative h-[400px] w-1/2 p-4 bg-white shadow-lg rounded-lg">
                     <canvas id="medicationChart"></canvas>
                 </div>
-            </div>
 
-            <!-- Diagnosis Chart Container -->
-            <div class="bg-white shadow-lg rounded-lg p-6 w-1/2">
-                <h3 class="text-xl font-semibold text-gray-800 text-center mb-4">Most Common Diagnoses</h3>
-                <div class="relative h-[400px]">
+                <!-- Diagnosis Chart Container -->
+                <div class="relative h-[400px] w-1/2 p-4 bg-white shadow-lg rounded-lg">
                     <canvas id="diagnosisChart"></canvas>
                 </div>
             </div>
         </div>
+
+        <!-- Generate Accomplishment Report Button in a Container -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mt-6">
+            <div class="flex justify-end">
+                <button 
+                    type="button" 
+                    class="bg-blue-500 text-white py-2 px-6 rounded-lg shadow-md hover:bg-blue-600">
+                    Generate Accomplishment Report
+                </button>
+            </div>
+        </div>
+
     </div>
 
     <script>
