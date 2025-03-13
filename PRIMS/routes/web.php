@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\AppointmentController;
@@ -121,13 +123,17 @@ Route::middleware([
     Route::get('/appointment-history', [AppointmentController::class, 'showAppointmentHistory'])
     ->name('appointment-history');
 
-    // Add Record route
-    Route::get('/staff/add-record', function () {
+    // Add Record route  
+    Route::get('/staff/add-record', function (Illuminate\Http\Request $request) {
         $user = Auth::user();
         if (!$user || !$user->hasRole('clinic staff')) {
-            abort(403); // Forbidden
+            abort(403);
         }
-        return view('addRecordmain');
+    
+        return view('addRecordmain', [
+            'appointment_id' => $request->query('appointment_id'),
+            'fromStaffCalendar' => $request->query('fromStaffCalendar', false)
+        ]);
     })->name('addRecordmain');
 
      // Test route
