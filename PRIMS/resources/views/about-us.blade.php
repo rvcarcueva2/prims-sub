@@ -6,9 +6,9 @@
     <div class="max-w-screen-2xl mx-auto mt-6 px-8">
         
         <!-- Yellow Header Section -->
-        <div class="bg-[#F4C04D] h-[250px] w-full flex justify-center items-start pt-5">
-        <h2 class="text-4xl font-bold text-[#1D3557]">About us</h2>
-        </div>
+    <div class="bg-[#F4C04D] h-[250px] w-full flex justify-center items-start pt-8">
+        <h2 class="text-4xl font-bold text-[#1D3557] mt-2">About us</h2>
+    </div>
 
         <!-- White Content Box -->
         <div class="bg-white shadow-lg px-10 py-8 mt-0 max-w-[100%] mx-auto">
