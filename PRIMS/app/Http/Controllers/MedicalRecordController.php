@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MedicalRecord;
 use App\Models\Appointment;
+use App\Models\Patient;
+use App\Models\ClinicStaff;
 
 class MedicalRecordController extends Controller
 {
@@ -24,11 +26,12 @@ class MedicalRecordController extends Controller
 
     public function create(Request $request)
     {
-
-        $appointment = Appointment::findOrFail($request->appointment_id);
+        $appointmentId = $request->appointmentId;
+        $appointment = Appointment::with('patient')->find($appointmentId);
 
         return view('livewire.add-medical-record', 
         [
+            'patient' => $appointment->patient,
             'appointmentId' => $appointment->id,
             'email' => $appointment->patient->email,
             'apc_id_number' => $appointment->patient->apc_id_number,

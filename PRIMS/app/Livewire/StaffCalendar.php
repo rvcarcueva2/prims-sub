@@ -189,7 +189,7 @@ class StaffCalendar extends Component
         $appointment = Appointment::find($appointmentId);
 
         if ($appointment) {
-            return redirect()->route('addRecordmain', [
+            return redirect()->route('add-medical-record', [
                 'appointmentId' => $appointmentId,
                 'email' => $appointment->patient->email,
                 'apc_id_number' => $appointment->patient->apc_id_number,
