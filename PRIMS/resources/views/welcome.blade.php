@@ -45,8 +45,8 @@
 
                 <!-- Patient Portal -->
                 <div class="flex flex-col bg-prims-yellow-1 py-8 px-6">
-                    <h3 class="text-3xl font-extrabold mb-3">Patient Portal</h3>
-                    <h5 class="text-md">You can access our patient portal to request medical records or set appointments in the calendar.</h5>
+                    <h3 class="text-3xl font-extrabold mb-3">Questions</h3>
+                    <h5 class="text-md">You can ask our chatbot any questions about health concerns or clinic services! Whether you need medical advice, appointment assistance, or general health information, we're here to help.</h5>
                     <div class="flex justify-end">
                     </div>
                 </div>
