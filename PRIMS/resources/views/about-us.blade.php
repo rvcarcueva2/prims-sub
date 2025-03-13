@@ -12,6 +12,12 @@
 
         <!-- White Content Box -->
         <div class="bg-white shadow-lg px-10 py-8 mt-0 max-w-[100%] mx-auto">
+
+        <!-- Image Section (Centered & Overlapping) -->
+        <div class="flex justify-center -mt-40 relative z-10">
+            <img src="/img/test-photo.png" alt="About Us Image" class="w-[80%] rounded-lg shadow-lg mx-auto">
+        </div>
+
                 
                 <!-- About Us Text -->
                 <p class="text-lg text-gray-700 text-justify">
