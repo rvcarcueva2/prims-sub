@@ -86,6 +86,9 @@ Route::middleware([
         return view('medical-records');
     })->name('medical-records');
 
+    Route::get('/add-medical-record', [MedicalRecordController::class, 'create'])
+    ->name('add-medical-record');
+
     Route::get('/medical-records/{id}', [MedicalRecordController::class, 'view'])
     ->name('view-medical-record');
 

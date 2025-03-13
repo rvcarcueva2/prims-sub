@@ -94,6 +94,12 @@ class AddMedicalRecord extends Component
         }
     }
 
+    protected $messages = [
+        'reason.required' => 'Kindly answer the field.',
+        'description.required' => 'Kindly provide a description.',
+        'pe.required' => 'Kindly answer the field.',
+        'diagnosis.required' => 'Please select a diagnosis.',
+    ];
 
     public function submit()
     {

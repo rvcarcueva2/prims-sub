@@ -60,7 +60,7 @@
                         <p>Patient: {{ $appointment->patient->first_name }} {{ $appointment->patient->last_name }}</p>
                         <p>Doctor: {{ $appointment->doctor->clinic_staff_fname }} {{ $appointment->doctor->clinic_staff_lname }}</p>
 
-                        <x-prims-sub-button2 class="mt-3">Start Appointment</x-prims-sub-button2>
+                        <x-prims-sub-button2 wire:click="startAppointment({{ $appointment->id }})" class="mt-3">Start Appointment</x-prims-sub-button2>
                         <x-prims-sub-button2 wire:click="confirmCancel({{ $appointment->id }})" class="mt-3 bg-white">Cancel Appointment</x-prims-sub-button2>
                     </div>
                 @empty

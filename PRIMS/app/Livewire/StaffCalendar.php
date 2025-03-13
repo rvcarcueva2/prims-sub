@@ -184,6 +184,43 @@ class StaffCalendar extends Component
         }
     }
 
+    public function startAppointment($appointmentId)
+    {
+        $appointment = Appointment::find($appointmentId);
+
+        if ($appointment) {
+            return redirect()->route('addRecordmain', [
+                'appointmentId' => $appointmentId,
+                'email' => $appointment->patient->email,
+                'apc_id_number' => $appointment->patient->apc_id_number,
+                'first_name' => $appointment->patient->first_name,
+                'mi' => $appointment->patient->middle_initial,
+                'last_name' => $appointment->patient->last_name,
+                'email' => $appointment->patient->email,
+                'dob' => $appointment->patient->date_of_birth,
+                'gender' => $appointment->patient->gender,
+                'street_number' => $appointment->patient->street_number,
+                'barangay' => $appointment->patient->barangay,
+                'city' => $appointment->patient->city,
+                'province' => $appointment->patient->province,
+                'zip_code' => $appointment->patient->zip_code,
+                'country' => $appointment->patient->country,
+                'contact_number' => $appointment->patient->contact_number,
+                'nationality' => $appointment->patient->nationality,
+                'age' => \Carbon\Carbon::parse($appointment->patient->date_of_birth)->age, // Calculate age here
+                // 'reason' => $appointment->reason,
+                // 'description' => $appointment->description,
+                // 'diagnosis' => $appointment->diagnosis,
+                // 'allergies' => $appointment->allergies,
+                // 'past_medical_history' => json_decode($appointment->past_medical_history, true) ?? [],
+                // 'family_history' => json_decode($appointment->family_history, true) ?? [],
+                // 'social_history' => json_decode($appointment->social_history, true) ?? [],
+                // 'pe' => $appointment->pe,
+                // 'prescription' => $appointment->prescription,
+            ]);
+        }
+    }
+
     public function confirmCancel($appointmentId)
     {
         $this->selectedAppointmentId = $appointmentId;
