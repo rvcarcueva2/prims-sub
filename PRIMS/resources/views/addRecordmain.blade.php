@@ -3,6 +3,9 @@
         <x-prims-sub-header>
             New Medical Record
         </x-prims-sub-header>
-        <livewire:add-medical-record />
+        <livewire:add-medical-record 
+            :appointment_id="request()->query('appointment_id')"
+            :fromStaffCalendar="(bool) request()->query('fromStaffCalendar', false)"
+        />
     </div>
 </x-app-layout>
