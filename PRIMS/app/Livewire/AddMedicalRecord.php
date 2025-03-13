@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\MedicalRecord;
 use App\Models\Patient;
+use App\Models\ClinicStaff;
 use App\Models\Appointment;
 use Carbon\Carbon;
 
