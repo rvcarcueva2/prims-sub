@@ -56,7 +56,8 @@
                     <h3 class="text-3xl font-extrabold mb-3">About Us</h3>
                     <h5 class="text-md">Learn about the APC-Clinic including its facilities and personnel.</h5>
                     <div class="flex justify-end">
-                        <x-prims-sub-button1 href="" class="my-6">About Us</x-prims-sub-button1>
+                    <x-prims-sub-button1 href="{{ url('/about-us') }}" class="my-6">About Us</x-prims-sub-button1>
+
                     </div>
                 </div>
             </div>

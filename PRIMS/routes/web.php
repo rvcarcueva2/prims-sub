@@ -154,6 +154,11 @@ Route::middleware([
         return view('about-us');
     })->name('about-us');
 
+    // About us Button Route
+    Route::get('/about-us', function () {
+        return view('about-us');
+    })->name('about');
+
     Route::post('/staff/inventory/add', [InventoryController::class, 'store'])->name('inventory.store');
     Route::get('/staff/inventory/{id}', [InventoryController::class, 'show'])->name('inventory.show');
 
