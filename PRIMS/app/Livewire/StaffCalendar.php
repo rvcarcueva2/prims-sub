@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 use App\Mail\ApprovedAppointment;
 use App\Mail\DeclinedAppointment;
 use Illuminate\Support\Facades\Mail;
+use App\Models\MedicalRecord;
 use App\Models\User;
 
 class StaffCalendar extends Component
@@ -186,10 +187,10 @@ class StaffCalendar extends Component
 
     public function startAppointment($appointmentId)
     {
-        $appointment = Appointment::find($appointmentId);
+        $appointment = Appointment::with('patient')->find($appointmentId);
 
         if ($appointment) {
-            return redirect()->route('add-medical-record', [
+            return redirect()->route('addRecordmain', [
                 'appointmentId' => $appointmentId,
                 'email' => $appointment->patient->email,
                 'apc_id_number' => $appointment->patient->apc_id_number,
