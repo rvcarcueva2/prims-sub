@@ -25,7 +25,7 @@
                     <div class="relative p-2 rounded-lg cursor-pointer hover:bg-gray-200 
                         {{ !$isInCurrentMonth ? 'text-gray-400' : '' }} 
                         {{ $day['isToday'] ? 'text-blue-600' : '' }} 
-                        {{ $selectedDate === $day['date'] ? 'bg-prims-yellow-5' : '' }}"
+                        {{ $selectedDate === $day['date'] ? 'bg-prims-yellow-1' : '' }}"
                         wire:click="selectDate('{{ $day['date'] }}')">
                         {{ $day['day'] }}
 
@@ -219,7 +219,7 @@
                     @foreach($timeSlots as $time)
                     <button wire:click="toggleTime('{{ $time }}')"
                         x-bind:class="{
-                            'bg-prims-yellow-5 text-black': @json(in_array($time, (array) $selectedTimes)),
+                            'bg-prims-yellow-1 text-black': @json(in_array($time, (array) $selectedTimes)),
                             'bg-gray-200': @json(!in_array($time, (array) $selectedTimes)),
                             'cursor-not-allowed opacity-50': !($wire.selectedDoctor && $wire.selectedDate && $wire.isEditingSchedule),
                             'cursor-pointer hover:bg-white': $wire.selectedDoctor && $wire.selectedDate && $wire.isEditingSchedule

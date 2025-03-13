@@ -3,7 +3,7 @@
         
         <!-- Doctor Information Section -->
         <div class="col-span-2 row-span-12 bg-white rounded-md shadow-md text-center">
-            <div class="flex justify-center mt-6 bg-prims-yellow-5">
+            <div class="flex justify-center mt-6 bg-prims-yellow-1">
                 <h1 class="text-xl font-bold">Choose a Doctor</h1>
             </div>
 
@@ -36,7 +36,7 @@
 
         <!-- Calendar Section -->
         <div class="col-span-5 row-span-12 bg-white rounded-md shadow-md">
-            <div class="flex justify-center mt-6 bg-prims-yellow-5">
+            <div class="flex justify-center mt-6 bg-prims-yellow-1">
                 <h1 class="text-xl font-bold">Choose a Date</h1>
             </div>
             <div class="flex gap-4 justify-center mx-1 my-4 font-bold text-sub-header-1">
@@ -77,7 +77,7 @@
                     <div class="p-2 rounded-lg 
                         {{ $day['isToday'] ? 'text-blue-600' : '' }} 
                         {{ $selectedDate === $day['date'] ? 'border-2 border-prims-yellow-5 bg-prims-azure-100 text-white' : '' }} 
-                        {{ ($isPastDate || $isSunday || !$isAvailable) ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer hover:bg-prims-yellow-5' }}
+                        {{ ($isPastDate || $isSunday || !$isAvailable) ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer hover:bg-prims-yellow-1' }}
                         {{ $isFullyBooked && !$isPastDate ? 'bg-[#ff8a8a] text-black' : ($isAvailable && !$isPastDate ? 'bg-[#8aff8a] text-black' : '') }} "
                         @if($isAvailable) wire:click="selectDate({{ $day['day'] }})" @endif>
                         {{ $day['day'] }}
@@ -90,7 +90,7 @@
 
         <!-- Choose a Time -->
         <div class="col-span-5 row-span-4 bg-white shadow-md">
-            <div class="flex justify-center mt-6 bg-prims-yellow-5">
+            <div class="flex justify-center mt-6 bg-prims-yellow-1">
                 <h1 class="text-xl font-bold">Choose a Time</h1>
             </div>
             <div class="grid grid-cols-5 gap-4 px-4 py-4 font-bold text-center">
@@ -106,7 +106,7 @@
                     @if(!$isSelectionMade) 
                         text-gray-400 cursor-not-allowed
                     @elseif($isAvailable) 
-                        {{ $selectedTime === $time ? 'border-2 border-prims-yellow-5 bg-prims-azure-100 text-white' : 'text-black hover:bg-prims-yellow-5' }}
+                        {{ $selectedTime === $time ? 'border-2 border-prims-yellow-5 bg-prims-azure-100 text-white' : 'text-black hover:bg-prims-yellow-1' }}
                     @else 
                         text-gray-400 cursor-not-allowed
                     @endif" 
@@ -119,8 +119,8 @@
 
 
         <!-- Submit -->
-        <div class="col-span-5 row-span-4 bg-prims-yellow-5 shadow-md p-6">
-            <h1 class="text-xl font-bold text-center mb-4">Ready to appoint a check-up?</h1>
+        <div class="col-span-5 row-span-4 bg-prims-yellow-1 shadow-md p-6">
+            <h1 class="text-xl font-bold text-center mb-4">Enter Reason for Visit</h1>
             <textarea wire:model="reasonForVisit" id="reason" placeholder="Enter reason for visit" class="border border-gray-300 rounded-lg w-full p-2 mt-2"></textarea>
 
             <div class="mt-4 flex justify-center gap-4">

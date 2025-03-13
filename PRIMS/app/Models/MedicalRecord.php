@@ -16,6 +16,7 @@ class MedicalRecord extends Model
         'mi',
         'last_name',
         'dob',
+        'age',
         'gender',
         'contact_number',
         'street_number',
@@ -34,5 +35,18 @@ class MedicalRecord extends Model
         'social_history',
         'pe',
         'prescription',
+        'last_visited',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('notArchived', function ($query) {
+            $query->whereNull('archived_at');
+        });
+    }
+
+    public function scopeArchived($query)
+    {
+        return $query->whereNotNull('archived_at');
+    }
 }

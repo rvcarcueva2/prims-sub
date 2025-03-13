@@ -89,6 +89,10 @@ Route::middleware([
     Route::get('/medical-records/{id}', [MedicalRecordController::class, 'view'])
     ->name('view-medical-record');
 
+    Route::get('/archived-records', [MedicalRecordController::class, 'archiveRecord'])
+    ->name('archived-records');
+
+
     // Summary report route
     Route::get('/staff/summary-report', function () {
         $user = Auth::user();
@@ -140,6 +144,15 @@ Route::middleware([
         }
         return view('add-medicine');
     })->name('add-medicine');
+
+    // About us
+    Route::get('/about-us', function () {
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('patient')) {
+            abort(403); // Forbidden
+        }
+        return view('about-us');
+    })->name('about-us');
 
     Route::post('/staff/inventory/add', [InventoryController::class, 'store'])->name('inventory.store');
     Route::get('/staff/inventory/{id}', [InventoryController::class, 'show'])->name('inventory.show');
