@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\MedicalRecord;
+use App\Models\Appointment;
+use App\Models\Patient;
+use App\Models\ClinicStaff;
 
 class MedicalRecordController extends Controller
 {
-    public $archiveRecord;
+    public $archiveRecord, $appointmentId, $appointment;
 
     public function view($id)
     {
@@ -20,6 +23,35 @@ class MedicalRecordController extends Controller
         $archiveRecord = MedicalRecord::archived()->get();
         return view('archived-medical-records', compact('archiveRecord'));
     }
+
+    public function create(Request $request)
+    {
+        $appointmentId = $request->appointmentId;
+        $appointment = Appointment::with('patient')->find($appointmentId);
+
+        return view('livewire.add-medical-record', 
+        [
+            'patient' => $appointment->patient,
+            'appointmentId' => $appointment->id,
+            'email' => $appointment->patient->email,
+            'apc_id_number' => $appointment->patient->apc_id_number,
+            'first_name' => $appointment->patient->first_name,
+            'mi' => $appointment->patient->middle_initial,
+            'last_name' => $appointment->patient->last_name,
+            'dob' => $appointment->patient->date_of_birth,
+            'gender' => $appointment->patient->gender,
+            'street_number' => $appointment->patient->street_number,
+            'barangay' => $appointment->patient->barangay,
+            'city' => $appointment->patient->city,
+            'province' => $appointment->patient->province,
+            'zip_code' => $appointment->patient->zip_code,
+            'country' => $appointment->patient->country,
+            'contact_number' => $appointment->patient->contact_number,
+            'nationality' => $appointment->patient->nationality,
+            'age' => calculateAge($appointment->patient->date_of_birth),
+        ]);
+    }
+
 }
 
 // MedicalRecordController.php

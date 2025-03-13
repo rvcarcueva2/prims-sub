@@ -5,11 +5,14 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\MedicalRecord;
 use App\Models\Patient;
+use App\Models\Appointment;
 use Carbon\Carbon;
 
 class AddMedicalRecord extends Component
 {
     public $apc_id_number, $email, $first_name, $mi, $last_name, $contact_number, $dob, $age, $gender, $street_number, $barangay, $city, $province, $zip_code, $country, $reason, $nationality, $description, $diagnosis, $allergies, $pe, $prescription;
+
+    public $appointment_id;
 
     public $past_medical_history = [
         'Mumps' => null,
@@ -94,6 +97,12 @@ class AddMedicalRecord extends Component
         }
     }
 
+    protected $messages = [
+        'reason.required' => 'Kindly answer the field.',
+        'description.required' => 'Kindly provide a description.',
+        'pe.required' => 'Kindly answer the field.',
+        'diagnosis.required' => 'Please select a diagnosis.',
+    ];
 
     public function submit()
     {
