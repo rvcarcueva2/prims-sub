@@ -47,9 +47,7 @@
                                     View
                                 </button>
                             </a>
-                            <button wire:click="archiveRecord({{ $record->id }})" class="bg-red-500 text-white px-3 py-1 rounded">
-                                Archive
-                            </button>
+                            @livewire('archive-medical-record', ['record' => $record->id])
                         </td>
                     </tr>
                 @endforeach
