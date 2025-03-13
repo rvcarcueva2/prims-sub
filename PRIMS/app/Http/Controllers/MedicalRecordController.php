@@ -7,6 +7,7 @@ use App\Models\MedicalRecord;
 use App\Models\Appointment;
 use App\Models\Patient;
 use App\Models\ClinicStaff;
+use Carbon\Carbon;
 
 class MedicalRecordController extends Controller
 {
@@ -31,8 +32,8 @@ class MedicalRecordController extends Controller
 
         return view('livewire.add-medical-record', 
         [
-            'patient' => $appointment->patient,
-            'appointmentId' => $appointment->id,
+            // 'patient' => $appointment->patient,
+            // 'appointmentId' => $appointment->id,
             'email' => $appointment->patient->email,
             'apc_id_number' => $appointment->patient->apc_id_number,
             'first_name' => $appointment->patient->first_name,
@@ -48,7 +49,7 @@ class MedicalRecordController extends Controller
             'country' => $appointment->patient->country,
             'contact_number' => $appointment->patient->contact_number,
             'nationality' => $appointment->patient->nationality,
-            'age' => calculateAge($appointment->patient->date_of_birth),
+            'age' => Carbon::parse($appointment->patient->date_of_birth)->age,
         ]);
     }
 

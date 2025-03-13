@@ -4,7 +4,7 @@
             <h2 class="text-lg font-semibold">Personal Information</h2>
         </div>
         <form wire:submit.prevent="submit">
-            @csrf
+            <!-- @csrf -->
             <div class="grid grid-cols-4 gap-4 my-4">
                 <div>
                     <label class="text-lg">ID Number</label>
