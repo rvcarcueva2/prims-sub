@@ -24,4 +24,5 @@ class ArchiveMedicalRecord extends Component
     {
         return view('livewire.archive-medical-record');
     }
+
 }
