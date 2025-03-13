@@ -89,6 +89,10 @@ Route::middleware([
     Route::get('/medical-records/{id}', [MedicalRecordController::class, 'view'])
     ->name('view-medical-record');
 
+    Route::get('/archived-records', [MedicalRecordController::class, 'archiveRecord'])
+    ->name('archived-records');
+
+
     // Summary report route
     Route::get('/staff/summary-report', function () {
         $user = Auth::user();
