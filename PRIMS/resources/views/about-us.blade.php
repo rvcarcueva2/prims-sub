@@ -6,31 +6,33 @@
     <div class="max-w-screen-2xl mx-auto mt-6 px-8">
         
         <!-- Yellow Header Section -->
-        <div class="bg-[#F4C04D] h-[250px] w-full flex justify-center items-start pt-5">
-        <h2 class="text-4xl font-bold text-[#1D3557]">About us</h2>
-        </div>
+    <div class="bg-[#F4C04D] h-[250px] w-full flex justify-center items-start pt-8">
+        <h2 class="text-4xl font-bold text-[#1D3557] mt-2">ABOUT US</h2>
+    </div>
 
         <!-- White Content Box -->
         <div class="bg-white shadow-lg px-10 py-8 mt-0 max-w-[100%] mx-auto">
 
         <!-- Image Section (Centered & Overlapping) -->
-        <div class="flex justify-center -mt-40 relative z-10">
+        <div class="flex justify-center -mt-40 mb-6 relative z-10">
             <img src="/img/test-photo.png" alt="About Us Image" class="w-[80%] rounded-lg shadow-lg mx-auto">
         </div>
 
                 
-                <!-- About Us Text -->
-                <p class="text-lg text-gray-700 text-justify">
-                    APC Clinic is the sole healthcare provider at Asia Pacific College, dedicated to serving students, 
-                    faculty, and staff. We offer free medical checkups, blood pressure monitoring, and essential medications 
-                    to ensure accessible, quality care on campus.
-                </p>
-                <br>
-                <p class="text-lg text-gray-700 text-justify">
-                    Soon, we will expand our services with dental checkups, further enhancing student wellness. 
-                    Committed to preventive care, APC Clinic provides a safe, supportive space where healthcare 
-                    is always within reach.
-                </p>
+            <div class="flex justify-center items-center text-center px-10">
+        <div class="max-w-3xl custom-justify">
+            <p class="text-lg leading-relaxed">
+            Asia Pacific College (APC) is introducing the APC Clinic which serves as the primary healthcare provider at this college, dedicated to meeting the medical needs of its students, faculty, and staff. We are committed to delivering accessible, high-quality healthcare services that support the well-being of our academic community.              </p>
+
+            <br>
+            <p class="text-lg leading-relaxed">
+            Our clinic provides a range of essential medical services, including free medical checkups, blood pressure monitoring, and access to necessary medications. This ensures that quality care remains within the reach of all. With our continuous effort to enhance campus healthcare, we are pleased to announce the upcoming addition of dental checkups as part of our expanding services.            </p>
+
+            <br>
+            <p class="text-lg leading-relaxed">
+            At APC Clinic, we prioritize preventive care and wellness, creating a safe and supportive environment where healthcare is readily available. We are dedicated to providing compassionate, student-centered care, whether it is for routine consultations or urgent medical assistance, in order to help our community stay healthy and focused on their academic pursuits.            </p>
+        </div>
+    </div>
 
                 <!-- Black Divider Line -->
                 <div class="border-t-2 border-black w-full my-6"></div>
@@ -61,6 +63,12 @@
                             we aim to be a trusted healthcare partner for generations to come.
                         </p>
                     </div>
+
+                    <style>
+                        .custom-justify {
+                            text-align: justify;
+                        }
+                    </style>
 
                     <!-- Values -->
                     <div>
