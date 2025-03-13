@@ -4,11 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Appointment;
+use Illuminate\Support\Facades\Auth;
 
 class StaffSummaryReportController extends Controller
 {
     public function index()
     {
+
+        $user = Auth::user();
+        if (!$user || !$user->hasRole('clinic staff')) {
+            abort(403); // Forbidden
+        }
+
         // Fetch appointment counts
         $attendedCount = Appointment::where('status', 'completed')->count();
         $cancelledCount = Appointment::where('status', 'cancelled')->count();
