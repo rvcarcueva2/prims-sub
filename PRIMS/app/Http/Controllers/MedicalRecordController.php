@@ -32,8 +32,8 @@ class MedicalRecordController extends Controller
 
         return view('livewire.add-medical-record', 
         [
-            // 'patient' => $appointment->patient,
-            // 'appointmentId' => $appointment->id,
+            'patient' => $appointment->patient,
+            'appointmentId' => $appointment->id,
             'email' => $appointment->patient->email,
             'apc_id_number' => $appointment->patient->apc_id_number,
             'first_name' => $appointment->patient->first_name,
