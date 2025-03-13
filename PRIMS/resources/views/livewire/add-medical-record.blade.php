@@ -255,6 +255,78 @@
                         <option value="Plantar Fasciitis">Plantar Fasciitis</option>
                         <option value="Dislocation">Dislocation</option>
                     </optgroup>
+                    <optgroup label="Ophthalmology">
+                        <option value="Conjunctivitis">Conjunctivitis</option>
+                        <option value="Stye">Stye</option>
+                        <option value="Foreign Body">Foreign Body</option>
+                    </optgroup>
+                    <optgroup label="ENT">
+                        <option value="Stomatitis">Stomatitis</option>
+                        <option value="Epistaxis">Epistaxis</option>
+                        <option value="Otitis Media">Otitis Media</option>
+                        <option value="Foreign Body Removal">Foreign Body Removal</option>
+                    </optgroup>
+                    <optgroup label="Neurology">
+                        <option value="Tension Headache">Tension Headache</option>
+                        <option value="Migraine">Migraine</option>
+                        <option value="Vertigo">Vertigo</option>
+                        <option value="Hyperventilation Syndrome">Hyperventilation Syndrome</option>
+                        <option value="Insomnia">Insomnia</option>
+                        <option value="Seizure">Seizure</option>
+                        <option value="Bell's Palsy">Bell's Palsy</option>
+                    </optgroup>
+                    <optgroup label="Dermatology">
+                        <option value="Folliculitis">Folliculitis</option>
+                        <option value="Acne">Acne</option>
+                        <option value="Burn">Burn</option>
+                        <option value="Wound Dressing">Wound Dressing</option>
+                        <option value="Infected Wound">Infected Wound</option>
+                        <option value="Blister Wound">Blister Wound</option>
+                        <option value="Seborrheic Dermatitis">Seborrheic Dermatitis</option>
+                        <option value="Bruise/Hematoma">Bruise/Hematoma</option>
+                    </optgroup>
+                    <optgroup label="Nephrology">
+                        <option value="Urinary Tract Infection">Urinary Tract Infection</option>
+                        <option value="Renal Disease">Renal Disease</option>
+                        <option value="Urolithiasis">Urolithiasis</option>
+                    </optgroup>
+                    <optgroup label="Endocrinology">
+                        <option value="Hypoglycemia">Hypoglycemia</option>
+                        <option value="Dyslipidemia">Dyslipidemia</option>
+                        <option value="Diabetes Mellitus">Diabetes Mellitus</option>
+                    </optgroup>
+                    <optgroup label="OB-Gyne">
+                        <option value="Dysmenorrhea">Dysmenorrhea</option>
+                        <option value="Hormonal Imbalance">Hormonal Imbalance</option>
+                        <option value="Pregnancy">Pregnancy</option>
+                    </optgroup>
+                    <optgroup label="Hematologic">
+                        <option value="Leukemia">Leukemia</option>
+                        <option value="Blood Dyscrasia">Blood Dyscrasia</option>
+                        <option value="Anemia">Anemia</option>
+                    </optgroup>
+                    <optgroup label="Surgery">
+                        <option value="Lacerated Wound">Lacerated Wound</option>
+                        <option value="Punctured Wound">Punctured Wound</option>
+                        <option value="Animal Bite">Animal Bite</option>
+                        <option value="Superficial Abrasions">Superficial Abrasions</option>
+                        <option value="Foreign Body Removal">Foreign Body Removal</option>
+                    </optgroup>
+                    <optgroup label="Allergology">
+                        <option value="Contact Dermatitis">Contact Dermatitis</option>
+                        <option value="Allergic Rhinitis">Allergic Rhinitis</option>
+                        <option value="Bronchial Asthma">Bronchial Asthma</option>
+                        <option value="Hypersensitivity">Hypersensitivity</option>
+                    </optgroup>
+                    <optgroup label="Psychological">
+                        <option value="Post Traumatic Stress">Post Traumatic Stress</option>
+                        <option value="Bipolar Disorder">Bipolar Disorder</option>
+                        <option value="Clinical Depression">Clinical Depression</option>
+                        <option value="Major Depressive Disorder">Major Depressive Disorder</option>
+                        <option value="Agoraphobia">Agoraphobia</option>
+                        <option value="ADHD">ADHD</option>
+                        <option value="Anxiety Disorder">Anxiety Disorder</option>
+                    </optgroup>
                 </select>
 
                 <label class="font-medium text-lg mt-4">Prescription</label>

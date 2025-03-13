@@ -6,67 +6,67 @@
         <div class="grid grid-cols-4 gap-4 mt-4 items-center">
             <div>
                 <label class="font-bold text-lg">ID Number</label>
-                <input type="text" value="{{ $record->apc_id_number }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->apc_id_number }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">First Name</label>
-                <input type="text" value="{{ $record->first_name }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->first_name }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">Middle Initial</label>
-                <input type="text" value="{{ $record->mi }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->mi }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">Last Name</label>
-                <input type="text" value="{{ $record->last_name }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->last_name }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">Gender</label>
-                <input type="text" value="{{ $record->gender }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->gender }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">Age</label>
-                <input type="text" value="{{ $record->age }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->age }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">Date of Birth</label>
-                <input type="date" value="{{ $record->dob }}" class="border p-2 rounded w-full" readonly>
+                <input type="date" value="{{ $record->dob }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">Email</label>
-                <input type="text" value="{{ $record->email }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->email }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">House/Unit No. & Street</label>
-                <input type="text" value="{{ $record->street_number }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->street_number }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">Barangay</label>
-                <input type="text" value="{{ $record->barangay }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->barangay }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">City/Municipality</label>
-                <input type="text" value="{{ $record->city }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->city }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">Province</label>
-                <input type="text" value="{{ $record->province }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->province }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">ZIP Code</label>
-                <input type="text" value="{{ $record->zip_code }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->zip_code }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">Country</label>
-                <input type="text" value="{{ $record->country }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->country }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">Contact Number</label>
-                <input type="text" value="{{ $record->contact_number }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->contact_number }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
             <div>
                 <label class="font-bold text-lg">Nationality</label>
-                <input type="text" value="{{ $record->nationality }}" class="border p-2 rounded w-full" readonly>
+                <input type="text" value="{{ $record->nationality }}" class="border p-2 rounded w-full bg-gray-100" readonly>
             </div>
         </div>
 
@@ -76,13 +76,13 @@
 
         <div class="mt-4">
             <label class="text-lg font-medium">Reason for visit</label>
-            <textarea class="w-full border p-2 rounded mb-5" readonly>{{ $record->reason }}</textarea>
+            <textarea class="w-full border p-2 rounded mb-5 bg-gray-100" readonly>{{ $record->reason }}</textarea>
 
             <label class="text-lg font-medium">Description of symptoms</label>
-            <textarea class="w-full border p-2 rounded mb-5" readonly>{{ $record->description }}</textarea>
+            <textarea class="w-full border p-2 rounded mb-5 bg-gray-100" readonly>{{ $record->description }}</textarea>
 
             <label class="text-lg font-medium">Allergies</label>
-            <textarea class="w-full border p-2 rounded" readonly>{{ $record->allergies }}</textarea>
+            <textarea class="w-full border p-2 rounded bg-gray-100" readonly>{{ $record->allergies }}</textarea>
         </div>
 
         <div class="mt-6 bg-prims-yellow-1 rounded-lg p-4">
@@ -162,7 +162,7 @@
             <!-- Alcohol Consumption -->
             <div class="flex flex-col">
                 <label class="text-lg font-semibold">Alcohol Consumption</label>
-                <p class="border rounded p-1 w-[22rem] bg-gray-100">
+                <p class="border border-gray-500 rounded p-1 w-[22rem] bg-gray-100">
                     {{ $social_history['alcohol'] ?? 'N/A' }}
                 </p>
             </div>
@@ -170,7 +170,7 @@
             <!-- Medications -->
             <div class="col-span-2 flex flex-col">
                 <label class="text-lg font-semibold">Medications</label>
-                <p class="border rounded-md p-1 w-[22rem] bg-gray-100">
+                <p class="border border-gray-500 rounded-md p-1 w-[22rem] bg-gray-100">
                     {{ $social_history['medications'] ?? 'None' }}
                 </p>
             </div>
