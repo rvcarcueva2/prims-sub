@@ -37,4 +37,16 @@ class MedicalRecord extends Model
         'prescription',
         'last_visited',
     ];
+
+    protected static function booted()
+    {
+        static::addGlobalScope('notArchived', function ($query) {
+            $query->whereNull('archived_at');
+        });
+    }
+
+    public function scopeArchived($query)
+    {
+        return $query->whereNotNull('archived_at');
+    }
 }
