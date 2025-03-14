@@ -15,7 +15,7 @@
 
         <!-- Image Section (Centered & Overlapping) -->
         <div class="flex justify-center -mt-40 mb-6 relative z-10">
-            <img src="/img/test-photo.png" alt="About Us Image" class="w-[80%] rounded-lg shadow-lg mx-auto">
+            <img src="/img/aboutus123.png" alt="About Us Image" class="w-[80%] rounded-lg shadow-lg mx-auto">
         </div>
 
                 
