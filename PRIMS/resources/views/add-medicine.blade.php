@@ -117,7 +117,7 @@
                             <option value="Electrolyte Solution">Electrolyte Solution</option>
                             <option value="Expectorant">Expectorant</option>
                             <option value="Gastrointestinal">Gastrointestinal</option>
-                            <option value="Muscle Relaxant">Muslce Relaxant</option>
+                            <option value="Muscle Relaxant">Muscle Relaxant</option>
                             <option value="NSAID">NSAID</option>
                             <option value="Other">Others (Specify below)</option>
                         </select>

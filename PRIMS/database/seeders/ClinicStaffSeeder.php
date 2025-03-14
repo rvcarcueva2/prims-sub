@@ -26,22 +26,13 @@ class ClinicStaffSeeder extends Seeder
                 'clinic_staff_desc' => null,
             ],
             [
-                'email' => 'smcatingub@apc.edu.ph',
-                'clinic_staff_fname' => 'Shannelien Mae',
-                'clinic_staff_minitial' => 'M',
-                'clinic_staff_lname' => 'Catingub',
-                'clinic_staff_role' => 'Doctor',
-                'clinic_staff_image' => 'img/clinic-staff/girl-doctor.png',
-                'clinic_staff_desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate pharetra metus, non finibus nunc pharetra ut. Integer non felis dictum elit ullamcorper rutrum eu id lacus.',
-            ],
-            [
                 'email' => 'junavendano@apc.edu.ph',
                 'clinic_staff_fname' => 'Jun',
                 'clinic_staff_minitial' => null,
                 'clinic_staff_lname' => 'Avendano',
                 'clinic_staff_role' => 'Doctor',
                 'clinic_staff_image' => 'img/clinic-staff/boy-doctor.png',
-                'clinic_staff_desc' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vulputate pharetra metus, non finibus nunc pharetra ut. Integer non felis dictum elit ullamcorper rutrum eu id lacus.',
+                'clinic_staff_desc' => 'Specializes in General Medicine',
             ],
         ];
 
