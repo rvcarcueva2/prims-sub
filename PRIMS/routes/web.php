@@ -127,6 +127,9 @@ Route::middleware([
     Route::get('/appointment-history', [AppointmentController::class, 'showAppointmentHistory'])
     ->name('appointment-history');
 
+    Route::get('/print-medical-record/{appointmentId}', [MedicalRecordController::class, 'printMedicalRecord'])->name('print.medical.record');
+    
+
     // Add Record route  
     Route::get('/staff/add-record', function (Illuminate\Http\Request $request) {
         $user = Auth::user();

@@ -25,6 +25,31 @@ class MedicalRecordController extends Controller
         return view('archived-medical-records', compact('archiveRecord'));
     }
 
+    public function printMedicalRecord($appointmentId)
+    {
+        // Find the appointment by ID
+        $appointment = Appointment::with(['patient', 'medicalRecords'])->findOrFail($appointmentId);
+    
+        // Fetch the associated medical records (you can adjust this based on how you structure the records)
+        $medicalRecords = $appointment->medicalRecords;
+    
+        // Retrieve the patient details
+        $patient = $appointment->patient;
+    
+        // Ensure that the medical record data includes diagnosis, treatment, and notes
+        // You might need to modify the medical records model if necessary to include these attributes
+    
+        // Generate PDF using DomPDF
+        $pdf = \PDF::loadView('pdf.medical-record-pdf', [
+            'patient' => $patient,
+            'medicalRecords' => $medicalRecords,
+            'appointment' => $appointment,
+        ]);
+    
+        // Return the generated PDF file for download
+        return $pdf->download('medical_record_' . $appointment->id . '.pdf');
+    }
+
     public function create(Request $request)
     {
         $appointmentId = $request->appointmentId;
@@ -54,5 +79,3 @@ class MedicalRecordController extends Controller
     }
 
 }
-
-// MedicalRecordController.php

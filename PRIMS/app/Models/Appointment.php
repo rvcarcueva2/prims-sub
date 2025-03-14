@@ -26,6 +26,12 @@ class Appointment extends Model
         return $this->belongsTo(Patient::class, 'patient_id');
     }
 
+    public function medicalRecords()
+    {
+        return $this->hasMany(MedicalRecord::class, 'appointment_id');
+    }
+
+
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'status_updated_by');

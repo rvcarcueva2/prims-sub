@@ -27,7 +27,10 @@ class AppointmentHistory extends Component
 
     public function loadAppointments()
     {
-        $this->appointmentHistory = Appointment::where('patient_id', $this->patient->id)->get();
+        $this->appointmentHistory = Appointment::where('patient_id', $this->patient->id)
+            ->orderBy('appointment_date', 'desc')
+            ->get();
+
         $this->hasUpcomingAppointment = Appointment::where('patient_id', $this->patient->id)
             ->where('appointment_date', '>=', now())
             ->whereIn('status', ['approved'])

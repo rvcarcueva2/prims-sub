@@ -36,6 +36,7 @@ class MedicalRecord extends Model
         'pe',
         'prescription',
         'last_visited',
+        'appointment_id',
     ];
 
     protected static function booted()
@@ -48,6 +49,11 @@ class MedicalRecord extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id');
+    }
+
+    public function appointment()
+    {
+        return $this->belongsTo(Appointment::class);
     }
 
     public function scopeArchived($query)
