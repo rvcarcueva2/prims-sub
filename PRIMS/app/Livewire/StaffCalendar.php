@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 use App\Mail\ApprovedAppointment;
 use App\Mail\DeclinedAppointment;
 use Illuminate\Support\Facades\Mail;
+use App\Models\MedicalRecord;
 use App\Models\User;
 
 class StaffCalendar extends Component
@@ -183,6 +184,39 @@ class StaffCalendar extends Component
             Mail::to($appointment->patient->email)->send(new DeclinedAppointment($appointment));
         }
     }
+
+    public function startAppointment($appointmentId)
+    {
+        $appointment = Appointment::find($appointmentId);
+    
+        if (!$appointment) {
+            session()->flash('error', 'Appointment not found.');
+            return;
+        }
+    
+        return redirect()->route('addRecordmain', [
+            'appointment_id' => $appointment->id,
+            'fromStaffCalendar' => true
+        ]);
+    }
+
+    public function reapproveAppointment($appointmentId)
+    {
+        $appointment = Appointment::find($appointmentId);
+    
+        if ($appointment && $appointment->status !== 'approved') {
+            $appointment->status = 'approved';
+            $appointment->status_updated_by = Auth::id();
+            $appointment->save();
+    
+            // Refresh calendar and appointments
+            $this->loadAppointments();
+            $this->generateCalendar();
+    
+            session()->flash('success', 'Appointment re-approved successfully.');
+        }
+    }
+    
 
     public function confirmCancel($appointmentId)
     {

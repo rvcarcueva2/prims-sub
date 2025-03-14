@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\AppointmentController;
@@ -86,6 +88,9 @@ Route::middleware([
         return view('medical-records');
     })->name('medical-records');
 
+    Route::get('/addRecordmain', [MedicalRecordController::class, 'create'])
+    ->name('add-medical-record');
+
     Route::get('/medical-records/{id}', [MedicalRecordController::class, 'view'])
     ->name('view-medical-record');
 
@@ -94,15 +99,19 @@ Route::middleware([
 
 
     // Summary report route
-    Route::get('/staff/summary-report', function () {
-        $user = Auth::user();
-        if (!$user || !$user->hasRole('clinic staff')) {
-            abort(403); // Forbidden
-        }
-        return view('staff-summary-report');
-    })->name('summary-report');
+    // Route::get('/staff/summary-report', function () {
+    //     $user = Auth::user();
+    //     if (!$user || !$user->hasRole('clinic staff')) {
+    //         abort(403); // Forbidden
+    //     }
+    //     return view('staff-summary-report');
+    // })->name('summary-report');
 
-    Route::get('/staff-summary-report', [StaffSummaryReportController::class, 'index'])->name('staff-summary-report');
+    Route::get('/staff/summary-report', [StaffSummaryReportController::class, 'index'])->name('summary-report');
+
+    Route::get('/staff/generate-accomplishment-report', 
+        [StaffSummaryReportController::class, 'generateAccomplishmentReport'])
+        ->name('generate.accomplishment.report');
 
 
     // Calendar route
@@ -118,13 +127,20 @@ Route::middleware([
     Route::get('/appointment-history', [AppointmentController::class, 'showAppointmentHistory'])
     ->name('appointment-history');
 
-    // Add Record route
-    Route::get('/staff/add-record', function () {
+    Route::get('/print-medical-record/{appointmentId}', [MedicalRecordController::class, 'printMedicalRecord'])->name('print.medical.record');
+    
+
+    // Add Record route  
+    Route::get('/staff/add-record', function (Illuminate\Http\Request $request) {
         $user = Auth::user();
         if (!$user || !$user->hasRole('clinic staff')) {
-            abort(403); // Forbidden
+            abort(403);
         }
-        return view('addRecordmain');
+    
+        return view('addRecordmain', [
+            'appointment_id' => $request->query('appointment_id'),
+            'fromStaffCalendar' => $request->query('fromStaffCalendar', false)
+        ]);
     })->name('addRecordmain');
 
      // Test route
