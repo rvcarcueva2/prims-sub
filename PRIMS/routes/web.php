@@ -109,6 +109,10 @@ Route::middleware([
 
     Route::get('/staff/summary-report', [StaffSummaryReportController::class, 'index'])->name('summary-report');
 
+    Route::get('/staff/generate-accomplishment-report', 
+        [StaffSummaryReportController::class, 'generateAccomplishmentReport'])
+        ->name('generate.accomplishment.report');
+
 
     // Calendar route
     Route::get('/staff/calendar', function () {
