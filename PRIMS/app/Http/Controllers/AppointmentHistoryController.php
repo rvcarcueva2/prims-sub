@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
+
 class AppointmentHistoryController extends Controller
 {
     public function showAppointmentHistory()
