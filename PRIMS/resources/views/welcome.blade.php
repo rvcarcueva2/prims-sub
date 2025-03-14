@@ -65,7 +65,7 @@
 
         <div class="flex items-center gap-12 w-[70%] py-12 mx-auto">
             <div class="w-[45%]">
-                <img src="img/sample-pic.svg" class="object-cover rounded-lg">
+                <img src="img/bpcheck123.png" class="object-cover rounded-lg">
             </div>
             <div class="flex flex-col w-[50%] text-left">
                 <p class="font-bold text-4xl mb-6">We care for you.</p>
