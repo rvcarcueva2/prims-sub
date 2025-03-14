@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\Dispensed;
-use App\Models\Supply;
+use App\Models\MedicalRecord;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 
 class StaffSummaryReportController extends Controller
@@ -15,44 +17,104 @@ class StaffSummaryReportController extends Controller
     {
         $user = Auth::user();
         if (!$user || !$user->hasRole('clinic staff')) {
-            abort(403); // Forbidden
+            abort(403);
         }
 
-        // Get the month and year from the request, default to current month and year
         $month = $request->input('month', Carbon::now()->month);
         $year = $request->input('year', Carbon::now()->year);
 
-        // Fetch appointment counts
-        $attendedCount = Appointment::where('status', 'completed')->count();
-        $cancelledCount = Appointment::where('status', 'cancelled')->count();
-        $totalAppointments = $attendedCount + $cancelledCount;
-        $attendedPercentage = ($totalAppointments > 0) ? ($attendedCount / $totalAppointments) * 100 : 0;
+        // Appointment Summary (Patients Only)
+        $attendedCount = Appointment::where('status', 'completed')
+            ->whereMonth('appointment_date', $month)
+            ->whereYear('appointment_date', $year)
+            ->count();
 
-        // Fetch the top 5 most prescribed medications for the given month and year
+        $cancelledCount = Appointment::where('status', 'cancelled')
+            ->whereMonth('appointment_date', $month)
+            ->whereYear('appointment_date', $year)
+            ->count();
+
+        $totalAppointments = $attendedCount + $cancelledCount;
+        $totalPatients = User::whereHas('roles', function ($query) {
+            $query->where('name', 'patient');
+        })->count();
+
+        // Most Prescribed Medications
         $medications = Dispensed::select('inventory_id', \DB::raw('SUM(quantity_dispensed) as total_dispensed'))
             ->whereMonth('date_dispensed', $month)
             ->whereYear('date_dispensed', $year)
             ->groupBy('inventory_id')
             ->orderByDesc('total_dispensed')
-            ->take(5) // Take top 5
+            ->take(5)
             ->get()
-            ->map(function($dispensed) {
-                $inventory = $dispensed->inventory;
+            ->map(function ($dispensed) {
                 return [
-                    'name' => $inventory->supply->name, // Get the medication name from the supply model
+                    'name' => $dispensed->inventory->supply->name,
                     'quantity_dispensed' => $dispensed->total_dispensed,
                 ];
             });
 
-        // Return the view with data
+        // Common Diagnoses
+        $commonDiagnoses = MedicalRecord::select('diagnosis', \DB::raw('COUNT(diagnosis) as count'))
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->groupBy('diagnosis')
+            ->orderByDesc('count')
+            ->take(5)
+            ->get();
+
         return view('staff-summary-report', [
             'attendedCount' => $attendedCount,
             'cancelledCount' => $cancelledCount,
             'totalAppointments' => $totalAppointments,
-            'attendedPercentage' => $attendedPercentage,
+            'totalPatients' => $totalPatients,
             'medications' => $medications,
+            'diagnoses' => $commonDiagnoses,
             'selectedMonth' => $month,
             'selectedYear' => $year,
         ]);
+    }
+
+    public function generateAccomplishmentReport(Request $request)
+    {
+        $month = $request->input('month', Carbon::now()->month);
+        $year = $request->input('year', Carbon::now()->year);
+        $to = $request->input('to');
+        $submittedTo = $request->input('submittedTo');
+        $staffName = Auth::user()->name;
+
+        // Fetch all possible diagnoses (ensuring blank ones are included)
+        $allDiagnoses = [
+            'Cardiology' => ['Hypertension', 'BP Monitoring', 'Bradycardia', 'Hypotension', 'Angina'],
+            'Pulmonology' => ['URTI', 'Pneumonia', 'PTB', 'Bronchitis', 'Lung Pathology'],
+            'Gastroenterology' => ['Acute Gastroenteritis', 'GERD', 'Hemorrhoids', 'Anorexia'],
+            'Neurology' => ['Tension Headache', 'Migraine', 'Vertigo', 'Insomnia'],
+            'Endocrinology' => ['Diabetes Mellitus', 'Dyslipidemia'],
+            'Nephrology' => ['Urinary Tract Infection'],
+        ];
+
+        $existingDiagnoses = MedicalRecord::select('diagnosis', \DB::raw('COUNT(diagnosis) as count'))
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->groupBy('diagnosis')
+            ->get()
+            ->pluck('count', 'diagnosis')
+            ->toArray();
+
+        // Organizing Diagnoses into Categories
+        $categorizedDiagnoses = [];
+        foreach ($allDiagnoses as $category => $diagnoses) {
+            $categorizedDiagnoses[$category] = [];
+            foreach ($diagnoses as $diagnosis) {
+                $categorizedDiagnoses[$category][] = [
+                    'name' => $diagnosis,
+                    'count' => $existingDiagnoses[$diagnosis] ?? 0,
+                ];
+            }
+        }
+
+        $pdf = Pdf::loadView('pdf.report', compact('month', 'year', 'to', 'submittedTo', 'staffName', 'categorizedDiagnoses'));
+
+        return $pdf->download('accomplishment-report.pdf');
     }
 }

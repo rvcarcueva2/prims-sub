@@ -45,6 +45,11 @@ class MedicalRecord extends Model
         });
     }
 
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id');
+    }
+
     public function scopeArchived($query)
     {
         return $query->whereNotNull('archived_at');
