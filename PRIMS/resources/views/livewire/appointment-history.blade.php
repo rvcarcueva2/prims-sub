@@ -4,13 +4,13 @@
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-lg sm:rounded-lg mt-5">
             <div class="p-6 lg:p-8 gap-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex flex-wrap justify-start">
                 <!-- left - picture -->
-                <div>
+                <!-- <div>
                     <img src="img/appointment-history/temp-id-pic.jpg" class="max-h-44 inline-block align-middle">
-                </div>
+                </div> -->
 
                 <!-- center - personal details -->
                 <div class="flex flex-col w-2/5">
-                    <div class="text-3xl pb-5 mt-2">
+                    <div class="text-3xl pb-5">
                         <strong>{{ $patient->first_name }} {{ $patient->middle_initial }}. {{ $patient->last_name }}</strong>
                     </div>
                     <div class="flex justify-start gap-5 flex-wrap">

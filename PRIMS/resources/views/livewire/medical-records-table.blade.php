@@ -1,4 +1,15 @@
 <div class="p-6">
+    <!-- Search bar -->
+    <div class="flex gap-6 pb-5 justify-end">
+        <input type="text" id="searchInput" placeholder="Search records..." class="px-4 py-2 border rounded-lg w-1/3">
+
+        <a href="/staff/add-record">
+            <button id="addRecordButton" class="px-4 py-2 bg-prims-azure-500 text-white rounded-lg hover:bg-prims-azure-100">
+                Add Record
+            </button>
+        </a>
+    </div>
+
     <div class="overflow-x-auto bg-white shadow-md rounded-lg">
         <table id="recordsTable" class="w-full min-w-full divide-y divide-gray-200">
             <thead style="background-color: #F4BF4F;">
@@ -31,7 +42,7 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($records as $record)
-                    <tr>
+                    <tr class="record-row">
                         <td>
                             <input type="checkbox" class="ml-6 h-4 w-4 text-indigo-600 border-gray-300 rounded">
                         </td>
@@ -54,15 +65,16 @@
             </tbody>
         </table>
     </div>
-    
-    <div class="mt-4 flex gap-6">
-        <a href="/staff/add-record">
-            <button id="addRecordButton" class="px-4 py-2 bg-prims-azure-500 text-white rounded-lg hover:bg-prims-azure-100">
-                Add Record
-            </button>
-        </a>
-        <!-- <button id="deleteSelectedButton" class="text-red-600 hover:text-red-700">
-            Delete All Selected
-        </button> -->
-    </div>
 </div>
+
+<script>
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll(".record-row");
+
+        rows.forEach(row => {
+            let text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? "" : "none";
+        });
+    });
+</script>
