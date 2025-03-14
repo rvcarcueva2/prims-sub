@@ -27,20 +27,20 @@
                 <div class="flex flex-col rounded-l-2xl bg-prims-yellow-1 py-8 px-6">
                     <h3 class="text-3xl font-extrabold mb-3">Schedule</h3>
                     <h4 class="text-xl font-light mb-3">Walk-ins</h4>
-                    <h5 class="text-2xl">Morning</h5>
-                    <h5 class="text-2xl font-extralight mb-3">7:00 AM - 11:30 AM</h5>
-                    <h5 class="text-2xl">Afternoon</h5>
-                    <h5 class="text-2xl font-extralight:">1:00 PM - 5:00 PM</h5>
+                    <h5 class="text-xl">Morning</h5>
+                    <h5 class="text-lg font-extralight mb-3">7:00 AM - 11:30 AM</h5>
+                    <h5 class="text-xl">Afternoon</h5>
+                    <h5 class="text-lg font-extralight:">1:00 PM - 5:00 PM</h5>
                 </div>
 
                 <!-- Checkups -->
                 <div class="flex flex-col bg-prims-yellow-1 py-8 px-6">
                     <h3 class="text-3xl font-extrabold mb-3">Checkups</h3>
                     <h4 class="text-xl font-light mb-3">Walk-ins (Wednesdays)</h4>
-                    <h5 class="text-2xl">Morning</h5>
-                    <h5 class="text-2xl font-extralight mb-3">7:00 AM - 11:30 AM</h5>
-                    <h5 class="text-2xl">Afternoon</h5>
-                    <h5 class="text-2xl font-extralight:">1:00 PM - 5:00 PM</h5>
+                    <h5 class="text-xl">Morning</h5>
+                    <h5 class="text-lg font-extralight mb-3">7:00 AM - 11:30 AM</h5>
+                    <h5 class="text-xl">Afternoon</h5>
+                    <h5 class="text-lg font-extralight:">1:00 PM - 5:00 PM</h5>
                 </div>
 
                 <!-- Patient Portal -->

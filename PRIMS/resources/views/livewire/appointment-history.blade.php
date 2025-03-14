@@ -48,14 +48,49 @@
                                 <br> Dr. {{ $hasUpcomingAppointment->doctor->clinic_staff_fname }} {{ $hasUpcomingAppointment->doctor->clinic_staff_lname }}
                                 <br><em> {{ $hasUpcomingAppointment->reason_for_visit }} </em>
                             </span>
-                            <x-button wire:click="confirmCancel({{ $hasUpcomingAppointment->id }})" class="mt-3">
-                                Cancel Appointment
+                            <x-button wire:click="confirmCancel('{{ $hasUpcomingAppointment->id }}')" class="mt-3">
+                            Cancel Appointment
                             </x-button>
                         @else
                             <span class="text-sm text-gray-500">None</span>
                         @endif
                     </div>
                 </div>
+
+                @if($showCancelModal)
+                    <div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+                        <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm">
+                            <h3 class="text-2xl font-bold pb-3 text-center">Cancel Appointment</h3>
+                            <p class="text-center">Please enter a <span class="text-red-500"><strong>reason</strong></span> for cancelling this appointment.</p>
+                            <textarea wire:model.defer="cancelReason" class="w-full p-2 border rounded mt-3" placeholder="Enter reason here..."></textarea>
+                            
+                            <div class="mt-4 flex justify-end gap-2">
+                                <x-button 
+                                wire:click="cancelAppointment"
+                                x-bind:disabled="!$wire.cancelReason"
+                                x-bind:class="!$wire.cancelReason ? 'opacity-50 cursor-not-allowed' : ''">
+                                    Confirm
+                                </x-button>
+                                <button wire:click="$set('showCancelModal', false)" class="px-4 py-2 rounded">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                @if($showCancelSuccessModal)
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
+                    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm">
+                        <h3 class="text-3xl font-bold pb-3 text-center">Appointment Cancelled</h3>
+                        <p class="text-center">An <span class="text-red-500"><strong>email notification</strong></span> has been sent to the you and the clinic staff.</p>
+                        <div class="mt-4 flex justify-end gap-2">
+                            <x-button wire:click="$set('showCancelSuccessModal', false)">OK</x-button>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
             </div>
         </div>
     </div>
