@@ -1,17 +1,9 @@
-# Use the official PHP image with necessary extensions
-FROM php:8.2-fpm
+FROM php:8.2-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    zip \
-    unzip \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    libzip-dev \
-    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+    unzip zip curl libzip-dev libpng-dev libonig-dev libxml2-dev git \
+    && docker-php-ext-install pdo pdo_mysql zip
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -19,15 +11,20 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-# Copy Laravel project files
-COPY PRIMS/ /var/www
+# Copy project files
+COPY ./PRIMS /var/www
 
 # Install dependencies
-RUN composer install
+RUN composer install --no-dev --optimize-autoloader
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
+# Set proper permissions
+RUN chmod -R 775 storage bootstrap/cache
 
-# Expose port 9000 and start php-fpm server
-EXPOSE 9000
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# Set Laravel app key (optional: safer to use ENV + php artisan key:generate at runtime)
+# RUN php artisan key:generate
+
+# Expose port (Railway will set PORT)
+EXPOSE 8080
+
+# Start Laravel server on Railway-assigned port
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
