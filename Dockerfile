@@ -1,8 +1,9 @@
+# Base PHP image
 FROM php:8.2-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    unzip zip curl libzip-dev libpng-dev libonig-dev libxml2-dev git \
+    unzip zip curl git libzip-dev libpng-dev libonig-dev libxml2-dev \
     && docker-php-ext-install pdo pdo_mysql zip
 
 # Install Composer
@@ -14,17 +15,21 @@ WORKDIR /var/www
 # Copy project files
 COPY ./PRIMS /var/www
 
-# Install dependencies
+# Set permissions (ensure Laravel can write to storage & cache)
+RUN chmod -R 775 storage bootstrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache
+
+# Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Set proper permissions
-RUN chmod -R 775 storage bootstrap/cache
+# Set environment (you may pass .env through Railway variables instead)
+ENV APP_ENV=production
+ENV PORT=8080
 
-# Set Laravel app key (optional: safer to use ENV + php artisan key:generate at runtime)
-# RUN php artisan key:generate
-
-# Expose port (Railway will set PORT)
+# Expose port
 EXPOSE 8080
 
-# Start Laravel server on Railway-assigned port
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8080}
+# Entrypoint: cache config and run migrations, then start Laravel
+CMD php artisan config:cache \
+ && php artisan migrate --force \
+ && php artisan serve --host=0.0.0.0 --port=${PORT}
