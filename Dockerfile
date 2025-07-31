@@ -1,45 +1,33 @@
-# Dockerfile
-
+# Use the official PHP image with necessary extensions
 FROM php:8.2-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpng-dev \
-    libjpeg-dev \
-    libonig-dev \
-    libxml2-dev \
+    git \
+    curl \
     zip \
     unzip \
-    curl \
-    git \
-    nano \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
     libzip-dev \
-    libpq-dev \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl bcmath
+    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /var/www
 
-# Copy project files
-COPY . .
+# Copy Laravel project files
+COPY PRIMS/ /var/www
 
 # Install dependencies
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install
 
-# Generate Laravel app key
-RUN php artisan key:generate
+# Set permissions
+RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www
 
-# Set proper permissions
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Expose port 8000
-EXPOSE 8000
-
-# Start Laravel server
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
